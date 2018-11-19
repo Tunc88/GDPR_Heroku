@@ -11,11 +11,12 @@ class Description extends React.Component {
         <Panel>
           <Panel.Body>
             <span>
-              Privacy patterns are design solutions to common privacy problems — a
-              way to translate "privacy-by-design" into practical advice for
+              Privacy patterns are design solutions to common privacy problems —
+              a way to translate "privacy-by-design" into practical advice for
               software engineering. We believe design patterns can help document
               common practices and standardize terminology. We are building a
-              living, community space where all can contribute their own patterns.
+              living, community space where all can contribute their own
+              patterns.
             </span>
             <div className="rowC">
               <row>
