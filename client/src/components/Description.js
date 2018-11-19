@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { PageHeader, ButtonToolbar, Button, Col, Panel } from "react-bootstrap";
+import {
+  PageHeader,
+  ButtonToolbar,
+  Button,
+  Col,
+  Panel,
+  Row
+} from "react-bootstrap";
 
 import "./Description.css";
 
@@ -11,21 +18,26 @@ class Description extends React.Component {
         <Panel>
           <Panel.Body>
             <span>
-              Privacy patterns are design solutions to common privacy problems — a
-              way to translate "privacy-by-design" into practical advice for
+              Privacy patterns are design solutions to common privacy problems —
+              a way to translate "privacy-by-design" into practical advice for
               software engineering. We believe design patterns can help document
               common practices and standardize terminology. We are building a
-              living, community space where all can contribute their own patterns.
+              living, community space where all can contribute their own
+              patterns.
             </span>
+          </Panel.Body>
+        </Panel>
+        <Panel>
+          <Panel.Body>
             <div className="rowC">
-              <row>
+              <Row>
                 <Col xs={2} xsOffset={5}>
                   <ButtonToolbar>
                     <Button bsStyle="primary">Login</Button>
                     <Button bsStyle="primary">Signin</Button>
                   </ButtonToolbar>
                 </Col>
-              </row>
+              </Row>
             </div>
           </Panel.Body>
         </Panel>
