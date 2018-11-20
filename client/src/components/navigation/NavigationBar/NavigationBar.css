@@ -1,13 +1,26 @@
-.placeholder {
+.placeholderLeft {
   width: 300px;
-  padding-left: 75rem;
+  /*padding-left: 75rem;*/
 }
 
-#userPic {
-  height: 34px;
-  margin-top: 7px;
+.placeholderRight {
+  width: 300px;
+  /*padding-left: 75rem;*/
 }
 
 #search {
   width: 400px;
+}
+#userPic {
+  height: 50px;
+  width: 50px;
+}
+
+.persona {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+#profile {
+  padding-top: 0px;
 }

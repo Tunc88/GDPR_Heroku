@@ -27,7 +27,7 @@ class NavigationBar extends React.Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Navbar.Form pullLeft>
-            <div className="placeholder" />
+            <div className="placeholderLeft" />
             <FormGroup>
               <FormControl
                 id="search"
@@ -41,21 +41,29 @@ class NavigationBar extends React.Component {
             <Link to="/overview">
               <Button type="submit">Back to overview</Button>
             </Link>
+          </Navbar.Form>{" "}
+          <Navbar.Form pullRight className="persona">
+            <div className="placeholderRight" />
+            <FormGroup>
+              <img
+                id="userPic"
+                src="https://venturebeat.com/wp-content/uploads/2016/02/anonymous-face.shutterstock_365080829.jpg?fit=400%2C320&strip=all"
+              />
+              <Nav>
+                <NavDropdown
+                  className="profile"
+                  eventKey={3}
+                  title="Profile"
+                  id="basic-nav-dropdown"
+                >
+                  <MenuItem eventKey={3.1}>View</MenuItem>
+                  <MenuItem eventKey={3.2}>Edit</MenuItem>
+                  <MenuItem divider />
+                  <MenuItem eventKey={3.3}>Change Role</MenuItem>
+                </NavDropdown>
+              </Nav>
+            </FormGroup>
           </Navbar.Form>
-
-          <Image
-            id="userPic"
-            src="https://venturebeat.com/wp-content/uploads/2016/02/anonymous-face.shutterstock_365080829.jpg?fit=400%2C320&strip=all"
-          />
-
-          <Nav>
-            <NavDropdown eventKey={3} title="Profile" id="basic-nav-dropdown">
-              <MenuItem eventKey={3.1}>View</MenuItem>
-              <MenuItem eventKey={3.2}>Edit</MenuItem>
-              <MenuItem divider />
-              <MenuItem eventKey={3.3}>Change Role</MenuItem>
-            </NavDropdown>
-          </Nav>
         </Navbar.Collapse>
       </Navbar>
     );
