@@ -11,6 +11,7 @@ import {
   Thumbnail,
   Image
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import classes from "./NavigationBar.css";
 
@@ -20,7 +21,7 @@ class NavigationBar extends React.Component {
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#brand">GDPR</a>
+            <Link to="/">GDPR</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
@@ -34,7 +35,12 @@ class NavigationBar extends React.Component {
                 placeholder="Enter concern or pattern"
               />
             </FormGroup>{" "}
-            <Button type="submit">Search!</Button>
+            <Link to="/search">
+              <Button type="submit">Search!</Button>
+            </Link>{" "}
+            <Link to="/overview">
+              <Button type="submit">Back to overview</Button>
+            </Link>
           </Navbar.Form>
 
           <Image

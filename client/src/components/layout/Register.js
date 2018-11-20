@@ -3,7 +3,7 @@ import { Panel } from "react-bootstrap";
 
 import "./Register.css";
 
-export default class Register extends Component {
+class Register extends Component {
   render() {
     return (
       <div>
@@ -14,3 +14,5 @@ export default class Register extends Component {
     );
   }
 }
+
+export default Register;

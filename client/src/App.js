@@ -6,6 +6,7 @@ import NavigationBar from "./components/navigation/NavigationBar/NavigationBar";
 import Footer from "./components/Footer";
 import Description from "./components/Description";
 import Overview from "./components/Overview";
+import Search from "./components/layout/Search";
 import Register from "./components/layout/Register";
 
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
           <Route exact path="/" component={Description} />
           {/* <Route exact path="/register" component={Register} /> */}
           <Route exact path="/overview" component={Overview} />
+          <Route exact path="/search" component={Search} />
           <Footer />
         </div>
       </Router>
