@@ -15,12 +15,13 @@ import { Link } from "react-router-dom";
 
 import classes from "./NavigationBar.css";
 
-var isLoggedIn = false;
+var isLoggedIn = true;
+var loggedInRole = "PM";
 
 class NavigationBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: "" };
+    this.state = [{ value: "" }];
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -57,7 +58,12 @@ class NavigationBar extends React.Component {
               />
             </FormGroup>{" "}
             <Link to="/search">
-              <Button onClick={this.handleChange} value="Submit" type="submit">
+              <Button
+                onClick={this.handleSubmit}
+                onKeyPress={this.handleSubmit}
+                value={this.state.value}
+                type="submit"
+              >
                 Search!
               </Button>
             </Link>{" "}
@@ -82,6 +88,7 @@ class NavigationBar extends React.Component {
                   <NavItem eventKey={2} href="/register">
                     Register
                   </NavItem>
+
                   <Navbar.Text className="roleText">Guest</Navbar.Text>
                 </Nav>
               ) : (
@@ -97,9 +104,7 @@ class NavigationBar extends React.Component {
                     <MenuItem divider />
                     <MenuItem eventKey={3.3}>Change Role</MenuItem>
                   </NavDropdown>
-                  <Navbar.Text className="roleText">
-                    Data Protection Officer
-                  </Navbar.Text>
+                  <Navbar.Text className="roleText">{loggedInRole}</Navbar.Text>
                 </Nav>
               )}
             </FormGroup>
