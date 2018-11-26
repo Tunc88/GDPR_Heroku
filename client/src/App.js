@@ -9,6 +9,7 @@ import Overview from "./components/Overview";
 import OverviewPm from "./components/layout/OverviewPm";
 import Search from "./components/layout/Search";
 import Register from "./components/layout/Register";
+import Login from "./components/layout/Login";
 
 class App extends Component {
   render() {
@@ -22,7 +23,10 @@ class App extends Component {
             <Route exact path="/overview" component={Overview} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/overviewPm" component={OverviewPm} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
           </div>
+
           <Footer />
         </div>
       </Router>
