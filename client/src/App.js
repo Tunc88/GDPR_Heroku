@@ -10,7 +10,7 @@ import store from "./store";
 
 import PrivateRoute from "./components/common/PrivateRoute";
 
-import NavigationBar from "./components/layout/NavigationBar";
+import NavigationBar from "./components/navigation/NavigationBar/NavigationBar";
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
@@ -42,11 +42,9 @@ if (localStorage.jwtToken) {
   }
 }
 
-
 class App extends Component {
   render() {
     return (
-
       <Provider store={store}>
         <Router>
           <div className="App">
@@ -65,7 +63,6 @@ class App extends Component {
           </div>
         </Router>
       </Provider>
-
     );
   }
 }

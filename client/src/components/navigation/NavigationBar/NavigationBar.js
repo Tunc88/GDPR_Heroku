@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 
 import classes from "./NavigationBar.css";
 
-var isLoggedIn = true;
+var isLoggedIn = false;
 var loggedInRole = "PM";
 
 class NavigationBar extends React.Component {
