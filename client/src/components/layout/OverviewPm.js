@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Col, Thumbnail, Grid, Row } from "react-bootstrap";
+import { Col, Thumbnail, Grid, Row, Button } from "react-bootstrap";
 
 export default class OverviewPm extends Component {
   render() {
     return (
       <Grid>
         <h2>Project Overview</h2>
+        <Button bsStyle="primary">Create Concern</Button>
         <Row componentClass={"Content"}>
           <Col xs={2} md={2}>
             <Thumbnail

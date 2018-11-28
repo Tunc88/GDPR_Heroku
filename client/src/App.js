@@ -10,8 +10,8 @@ import store from "./store";
 
 import PrivateRoute from "./components/common/PrivateRoute";
 
-//import NavigationBar from "./components/navigation/NavigationBar/NavigationBar";
-import NavigationBar from "./components/layout/NavigationBar";
+import NavigationBar from "./components/navigation/NavigationBar/NavigationBar";
+//import NavigationBar from "./components/layout/NavigationBar";
 import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";

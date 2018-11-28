@@ -12,6 +12,9 @@ import {
   Image
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { logoutUser } from "../../../actions/authActions";
+import PropTypes from "prop-types";
 
 import classes from "./NavigationBar.css";
 
@@ -25,6 +28,7 @@ class NavigationBar extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onLogoutClick = this.onLogoutClick.bind(this);
   }
 
   handleChange(event) {
@@ -36,7 +40,15 @@ class NavigationBar extends React.Component {
     event.preventDefault();
   }
 
+  onLogoutClick(event) {
+    event.preventDefault();
+    this.props.logoutUser();
+  }
+
   render() {
+    const { isAuthenticated } = this.props.auth;
+    const username = this.props.auth.user.name;
+
     return (
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
@@ -80,7 +92,7 @@ class NavigationBar extends React.Component {
                 src="https://venturebeat.com/wp-content/uploads/2016/02/anonymous-face.shutterstock_365080829.jpg?fit=400%2C320&strip=all"
               />
 
-              {isLoggedIn == false ? (
+              {!isAuthenticated ? (
                 <Nav>
                   <NavItem eventKey={1} href="/login">
                     Login
@@ -103,6 +115,10 @@ class NavigationBar extends React.Component {
                     <MenuItem eventKey={3.2}>Edit</MenuItem>
                     <MenuItem divider />
                     <MenuItem eventKey={3.3}>Change Role</MenuItem>
+                    <MenuItem divider />
+                    <MenuItem eventKey={3.4} onClick={this.onLogoutClick}>
+                      Log Out
+                    </MenuItem>
                   </NavDropdown>
                   <Navbar.Text className="roleText">{loggedInRole}</Navbar.Text>
                 </Nav>
@@ -115,4 +131,16 @@ class NavigationBar extends React.Component {
   }
 }
 
-export default NavigationBar;
+NavigationBar.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(NavigationBar);
