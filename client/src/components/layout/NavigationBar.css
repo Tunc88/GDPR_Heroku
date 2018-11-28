@@ -1,0 +1,14 @@
+.placeholder {
+  width: 300px;
+  padding-left: 75rem;
+}
+
+#userPic {
+  height: 34px;
+  margin-top: 7px;
+  width: 5%;
+}
+
+#search {
+  width: 400px;
+}

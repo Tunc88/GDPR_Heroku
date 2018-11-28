@@ -33,8 +33,12 @@ class Description extends React.Component {
               <Row>
                 <Col xs={2} xsOffset={5}>
                   <ButtonToolbar>
-                    <Button bsStyle="primary">Login</Button>
-                    <Button bsStyle="primary">Signin</Button>
+                    <Button href="/Login" bsStyle="primary">
+                      Login
+                    </Button>
+                    <Button href="/Register" bsStyle="primary">
+                      Signin
+                    </Button>
                   </ButtonToolbar>
                 </Col>
               </Row>
