@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 // Create Schema
 const ConcernSchema = new Schema({
   concernNumber: {
-    type: Number,
+    type: String,
     required: true
   },
   concernName: {

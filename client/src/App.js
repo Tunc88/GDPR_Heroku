@@ -18,6 +18,7 @@ import Login from "./components/auth/Login";
 import Overview from "./components/overview/Overview";
 import OverviewPM from "./components/overview/OverviewPM";
 import CreatePattern from "./components/overview/CreatePattern";
+import CreateConcern from "./components/overview/CreateConcern";
 import { Footer } from "./components/layout/Footer";
 import OverviewPm from "./components/layout/OverviewPm";
 import Search from "./components/layout/Search";
@@ -63,8 +64,13 @@ class App extends Component {
                 <PrivateRoute exact path="/overviewPM" component={OverviewPM} />
                 <PrivateRoute
                   exact
-                  path="/create-concern"
+                  path="/create-pattern"
                   component={CreatePattern}
+                />
+                <PrivateRoute
+                  exact
+                  path="/create-concern"
+                  component={CreateConcern}
                 />
               </Switch>
             </div>
