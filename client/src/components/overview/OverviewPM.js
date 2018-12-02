@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Panel, Col, Tabs, Tab, Button, Collapse } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Spinner from "../common/Spinner";
 import "./Overview.css";
 import PatternFeed from "./PatternFeed";
@@ -41,11 +42,19 @@ class OverviewPM extends Component {
           <Tab eventKey={1} title="Grid View">
             <Col xs={12}>
               <h4>Patterns</h4>
+              <Link to="/create-pattern">
+                <Button bsStyle="primary">Create new Pattern</Button>
+              </Link>
             </Col>
+
             {patternContent}
             <Col xs={12}>
               <h4>Concerns</h4>
+              <Link to="/create-concern">
+                <Button bsStyle="primary">Create new Concern</Button>
+              </Link>
             </Col>
+
             {concernContent}
           </Tab>
           <Tab eventKey={2} title="Diagramm View" />
