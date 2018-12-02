@@ -32,16 +32,30 @@ router.post("/createpattern", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  Pattern.findOne({ patternName: req.body.patternName }).then(pattern => {
+  Pattern.findOne({ name: req.body.patternName }).then(pattern => {
     if (pattern) {
-      errors.patternName = "Pattern already exists";
+      errors.name = "Pattern already exists";
       return res.status(400).json(errors);
     } else {
       const newPattern = new Pattern({
         patternNumber: req.body.patternNumber,
+        name: req.body.name,
         patternName: req.body.patternName,
         patternDescription: req.body.patternDescription,
-        assignedConcerns: req.body.assignedConcerns
+        assignedConcerns: req.body.assignedConcerns,
+        context: req.body.context,
+        summary: req.body.summary,
+        problem: req.body.problem,
+        forcesConcerns: req.body.forcesConcerns,
+        solution: req.body.solution,
+        structure: req.body.structure,
+        implementation: req.body.implementation,
+        consequences: req.body.consequences,
+        liabilities: req.body.liabilities,
+        relatedPatterns: req.body.relatedPatterns,
+        sources: req.body.sources,
+        knownUser: req.body.knownUser,
+        examples: req.body.examples
       });
       newPattern
         .save()
