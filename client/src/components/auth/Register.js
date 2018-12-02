@@ -26,6 +26,7 @@ class Register extends Component {
     this.state = {
       name: "",
       email: "",
+      username: "",
       role: "",
       password: "",
       password2: "",
@@ -123,6 +124,26 @@ class Register extends Component {
                       </div>
                       <div className="form-group">
                         <input
+                          type="text"
+                          className={classnames(
+                            "form-control form-control-lg",
+                            {
+                              "is-invalid": errors.username
+                            }
+                          )}
+                          placeholder="User Name"
+                          name="username"
+                          value={this.state.username}
+                          onChange={this.onChange}
+                        />
+                        {errors.username && (
+                          <div className="invalid-feedback">
+                            {errors.username}
+                          </div>
+                        )}
+                      </div>
+                      <div className="form-group">
+                        <input
                           type="password"
                           className={classnames(
                             "form-control form-control-lg",
@@ -216,11 +237,18 @@ class Register extends Component {
                
                   </FormControl>
                   </FormGroup>*/}
-                      <input
-                        type="submit"
-                        value="create Account"
-                        className="btn btn-primary btn-block mt-4"
-                      />
+                      <div className="rowC">
+                        <Row>
+                          <Col xs={0} xsOffset={5}>
+                            <ButtonToolbar>
+                              <Button href="/Overview" bsStyle="primary">
+                                Register
+                              </Button>
+                              <Button bsStyle="primary">Cancel</Button>
+                            </ButtonToolbar>
+                          </Col>
+                        </Row>
+                      </div>
                     </form>
                   </div>
                 </div>

@@ -10,6 +10,7 @@ class Login extends Component {
     super();
     this.state = {
       email: "",
+      username: "",
       password: "",
       errors: {}
     };
@@ -38,7 +39,7 @@ class Login extends Component {
     e.preventDefault();
 
     const userData = {
-      name: this.state.name,
+      username: this.state.username,
       password: this.state.password
     };
 
@@ -70,16 +71,18 @@ class Login extends Component {
                           className={classnames(
                             "form-control form-control-lg",
                             {
-                              "is-invalid": errors.name
+                              "is-invalid": errors.username
                             }
                           )}
-                          placeholder="Name"
-                          name="name"
-                          value={this.state.name}
+                          placeholder="User Name"
+                          name="username"
+                          value={this.state.username}
                           onChange={this.onChange}
                         />
-                        {errors.name && (
-                          <div className="invalid-feedback">{errors.name}</div>
+                        {errors.username && (
+                          <div className="invalid-feedback">
+                            {errors.username}
+                          </div>
                         )}
                       </div>
                       <div className="form-group">

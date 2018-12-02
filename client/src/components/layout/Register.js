@@ -85,7 +85,6 @@ class Register extends Component {
                       <MenuItem eventKey="1">Developer</MenuItem>
                       <MenuItem eventKey="2">Data Protection Officer</MenuItem>
                       <MenuItem eventKey="3">Project Manager</MenuItem>
-                      <MenuItem eventKey="4">Guest</MenuItem>
                       <MenuItem divider />
                       <MenuItem eventKey="4">Other</MenuItem>
                     </DropdownButton>
@@ -111,7 +110,9 @@ class Register extends Component {
                   <Row>
                     <Col xs={2} xsOffset={5}>
                       <ButtonToolbar>
-                        <Button bsStyle="primary">Register</Button>
+                        <Button href="/Overview" bsStyle="primary">
+                          Register
+                        </Button>
                         <Button bsStyle="primary">Cancel</Button>
                       </ButtonToolbar>
                     </Col>
