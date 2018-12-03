@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Panel, Col, Tabs, Tab, Button, Collapse } from "react-bootstrap";
+import EditToolbar from "../common/EditToolbar";
 
 class PatternItem extends Component {
   constructor(props, context) {
@@ -35,7 +36,17 @@ class PatternItem extends Component {
       <Col xs={4}>
         <Panel>
           <Panel.Heading>
-            <h5>{pattern.patternName}</h5>
+            <Col xs={6}>
+              <h4>{pattern.patternName}</h4>
+            </Col>
+            <Col xs={6}>
+              <EditToolbar pattern={pattern} />
+            </Col>
+            <div>
+              {pattern.assignedConcerns.map(concern => (
+                <span>{concern.concernName} </span>
+              ))}
+            </div>
           </Panel.Heading>
           <Panel.Body>
             {patternDescriptionFirstPart}

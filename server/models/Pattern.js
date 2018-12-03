@@ -65,7 +65,9 @@ const PatternSchema = new Schema({
 
   assignedConcerns: [
     {
-      Concern: Number
+      Concern: {
+        type: [mongoose.Schema.Types.ObjectId]
+      }
     }
   ]
 });

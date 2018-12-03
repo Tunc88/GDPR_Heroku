@@ -1,4 +1,8 @@
-import { CONCERN_LOADING, GET_CONCERNS } from "../actions/types";
+import {
+  CONCERN_LOADING,
+  GET_CONCERNS,
+  DELETE_CONCERN
+} from "../actions/types";
 
 const initialState = {
   concerns: [],
@@ -18,6 +22,13 @@ export default function(state = initialState, action) {
         ...state,
         concerns: action.payload,
         loading: false
+      };
+    case DELETE_CONCERN:
+      return {
+        ...state,
+        concerns: state.concerns.filter(
+          concern => concern._id !== action.payload
+        )
       };
     default:
       return state;
