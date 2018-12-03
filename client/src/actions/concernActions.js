@@ -1,33 +1,12 @@
 import axios from "axios";
 
 import {
-<<<<<<< HEAD
-  GET_ERRORS,
-  CONCERN_LOADING,
-  GET_CONCERNS,
-  CLEAR_ERRORS
-} from "./types";
-
-// create Concern
-export const createConcern = (concernData, history) => dispatch => {
-  axios
-    .post("/api/concerns/createconcern", concernData)
-    .then(res => history.push("/overviewPm"))
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
-    );
-};
-=======
   CONCERN_LOADING,
   GET_CONCERNS,
   CLEAR_ERRORS,
   GET_ERRORS,
   DELETE_CONCERN
 } from "./types";
->>>>>>> master
 
 // Get Concerns
 export const getConcerns = () => dispatch => {
