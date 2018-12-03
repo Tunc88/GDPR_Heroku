@@ -11,7 +11,7 @@ import {
 export const createConcern = (concernData, history) => dispatch => {
   axios
     .post("/api/concerns/createconcern", concernData)
-    .then(res => history.push("/overview"))
+    .then(res => history.push("/overviewPm"))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,

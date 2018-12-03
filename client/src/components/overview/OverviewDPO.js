@@ -10,7 +10,7 @@ import { getPatterns } from "../../actions/patternActions";
 import ConcernFeed from "./ConcernFeed";
 import { getConcerns } from "../../actions/concernActions";
 
-class OverviewPM extends Component {
+class OverviewDPO extends Component {
   componentDidMount() {
     this.props.getPatterns();
     this.props.getConcerns();
@@ -64,7 +64,7 @@ class OverviewPM extends Component {
   }
 }
 
-OverviewPM.propTypes = {
+OverviewDPO.propTypes = {
   getPatterns: PropTypes.func.isRequired,
   pattern: PropTypes.object.isRequired,
   getConcerns: PropTypes.func.isRequired,
@@ -79,4 +79,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getPatterns, getConcerns }
-)(OverviewPM);
+)(OverviewDPO);

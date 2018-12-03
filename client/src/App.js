@@ -14,7 +14,7 @@ import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Overview from "./components/overview/Overview";
-import OverviewPM from "./components/overview/OverviewPM";
+import OverviewDPO from "./components/overview/OverviewDPO";
 import CreatePattern from "./components/overview/CreatePattern";
 import CreateConcern from "./components/overview/CreateConcern";
 import { Footer } from "./components/layout/Footer";
@@ -54,7 +54,11 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Switch>
                 <PrivateRoute exact path="/overview" component={Overview} />
-                <PrivateRoute exact path="/overviewPM" component={OverviewPM} />
+                <PrivateRoute
+                  exact
+                  path="/overviewDPO"
+                  component={OverviewDPO}
+                />
                 <PrivateRoute
                   exact
                   path="/create-pattern"
