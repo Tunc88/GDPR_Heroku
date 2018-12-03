@@ -42,11 +42,11 @@ class ConcernItem extends Component {
           <Panel.Body>
             {concernDescriptionFirstPart}
             <Collapse in={this.state.open}>
-              <p>{concernDescriptionSecondPart}</p>
+              <div>{concernDescriptionSecondPart}</div>
             </Collapse>
-            <p class="extendMore" onClick={this.extendMore}>
+            <div className="extendMore" onClick={this.extendMore}>
               {more}
-            </p>
+            </div>
           </Panel.Body>
         </Panel>
       </Col>

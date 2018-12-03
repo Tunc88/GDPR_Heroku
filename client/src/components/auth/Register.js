@@ -58,6 +58,7 @@ class Register extends Component {
 
     const newUser = {
       name: this.state.name,
+      username: this.state.username,
       email: this.state.email,
       role: this.state.role,
       password: this.state.password,
@@ -242,7 +243,11 @@ class Register extends Component {
                         <Row>
                           <Col xs={0} xsOffset={5}>
                             <ButtonToolbar>
-                              <Button href="/Overview" bsStyle="primary">
+                              <Button
+                                onClick={this.onSubmit}
+                                //href="/Overview"
+                                bsStyle="primary"
+                              >
                                 Register
                               </Button>
                               <Button bsStyle="primary">Cancel</Button>

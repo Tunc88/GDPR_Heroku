@@ -4,27 +4,23 @@ const isEmpty = require("./is-empty");
 module.exports = function validatePatternInput(data) {
   let errors = {};
 
-  data.patternNumber = !isEmpty(data.patternNumber) ? data.patternNumber : "";
-  data.patternName = !isEmpty(data.patternName) ? data.patternName : "";
-  data.patternDescription = !isEmpty(data.patternDescription)
-    ? data.patternDescription
-    : "";
+  data.name = !isEmpty(data.name) ? data.name : "";
+  data.context = !isEmpty(data.context) ? data.context : "";
+  data.problem = !isEmpty(data.problem) ? data.problem : "";
+  data.solution = !isEmpty(data.solution) ? data.solution : "";
+  data.consequences = !isEmpty(data.consequences) ? data.consequences : "";
+  data.examples = !isEmpty(data.examples) ? data.examples : "";
 
-  if (Validator.isEmpty(data.patternNumber)) {
-    errors.patternNumber = "Number field is required";
+  if (!Validator.isLength(data.name, { min: 2, max: 30 })) {
+    errors.name = "Name of the pattern must be between 2 and 30 characters";
   }
 
-  if (!Validator.isLength(data.patternName, { min: 2, max: 30 })) {
-    errors.patternName =
-      "Name of the pattern must be between 2 and 30 characters";
+  if (Validator.isEmpty(data.name)) {
+    errors.name = "Name field is required";
   }
 
-  if (Validator.isEmpty(data.patternName)) {
-    errors.patternName = "Name field is required";
-  }
-
-  if (Validator.isEmpty(data.patternDescription)) {
-    errors.patternDescription = "Description field is required";
+  if (Validator.isEmpty(data.context)) {
+    errors.context = "Description field is required";
   }
 
   return {

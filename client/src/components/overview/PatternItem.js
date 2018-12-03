@@ -20,10 +20,8 @@ class PatternItem extends Component {
     const { pattern, auth } = this.props;
     const open = this.state.open;
     let more;
-    let patternDescriptionFirstPart = pattern.patternDescription
-      .split(" ", 10)
-      .join(" ");
-    let patternDescriptionSecondPart = pattern.patternDescription.substring(
+    let patternDescriptionFirstPart = pattern.summary.split(" ", 10).join(" ");
+    let patternDescriptionSecondPart = pattern.summary.substring(
       patternDescriptionFirstPart.length
     );
     if (open) {
@@ -37,7 +35,7 @@ class PatternItem extends Component {
         <Panel>
           <Panel.Heading>
             <Col xs={6}>
-              <h4>{pattern.patternName}</h4>
+              <h4>{pattern.name}</h4>
             </Col>
             <Col xs={6}>
               <EditToolbar pattern={pattern} />
@@ -51,11 +49,11 @@ class PatternItem extends Component {
           <Panel.Body>
             {patternDescriptionFirstPart}
             <Collapse in={this.state.open}>
-              <p>{patternDescriptionSecondPart}</p>
+              <div>{patternDescriptionSecondPart}</div>
             </Collapse>
-            <p class="extendMore" onClick={this.extendMore}>
+            <div className="extendMore" onClick={this.extendMore}>
               {more}
-            </p>
+            </div>
           </Panel.Body>
         </Panel>
       </Col>

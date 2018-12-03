@@ -14,9 +14,7 @@ class CreatePattern extends Component {
     super();
     this.state = {
       summary: "",
-      patternNumber: "2",
-      patternDescription: "",
-      patternName: "",
+      name: "",
       context: "",
       problem: "",
       forcesConcerns: "",
@@ -29,7 +27,7 @@ class CreatePattern extends Component {
       examples: "",
       relatedPatterns: "",
       sources: "",
-      knownUser: "",
+      knownUses: "",
       errors: {}
     };
 
@@ -54,9 +52,6 @@ class CreatePattern extends Component {
 
     const newPattern = {
       name: this.state.name,
-      patternName: this.state.patternName,
-      patternDescription: this.state.patternDescription,
-      patternNumber: this.state.patternNumber, // must be changed to a variable
       sources: this.state.sources,
       summary: this.state.summary,
       context: this.state.context,
@@ -71,7 +66,7 @@ class CreatePattern extends Component {
       examples: this.state.examples,
       relatedPatterns: this.state.relatedPatterns,
       sources: this.state.sources,
-      knownUser: this.state.knownUser
+      knownUses: this.state.knownUser
     };
 
     this.props.createPattern(newPattern, this.props.history);
@@ -83,16 +78,16 @@ class CreatePattern extends Component {
       <form onSubmit={this.onSubmit}>
         <TextField
           label="Name of pattern"
-          name="patternName"
-          value={this.state.patternName} // must be changede to name
+          name="name"
+          value={this.state.name} // must be changede to name
           placeholder="Enter the name of the pattern"
           onChange={this.onChange}
         />
 
         <TextAreaField
           label="Description"
-          name="patternDescription"
-          value={this.state.patternDescription} // must be changed to summary
+          name="summary"
+          value={this.state.summary} // must be changed to summary
           placeholder="Enter Summary"
           onChange={this.onChange}
         />

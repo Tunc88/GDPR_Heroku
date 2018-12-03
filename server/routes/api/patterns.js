@@ -56,16 +56,13 @@ router.post("/createpattern", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  Pattern.findOne({ name: req.body.patternName }).then(pattern => {
+  Pattern.findOne({ name: req.body.name }).then(pattern => {
     if (pattern) {
       errors.name = "Pattern already exists";
       return res.status(400).json(errors);
     } else {
       const newPattern = new Pattern({
-        patternNumber: req.body.patternNumber,
         name: req.body.name,
-        patternName: req.body.patternName,
-        patternDescription: req.body.patternDescription,
         assignedConcerns: req.body.assignedConcerns,
         context: req.body.context,
         summary: req.body.summary,
@@ -126,9 +123,8 @@ router.post(
     // Get fields
     const patternFields = {};
     patternFields.id = req.body.id;
-    if (req.body.patternName) patternFields.patternName = req.body.patternName;
-    if (req.body.patternDescription)
-      patternFields.patternDescription = req.body.patternDescription;
+    if (req.body.name) patternFields.name = req.body.name;
+    if (req.body.summary) patternFields.summary = req.body.summary;
 
     Pattern.findOneAndUpdate(
       { _id: req.body.id },

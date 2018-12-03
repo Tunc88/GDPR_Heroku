@@ -3,17 +3,13 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ConcernSchema = new Schema({
-  concernNumber: {
-    type: String,
-    required: true
+  name: {
+    type: String
+    //required
   },
-  concernName: {
-    type: String,
-    required: true
-  },
-  concernDescription: {
-    type: String,
-    required: true
+  description: {
+    type: String
+    //required
   }
 });
 

@@ -3,19 +3,38 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ProjectSchema = new Schema({
-  projectNumber: {
-    type: Number,
-    required: true
-  },
-  projectName: {
+  name: {
     type: String,
     required: true
   },
+
+  finished: {
+    type: Boolean,
+    default: false
+  },
+  description: {
+    type: String,
+    required: true
+  },
+
   assignedConcerns: [
     {
-      Concern: Number
+      Concern: {
+        type: [mongoose.Schema.Types.ObjectId]
+      }
     }
-  ]
+  ],
+  assignedDevelopers: [
+    {
+      Developer: {
+        type: [mongoose.Schema.Types.ObjectId]
+      }
+    }
+  ],
+  date: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = Project = mongoose.model("projects", ProjectSchema);

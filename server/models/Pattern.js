@@ -3,20 +3,9 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const PatternSchema = new Schema({
-  patternNumber: {
-    type: String,
-    required: true
-  },
-  patternName: {
-    type: String,
-    required: true
-  },
-  patternDescription: {
-    type: String,
-    required: true
-  },
   name: {
-    type: String
+    type: String,
+    required: true
   },
   context: {
     type: String,
@@ -59,7 +48,7 @@ const PatternSchema = new Schema({
   sources: {
     type: String
   },
-  knownUser: {
+  knownUses: {
     type: String
   },
 

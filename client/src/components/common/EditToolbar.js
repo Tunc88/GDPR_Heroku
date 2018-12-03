@@ -79,14 +79,14 @@ class EditToolbar extends Component {
 
   editPattern = () => {
     const patternData = {
-      patternName: this.state.patternName,
-      patternDescription: this.state.patternDescription,
+      name: this.state.name,
+      summary: this.state.summary,
       id: this.props.pattern._id
     };
     console.log(
       "function editpattern called in EditToolbar:" +
-        patternData.patternName +
-        patternData.patternDescription
+        patternData.name +
+        patternData.summary
     );
     this.props.editPattern(patternData);
     this.handleCloseEditModal();
@@ -115,7 +115,7 @@ class EditToolbar extends Component {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Do you want to delete {this.props.pattern.patternName} ?
+                Do you want to delete {this.props.pattern.name} ?
               </Modal.Title>
             </Modal.Header>
 
@@ -136,7 +136,7 @@ class EditToolbar extends Component {
             onHide={this.handleCloseEditModal}
           >
             <Modal.Header closeButton>
-              <Modal.Title>Edit {this.props.pattern.patternName}</Modal.Title>
+              <Modal.Title>Edit {this.props.pattern.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form>
@@ -144,8 +144,8 @@ class EditToolbar extends Component {
                   <ControlLabel>Pattern Name</ControlLabel>
                   <FormControl
                     type="text"
-                    name="patternName"
-                    value={this.state.patternName}
+                    name="name"
+                    value={this.state.name}
                     placeholder="Pattern Name"
                     onChange={this.onChange}
                   />
@@ -156,8 +156,8 @@ class EditToolbar extends Component {
                   <FormControl
                     componentClass="textarea"
                     type="text"
-                    name="patternDescription"
-                    value={this.state.patternDescription}
+                    name="summary"
+                    value={this.state.summary}
                     placeholder="Pattern Description"
                     onChange={this.onChange}
                   />
