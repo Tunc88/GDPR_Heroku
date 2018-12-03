@@ -8,6 +8,19 @@ import {
   DELETE_CONCERN
 } from "./types";
 
+// create Concern
+export const createConcern = (concernData, history) => dispatch => {
+  axios
+    .post("/api/concerns/createconcern", concernData)
+    .then(res => history.push("/overviewPm"))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 // Get Concerns
 export const getConcerns = () => dispatch => {
   dispatch(setConcernLoading());

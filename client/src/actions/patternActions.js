@@ -1,8 +1,8 @@
 import axios from "axios";
 
 import {
-<<<<<<< HEAD
   GET_ERRORS,
+  DELETE_PATTERN,
   PATTERN_LOADING,
   GET_PATTERNS,
   CLEAR_ERRORS
@@ -20,14 +20,6 @@ export const createPattern = (patternData, history) => dispatch => {
       })
     );
 };
-=======
-  PATTERN_LOADING,
-  GET_PATTERNS,
-  DELETE_PATTERN,
-  GET_ERRORS,
-  CLEAR_ERRORS
-} from "./types";
->>>>>>> master
 
 // Get Patterns
 export const getPatterns = () => dispatch => {

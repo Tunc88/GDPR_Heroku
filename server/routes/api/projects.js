@@ -17,3 +17,5 @@ router.get("/project", (req, res) =>
     res.json(projects);
   })
 );
+
+module.exports = router;

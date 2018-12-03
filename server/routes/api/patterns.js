@@ -16,15 +16,7 @@ router.get("/test", (req, res) => res.json({ msg: "Patterns Works" }));
 // @route   GET api/patterns/patterns
 // @desc    Get all patterns
 // @access  Public
-<<<<<<< HEAD
-router.get("/patterns", (req, res) =>
-=======
-router.get("/old", (req, res) =>
->>>>>>> master
-  Pattern.find({}).then(patterns => {
-    res.json(patterns);
-  })
-);
+
 router.get("/", (req, res) =>
   Pattern.aggregate([
     {
