@@ -20,9 +20,9 @@ import OverviewPM from "./components/overview/OverviewPM";
 import CreatePattern from "./components/overview/CreatePattern";
 import CreateConcern from "./components/overview/CreateConcern";
 import { Footer } from "./components/layout/Footer";
-import OverviewPm from "./components/layout/OverviewPm";
 import Search from "./components/layout/Search";
 import Description from "./components/Description";
+import PMoverview from "./components/layout/PMoverview";
 
 import "./App.css";
 
@@ -58,7 +58,7 @@ class App extends Component {
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/search" component={Search} />
-              <Route exact path="/overviewPm" component={OverviewPm} />
+              <Route exact path="/PMoverview" component={PMoverview} />
               <Switch>
                 <PrivateRoute exact path="/overview" component={Overview} />
                 <PrivateRoute exact path="/overviewPM" component={OverviewPM} />

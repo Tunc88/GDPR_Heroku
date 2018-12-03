@@ -5,3 +5,5 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const GET_PATTERNS = "GET_PATTERNS";
 export const CONCERN_LOADING = "CONCERN_LOADING";
 export const GET_CONCERNS = "GET_CONCERNS";
+export const GET_PROJECTS = "GET_PROJECTS";
+export const PROJECT_LOADING = "CPROJECT_LOADING";
