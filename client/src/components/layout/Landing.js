@@ -40,11 +40,11 @@ class Landing extends Component {
               <br />
               <Col xsOffset={4}>
                 <ButtonToolbar>
-                  <Link to="/register" className="btn btn-lg">
-                    Sign Up
+                  <Link to="/register" className="btn btn-lg btn-primary">
+                    LogIn
                   </Link>
-                  <Link to="/login" className="btn btn-lg btn-primary">
-                    Login
+                  <Link to="/login" className="btn btn-lg">
+                    SignIn
                   </Link>
                 </ButtonToolbar>
               </Col>
