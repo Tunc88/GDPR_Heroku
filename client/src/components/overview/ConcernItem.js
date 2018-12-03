@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Panel, Col, Tabs, Tab, Button, Collapse } from "react-bootstrap";
+import EditToolbarConcerns from "../common/EditToolbarConcerns";
 
 class ConcernItem extends Component {
   constructor(props, context) {
@@ -36,6 +37,7 @@ class ConcernItem extends Component {
         <Panel>
           <Panel.Heading>
             <h5>{concern.concernName}</h5>
+            <EditToolbarConcerns concern={concern} />
           </Panel.Heading>
           <Panel.Body>
             {concernDescriptionFirstPart}

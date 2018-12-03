@@ -26,7 +26,7 @@ class Register extends Component {
     this.state = {
       name: "",
       email: "",
-      role: "",
+      role: "Data Protection Officer",
       password: "",
       password2: "",
       errors: {}
@@ -71,6 +71,7 @@ class Register extends Component {
 
     return (
       <Col xs={8} xsOffset={2}>
+        <div>{this.state.role}</div>
         <Panel>
           <Panel.Heading>
             <h4>Create your GDPR Recommender account</h4>

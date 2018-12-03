@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 
 // Load Input Validation
 const validateConcernInput = require("../../validation/createConcern");
@@ -49,5 +50,58 @@ router.post("/createconcern", (req, res) => {
     }
   });
 });
+
+// @route   DELETE api/patterns/:id
+// @desc    Delete pattern
+// @access  Private
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Concern.findById(req.params.id)
+      .then(concern => {
+        // Delete
+        concern.remove().then(() => res.json({ success: true }));
+      })
+      .catch(err =>
+        res.status(404).json({ concernnotfound: "No concern found" })
+      );
+  }
+);
+
+// @route   POST api/concern
+// @desc    Edit concern
+// @access  Private
+router.post(
+  "/editconcern",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateConcernInput(req.body);
+
+    // Check Validation
+    /*
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }*/
+
+    // Get fields
+    const concernFields = {};
+    concernFields.id = req.body.id;
+    if (req.body.concernName) concernFields.concernName = req.body.concernName;
+    if (req.body.concernDescription)
+      concernFields.concernDescription = req.body.concernDescription;
+
+    Concern.findOneAndUpdate(
+      { _id: req.body.id },
+      { $set: concernFields },
+      { new: true }
+    ).then(concern => {
+      Concern.find({}).then(concerns => {
+        res.json(concerns);
+      });
+    });
+  }
+);
 
 module.exports = router;
