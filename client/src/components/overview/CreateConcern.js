@@ -4,22 +4,22 @@ import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 import { connect } from "react-redux";
 
-import { createConcern } from "../../actions/concernActions";
+import { createTactic } from "../../actions/tacticActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
 import { Button } from "react-bootstrap";
 
-class CreateConcern extends Component {
+class Createtactic extends Component {
   constructor() {
     super();
     this.state = {
       /*       summary: "", */
-      concernNumber: "2",
-      concernDescription: "",
-      concernName: "",
+      tacticNumber: "2",
+      tacticDescription: "",
+      tacticName: "",
       /*       context: "",
       problem: "",
-      forcesConcerns: "",
+      forcestactics: "",
       solution: "",
       structure: "",
       implementation: "",
@@ -52,16 +52,16 @@ class CreateConcern extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const newConcern = {
+    const newtactic = {
       /* name: this.state.name, */
-      concernName: this.state.concernName,
-      concernDescription: this.state.concernDescription,
-      concernNumber: this.state.concernNumber // must be changed to a variable
+      tacticName: this.state.tacticName,
+      tacticDescription: this.state.tacticDescription,
+      tacticNumber: this.state.tacticNumber // must be changed to a variable
       /* sources: this.state.sources,
       summary: this.state.summary,
       context: this.state.context,
       problem: this.state.problem,
-      forcesConcerns: this.state.forcesConcerns,
+      forcestactics: this.state.forcestactics,
       solution: this.state.solution,
       structure: this.state.structure,
       implementation: this.state.implementation,
@@ -74,7 +74,7 @@ class CreateConcern extends Component {
       knownUser: this.state.knownUser */
     };
 
-    this.props.createConcern(newConcern, this.props.history);
+    this.props.createtactic(newtactic, this.props.history);
   }
 
   render() {
@@ -82,17 +82,17 @@ class CreateConcern extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <TextField
-          label="Name of concern"
-          name="concernName"
-          value={this.state.concernName} // must be changede to name
-          placeholder="Enter the name of the concern"
+          label="Name of tactic"
+          name="tacticName"
+          value={this.state.tacticName} // must be changede to name
+          placeholder="Enter the name of the tactic"
           onChange={this.onChange}
         />
 
         <TextAreaField
           label="Description"
-          name="concernDescription"
-          value={this.state.concernDescription} // must be changed to summary
+          name="tacticDescription"
+          value={this.state.tacticDescription} // must be changed to summary
           placeholder="Enter Summary"
           onChange={this.onChange}
         />
@@ -138,15 +138,15 @@ class CreateConcern extends Component {
         /> */}
 
         <Button bsStyle="primary" onClick={this.onSubmit}>
-          Create Concern
+          Create tactic
         </Button>
       </form>
     );
   }
 }
 
-CreateConcern.propTypes = {
-  createConcern: PropTypes.func.isRequired,
+Createtactic.propTypes = {
+  createtactic: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -158,5 +158,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createConcern }
-)(withRouter(CreateConcern));
+  { createtactic }
+)(withRouter(Createtactic));

@@ -1,18 +1,56 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Panel, Col, Tabs, Tab, Button, Collapse } from "react-bootstrap";
+import {
+  Panel,
+  Col,
+  Tabs,
+  Tab,
+  Button,
+  Glyphicon,
+  InputGroup,
+  Badge
+} from "react-bootstrap";
 import Spinner from "../common/Spinner";
 import "./Overview.css";
 import PatternFeed from "./PatternFeed";
 import { getPatterns } from "../../actions/patternActions";
-import ConcernFeed from "./ConcernFeed";
-import { getConcerns } from "../../actions/concernActions";
+import TacticFeed from "./TacticFeed";
+import { getTactics } from "../../actions/tacticActions";
+import Sidebar from "react-sidebar";
+
+const mql = window.matchMedia(`(min-width: 800px)`);
 
 class Overview extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sidebarOpen: false,
+      sidebarDocked: mql.matches
+    };
+    this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
+    this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+  }
+
+  componentWillMount() {
+    mql.addListener(this.mediaQueryChanged);
+  }
+
   componentDidMount() {
     this.props.getPatterns();
-    this.props.getConcerns();
+    this.props.getTactics();
+  }
+
+  componentWillUnmount() {
+    this.state.mql.removeListener(this.mediaQueryChanged);
+  }
+
+  onSetSidebarOpen(open) {
+    this.setState({ sidebarOpen: open });
+  }
+
+  mediaQueryChanged() {
+    this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
   }
 
   render() {
@@ -26,27 +64,55 @@ class Overview extends Component {
       patternContent = <PatternFeed patterns={patterns} />;
     }
 
-    const { concerns, loading2 } = this.props.concern;
-    let concernContent;
+    const { tactics, loading2 } = this.props.tactic;
+    let tacticContent;
 
-    if (concerns === null || loading2) {
-      concernContent = <Spinner />;
+    if (tactics === null || loading2) {
+      tacticContent = <Spinner />;
     } else {
-      concernContent = <ConcernFeed concerns={concerns} />;
+      tacticContent = <TacticFeed tactics={tactics} />;
     }
 
     return (
       <div>
+        <Sidebar
+          sidebar={
+            <div>
+              <h4>Filter</h4>
+              {tacticContent}
+            </div>
+          }
+          open={this.state.sidebarOpen}
+          docked={true}
+          pullRight={true}
+          onSetOpen={this.onSetSidebarOpen}
+          styles={{
+            sidebar: {
+              background: "white",
+              position: "fixed",
+              marginTop: "52px"
+            }
+          }}
+        />
         <Tabs defaultActiveKey={1} id="Select-View">
           <Tab eventKey={1} title="Grid View">
+            <br />
             <Col xs={12}>
-              <h4>Patterns</h4>
+              <span className={"h4"}>
+                Patterns <Badge>{patterns.length}</Badge>
+              </span>
+              <Button className={"glyphicon-button"}>
+                <Glyphicon glyph="plus" />
+              </Button>
             </Col>
+            <br />
+            <br />
+            <br />
             {patternContent}
             <Col xs={12}>
-              <h4>Concerns</h4>
+              <h4>Tactics</h4>
             </Col>
-            {concernContent}
+            {tacticContent}
           </Tab>
           <Tab eventKey={2} title="Diagramm View" />
         </Tabs>
@@ -58,16 +124,16 @@ class Overview extends Component {
 Overview.propTypes = {
   getPatterns: PropTypes.func.isRequired,
   pattern: PropTypes.object.isRequired,
-  getConcerns: PropTypes.func.isRequired,
-  concern: PropTypes.object.isRequired
+  getTactics: PropTypes.func.isRequired,
+  tactic: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   pattern: state.pattern,
-  concern: state.concern
+  tactic: state.tactic
 });
 
 export default connect(
   mapStateToProps,
-  { getPatterns, getConcerns }
+  { getPatterns, getTactics }
 )(Overview);

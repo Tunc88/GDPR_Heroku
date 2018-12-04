@@ -52,7 +52,7 @@ class NavigationBar extends React.Component {
               <FormControl
                 id="search"
                 type="text"
-                placeholder="Enter concern or pattern"
+                placeholder="Enter tactic or pattern"
                 value={this.state.value}
                 onChange={this.handleChange}
               />

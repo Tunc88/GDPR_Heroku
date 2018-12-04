@@ -8,12 +8,12 @@ class Search extends Component {
         <h1>Found objects</h1>
 
         <Grid>
-          <h2>Concerns</h2>
+          <h2>tactics</h2>
           <Row>
             <Col xs={2} md={2}>
               <Thumbnail src={this.props.pic} alt="121x100" href="/create">
-                <h3>Concern</h3>
-                <p>Description of concern</p>
+                <h3>tactic</h3>
+                <p>Description of tactic</p>
               </Thumbnail>
             </Col>
           </Row>

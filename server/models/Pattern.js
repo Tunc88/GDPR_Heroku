@@ -18,7 +18,7 @@ const PatternSchema = new Schema({
     type: String,
     required: true
   },
-  forcesConcerns: {
+  forcestactics: {
     type: String
   },
   solution: {
@@ -52,9 +52,9 @@ const PatternSchema = new Schema({
     type: String
   },
 
-  assignedConcerns: [
+  assignedTactics: [
     {
-      Concern: {
+      tactic: {
         type: [mongoose.Schema.Types.ObjectId]
       }
     }
