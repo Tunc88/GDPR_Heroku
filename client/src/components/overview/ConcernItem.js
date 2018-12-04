@@ -20,11 +20,9 @@ class ConcernItem extends Component {
     const { concern, auth } = this.props;
     const open = this.state.open;
     let more;
-    let concernDescriptionFirstPart = concern.concernDescription
-      .split(" ", 10)
-      .join(" ");
-    let concernDescriptionSecondPart = concern.concernDescription.substring(
-      concernDescriptionFirstPart.length
+    let descriptionFirstPart = concern.description.split(" ", 10).join(" ");
+    let descriptionSecondPart = concern.description.substring(
+      descriptionFirstPart.length
     );
     if (open) {
       more = <p>Less...</p>;
@@ -36,13 +34,13 @@ class ConcernItem extends Component {
       <Col xs={4}>
         <Panel>
           <Panel.Heading>
-            <h5>{concern.concernName}</h5>
+            <h5>{concern.name}</h5>
             <EditToolbarConcerns concern={concern} />
           </Panel.Heading>
           <Panel.Body>
-            {concernDescriptionFirstPart}
+            {descriptionFirstPart}
             <Collapse in={this.state.open}>
-              <div>{concernDescriptionSecondPart}</div>
+              <div>{descriptionSecondPart}</div>
             </Collapse>
             <div className="extendMore" onClick={this.extendMore}>
               {more}

@@ -19,18 +19,24 @@ const ProjectSchema = new Schema({
 
   assignedConcerns: [
     {
-      Concern: {
-        type: [mongoose.Schema.Types.ObjectId]
-      }
+      //Concern: {
+      type: [String] //[mongoose.Schema.Types.ObjectId]
+      //}
     }
   ],
   assignedDevelopers: [
     {
-      Developer: {
-        type: [mongoose.Schema.Types.ObjectId]
-      }
+      //Developer: {
+      type: [String] //[mongoose.Schema.Types.ObjectId]
+      //}
     }
   ],
+
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "users"
+  },
+
   date: {
     type: Date,
     default: Date.now

@@ -19,6 +19,7 @@ import Overview from "./components/overview/Overview";
 import OverviewDPO from "./components/overview/OverviewDPO";
 import CreatePattern from "./components/overview/CreatePattern";
 import CreateConcern from "./components/overview/CreateConcern";
+import CreateProject from "./components/overview/CreateProject";
 import { Footer } from "./components/layout/Footer";
 import Search from "./components/layout/Search";
 import Description from "./components/Description";
@@ -75,6 +76,11 @@ class App extends Component {
                   exact
                   path="/create-concern"
                   component={CreateConcern}
+                />
+                <PrivateRoute
+                  exact
+                  path="/create-project"
+                  component={CreateProject}
                 />
               </Switch>
             </div>

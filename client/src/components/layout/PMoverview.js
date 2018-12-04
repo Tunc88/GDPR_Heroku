@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./PMoverview.css";
+import { Link } from "react-router-dom";
+import Spinner from "../common/Spinner";
+import ProjectFeed from "../overview/ProjectFeed";
 import { getProjects } from "../../actions/projectActions";
 import {
   Col,
@@ -19,43 +22,31 @@ class PMoverview extends Component {
   componentDidMount() {
     this.props.getProjects();
   }
+
   render() {
+    const { projects, loading } = this.props.project;
+
+    let projectContent;
+
+    if (projects === null || loading) {
+      projectContent = <Spinner />;
+    } else {
+      projectContent = <ProjectFeed projects={projects} />;
+    }
+
     return (
       <div>
         <PageHeader>Project Overview</PageHeader>
         <Grid>
           <Row>
             <Col xs={6} sm={4}>
-              <Panel>
-                <Panel.Heading>
-                  <h4>Project 1</h4>
-                  <div className="rowC">
-                    <Row>
-                      <Col xs={3} sm={10} smOffset={10}>
-                        <i className="fas fa-edit" />
-                        <i className="fas fa-trash-alt" />
-                      </Col>
-                    </Row>
-                  </div>
-                </Panel.Heading>
-                <Panel.Body>
-                  The focus of the project description is put on creating a
-                  clear and correct understanding of the project in minds of the
-                  people and organizations involved in the planning and
-                  development process. The project team (which is supposed to do
-                  the project) uses the document to get a general idea of what
-                  amount of work and under what requirements is planned for
-                  completion. The senior management team regards the project
-                  description as the key source of preliminary information
-                  necessary for strategic planning and development.
-                </Panel.Body>
-              </Panel>
+              {projectContent}
             </Col>
           </Row>
           <Col xs={2} xsOffset={10}>
-            <ButtonToolbar>
+            <Link to="/create-project">
               <Button bsStyle="primary">Create New Project</Button>
-            </ButtonToolbar>
+            </Link>
           </Col>
         </Grid>
       </div>
@@ -64,7 +55,7 @@ class PMoverview extends Component {
 }
 
 PMoverview.propTypes = {
-  getProject: PropTypes.func.isRequired,
+  getProjects: PropTypes.func.isRequired,
   project: PropTypes.object.isRequired
 };
 

@@ -6,7 +6,7 @@ export class Footer extends Component {
   render() {
     return (
       <div>
-        <Navbar inverse collapseOnSelect>
+        <Navbar inverse collapseOnSelect fixedBottom>
           <Navbar.Collapse>
             <Nav pullRight>
               <NavItem eventKey={1} href="#">
