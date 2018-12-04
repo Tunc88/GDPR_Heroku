@@ -17,11 +17,11 @@ const ProjectSchema = new Schema({
     required: true
   },
 
-  assignedConcerns: [
+  assignedtactics: [
     {
-      //Concern: {
-      type: [String] //[mongoose.Schema.Types.ObjectId]
-      //}
+      tactic: {
+        type: [mongoose.Schema.Types.ObjectId]
+      }
     }
   ],
   assignedDevelopers: [

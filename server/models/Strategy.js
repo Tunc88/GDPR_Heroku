@@ -11,13 +11,13 @@ const StrategySchema = new Schema({
     type: String,
     required
   },
-  assignedConcerns: [
+  assignedTactics: [
     {
-      Concern: {
+      tactic: {
         type: [mongoose.Schema.Types.ObjectId]
       }
     }
   ]
 });
 
-module.exports = Concern = mongoose.model("strategies", StrategySchema);
+module.exports = Strategy = mongoose.model("strategies", StrategySchema);

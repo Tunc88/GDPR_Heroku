@@ -12,9 +12,9 @@ import {
   FormControl,
   HelpBlock
 } from "react-bootstrap";
-import { deleteConcern, editConcern } from "../../actions/concernActions";
+import { deleteTactic, editTactic } from "../../actions/tacticActions";
 
-class EditToolbarConcerns extends Component {
+class EditToolbarTactics extends Component {
   constructor(props, context) {
     super(props, context);
     this.handleShowRemoveModal = this.handleShowRemoveModal.bind(this);
@@ -26,8 +26,8 @@ class EditToolbarConcerns extends Component {
     this.state = {
       showRemoveModal: false,
       showRemoveModal: false,
-      concernName: this.props.concern.concernName,
-      concernDescription: this.props.concern.concernDescription
+      name: this.props.tactic.dame,
+      description: this.props.tactic.description
     };
 
     this.onChange = this.onChange.bind(this);
@@ -67,24 +67,24 @@ class EditToolbarConcerns extends Component {
     this.setState({ showEditModal: true });
   }
 
-  editConcern = () => {
-    const concernData = {
-      concernName: this.state.concernName,
-      concernDescription: this.state.concernDescription,
-      id: this.props.concern._id
+  editTactic = () => {
+    const tacticData = {
+      name: this.state.name,
+      description: this.state.description,
+      id: this.props.tactic._id
     };
     console.log(
-      "function editconcern called in EditToolbar:" +
-        concernData.concernName +
-        concernData.concernDescription
+      "function edittactic called in EditToolbar:" +
+        tacticData.name +
+        tacticData.description
     );
-    this.props.editConcern(concernData);
+    this.props.editTactic(tacticData);
     this.handleCloseEditModal();
   };
 
-  deleteConcern = id => {
-    console.log("function deleteconcern called in EditToolbar");
-    this.props.deleteConcern(id);
+  deleteTactic = id => {
+    console.log("function deletetactic called in EditToolbar");
+    this.props.deleteTactic(id);
   };
 
   render() {
@@ -105,14 +105,14 @@ class EditToolbarConcerns extends Component {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Do you want to delete {this.props.concern.concernName} ?
+                Do you want to delete {this.props.tactic.name} ?
               </Modal.Title>
             </Modal.Header>
 
             <Modal.Footer>
               <Button
                 class="btn-lg btn-info"
-                onClick={() => this.deleteConcern(this.props.concern._id)}
+                onClick={() => this.deleteTactic(this.props.tactic._id)}
               >
                 Confirm
               </Button>
@@ -126,29 +126,29 @@ class EditToolbarConcerns extends Component {
             onHide={this.handleCloseEditModal}
           >
             <Modal.Header closeButton>
-              <Modal.Title>Edit {this.props.concern.concernName}</Modal.Title>
+              <Modal.Title>Edit {this.props.tactic.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form>
                 <FormGroup>
-                  <ControlLabel>Concern Name</ControlLabel>
+                  <ControlLabel>Tactic Name</ControlLabel>
                   <FormControl
                     type="text"
-                    name="concernName"
-                    value={this.state.concernName}
-                    placeholder="Concern Name"
+                    name="tacticName"
+                    value={this.state.name}
+                    placeholder="Tactic Name"
                     onChange={this.onChange}
                   />
                   <FormControl.Feedback />
                 </FormGroup>
                 <FormGroup>
-                  <ControlLabel>Concern Description</ControlLabel>
+                  <ControlLabel>Tactic Description</ControlLabel>
                   <FormControl
                     componentClass="textarea"
                     type="text"
-                    name="concernDescription"
-                    value={this.state.concernDescription}
-                    placeholder="Concern Description"
+                    name="tacticDescription"
+                    value={this.state.description}
+                    placeholder="Tactic Description"
                     onChange={this.onChange}
                   />
                   <FormControl.Feedback />
@@ -156,7 +156,7 @@ class EditToolbarConcerns extends Component {
               </form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={() => this.editConcern(this.props.concern._id)}>
+              <Button onClick={() => this.editTactic(this.props.tactic._id)}>
                 Confirm
               </Button>
 
@@ -169,8 +169,8 @@ class EditToolbarConcerns extends Component {
   }
 }
 
-EditToolbarConcerns.propTypes = {
-  deleteConcern: PropTypes.func.isRequired,
+EditToolbarTactics.propTypes = {
+  deleteTactic: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -180,5 +180,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { deleteConcern, editConcern }
-)(EditToolbarConcerns);
+  { deleteTactic, editTactic }
+)(EditToolbarTactics);

@@ -29,7 +29,7 @@ class EditToolbar extends Component {
       showRemoveModal: false,
       patternName: this.props.pattern.patternName,
       patternDescription: this.props.pattern.patternDescription,
-      assignedConcerns: this.props.pattern.assignedConcerns
+      assignedTactics: this.props.pattern.assignedTactics
     };
 
     this.onChange = this.onChange.bind(this);
@@ -54,11 +54,11 @@ class EditToolbar extends Component {
   /*onDelete(id) {
     this.props.onDelete(id);
   }*/
-  onChangeAssignedConcerns = id => {
-    //onChangeAssignedConcerns(id) {
-    //this.setState({ assignedConcerns[this.state.assignedConcerns.indexOf(id)]: true });
-    this.state.assignedConcerns.splice(
-      this.state.assignedConcerns.indexOf(id),
+  onChangeAssignedTactics = id => {
+    //onChangeAssignedTactics(id) {
+    //this.setState({ assignedTactics[this.state.assignedTactics.indexOf(id)]: true });
+    this.state.assignedTactics.splice(
+      this.state.assignedTactics.indexOf(id),
       1
     );
   };
@@ -99,7 +99,7 @@ class EditToolbar extends Component {
 
   render() {
     return (
-      <ButtonToolbar>
+      <ButtonToolbar className={"glyphicon-button"}>
         <ButtonGroup>
           <Button onClick={this.handleShowEditModal}>
             <Glyphicon glyph="pencil" />
@@ -164,19 +164,19 @@ class EditToolbar extends Component {
                   <FormControl.Feedback />
                 </FormGroup>
                 <FormGroup>
-                  <ControlLabel>Assigned Concerns</ControlLabel>
-                  {this.state.assignedConcerns.map(concern => (
+                  <ControlLabel>Assigned Tactics</ControlLabel>
+                  {this.state.assignedTactics.map(tactic => (
                     <Checkbox
-                      name="assignedConcerns"
+                      name="assignedTactics"
                       inline
                       checked
-                      value={concern._id}
+                      value={tactic._id}
                       /* onChange={() =>
-                        this.onChangeAssignedConcerns(concern._id)
+                        this.onChangeAssignedTactics(tactic._id)
                       }*/
-                      //onChange={this.onChangeAssignedConcerns(concern._id)}
+                      //onChange={this.onChangeAssignedTactics(tactic._id)}
                     >
-                      {concern.concernName}{" "}
+                      {tactic.tacticName}{" "}
                     </Checkbox>
                   ))}
                 </FormGroup>

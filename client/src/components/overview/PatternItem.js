@@ -34,22 +34,36 @@ class PatternItem extends Component {
       <Col xs={4}>
         <Panel>
           <Panel.Heading>
-            <Col xs={6}>
-              <h4>{pattern.name}</h4>
-            </Col>
-            <Col xs={6}>
+            <div className={"inline-flex"}>
+              <div className={"h4"}>{pattern.name}</div>
               <EditToolbar pattern={pattern} />
-            </Col>
-            <div>
-              {pattern.assignedConcerns.map(concern => (
-                <span>{concern.concernName} </span>
-              ))}
             </div>
+
+            {/*<div>
+              {pattern.assignedTactics.map(tactic => (
+                <span>{tactic.name} </span>
+              ))}
+              </div>*/}
           </Panel.Heading>
           <Panel.Body>
-            {patternDescriptionFirstPart}
+            {/*patternDescriptionFirstPart*/}
+            {pattern.summary}
             <Collapse in={this.state.open}>
-              <div>{patternDescriptionSecondPart}</div>
+              <div>
+                {/*patternDescriptionSecondPart*/}
+                {pattern.context}
+                {pattern.problem}
+                {pattern.forcesConcerns}
+                {pattern.solution}
+                {pattern.structure}
+                {pattern.implementation}
+                {pattern.consequences}
+                {pattern.liabilities}
+                {pattern.examples}
+                {pattern.relatedPatterns}
+                {pattern.sources}
+                {pattern.knownUses}
+              </div>
             </Collapse>
             <div className="extendMore" onClick={this.extendMore}>
               {more}

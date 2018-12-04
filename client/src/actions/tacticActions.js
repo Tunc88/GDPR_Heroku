@@ -1,17 +1,17 @@
 import axios from "axios";
 
 import {
-  CONCERN_LOADING,
-  GET_CONCERNS,
+  TACTIC_LOADING,
+  GET_TACTICS,
   CLEAR_ERRORS,
   GET_ERRORS,
-  DELETE_CONCERN
+  DELETE_TACTIC
 } from "./types";
 
-// create Concern
-export const createConcern = (concernData, history) => dispatch => {
+// create Tactic
+export const createTactic = (tacticData, history) => dispatch => {
   axios
-    .post("/api/concerns/createconcern", concernData)
+    .post("/api/tactics/createtactic", tacticData)
     .then(res => history.push("/overviewPm"))
     .catch(err =>
       dispatch({
@@ -21,33 +21,33 @@ export const createConcern = (concernData, history) => dispatch => {
     );
 };
 
-// Get Concerns
-export const getConcerns = () => dispatch => {
-  dispatch(setConcernLoading());
+// Get Tactics
+export const getTactics = () => dispatch => {
+  dispatch(setTacticLoading());
   axios
-    .get("/api/concerns")
+    .get("/api/tactics")
     .then(res =>
       dispatch({
-        type: GET_CONCERNS,
+        type: GET_TACTICS,
         payload: res.data
       })
     )
     .catch(err =>
       dispatch({
-        type: GET_CONCERNS,
+        type: GET_TACTICS,
         payload: null
       })
     );
 };
 
-// Delete Concern
-export const deleteConcern = id => dispatch => {
+// Delete Tactic
+export const deleteTactic = id => dispatch => {
   console.log(id);
   axios
-    .delete(`/api/concerns/${id}`)
+    .delete(`/api/tactics/${id}`)
     .then(res =>
       dispatch({
-        type: DELETE_CONCERN,
+        type: DELETE_TACTIC,
         payload: id
       })
     )
@@ -60,28 +60,28 @@ export const deleteConcern = id => dispatch => {
 };
 
 // Edit Pattern
-export const editConcern = concernData => dispatch => {
-  console.log(concernData);
+export const editTactic = tacticData => dispatch => {
+  console.log(tacticData);
   axios
-    .post("/api/concerns/editconcern", concernData)
+    .post("/api/tactics/edittactic", tacticData)
     .then(res =>
       dispatch({
-        type: GET_CONCERNS,
+        type: GET_TACTICS,
         payload: res.data
       })
     )
     .catch(err =>
       dispatch({
-        type: GET_CONCERNS,
+        type: GET_TACTICS,
         payload: null
       })
     );
 };
 
 // Set loading state
-export const setConcernLoading = () => {
+export const setTacticLoading = () => {
   return {
-    type: CONCERN_LOADING
+    type: TACTIC_LOADING
   };
 };
 

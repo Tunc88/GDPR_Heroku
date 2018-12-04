@@ -7,13 +7,13 @@ import Spinner from "../common/Spinner";
 import "./Overview.css";
 import PatternFeed from "./PatternFeed";
 import { getPatterns } from "../../actions/patternActions";
-import ConcernFeed from "./ConcernFeed";
-import { getConcerns } from "../../actions/concernActions";
+import TacticFeed from "./TacticFeed";
+import { getTactics } from "../../actions/tacticActions";
 
 class OverviewDPO extends Component {
   componentDidMount() {
     this.props.getPatterns();
-    this.props.getConcerns();
+    this.props.getTactics();
   }
 
   render() {
@@ -27,13 +27,13 @@ class OverviewDPO extends Component {
       patternContent = <PatternFeed patterns={patterns} />;
     }
 
-    const { concerns, loading2 } = this.props.concern;
-    let concernContent;
+    const { tactics, loading2 } = this.props.tactic;
+    let tacticContent;
 
-    if (concerns === null || loading2) {
-      concernContent = <Spinner />;
+    if (tactics === null || loading2) {
+      tacticContent = <Spinner />;
     } else {
-      concernContent = <ConcernFeed concerns={concerns} />;
+      tacticContent = <tacticFeed tactics={tactics} />;
     }
 
     return (
@@ -49,13 +49,13 @@ class OverviewDPO extends Component {
 
             {patternContent}
             <Col xs={12}>
-              <h4>Concerns</h4>
-              <Link to="/create-concern">
-                <Button bsStyle="primary">Create new Concern</Button>
+              <h4>tactics</h4>
+              <Link to="/create-tactic">
+                <Button bsStyle="primary">Create new tactic</Button>
               </Link>
             </Col>
 
-            {concernContent}
+            {tacticContent}
           </Tab>
           <Tab eventKey={2} title="Diagramm View" />
         </Tabs>
@@ -67,16 +67,16 @@ class OverviewDPO extends Component {
 OverviewDPO.propTypes = {
   getPatterns: PropTypes.func.isRequired,
   pattern: PropTypes.object.isRequired,
-  getConcerns: PropTypes.func.isRequired,
-  concern: PropTypes.object.isRequired
+  getTactics: PropTypes.func.isRequired,
+  tactic: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   pattern: state.pattern,
-  concern: state.concern
+  tactic: state.tactic
 });
 
 export default connect(
   mapStateToProps,
-  { getPatterns, getConcerns }
+  { getPatterns, getTactics }
 )(OverviewDPO);
