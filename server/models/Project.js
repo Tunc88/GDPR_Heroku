@@ -17,9 +17,9 @@ const ProjectSchema = new Schema({
     required: true
   },
 
-  assignedConcerns: [
+  assignedtactics: [
     {
-      Concern: {
+      tactic: {
         type: [mongoose.Schema.Types.ObjectId]
       }
     }

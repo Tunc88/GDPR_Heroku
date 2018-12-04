@@ -17,11 +17,10 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Overview from "./components/overview/Overview";
 import OverviewDPO from "./components/overview/OverviewDPO";
-import CreatePattern from "./components/overview/CreatePattern";
-import CreateConcern from "./components/overview/CreateConcern";
+//import CreatePattern from "./components/overview/CreatePattern";
+//import Createtactic from "./components/overview/Createtactic";
 import { Footer } from "./components/layout/Footer";
 import Search from "./components/layout/Search";
-import Description from "./components/Description";
 import PMoverview from "./components/layout/PMoverview";
 
 import "./App.css";
@@ -61,7 +60,7 @@ class App extends Component {
               <Route exact path="/overview" component={Overview} />
               <Switch>
                 <PrivateRoute exact path="/PMoverview" component={PMoverview} />
-                <PrivateRoute
+                {/*<PrivateRoute
                   exact
                   path="/overviewDPO"
                   component={OverviewDPO}
@@ -73,9 +72,9 @@ class App extends Component {
                 />
                 <PrivateRoute
                   exact
-                  path="/create-concern"
-                  component={CreateConcern}
-                />
+                  path="/create-tactic"
+                  component={Createtactic}
+                />*/}
               </Switch>
             </div>
             <Footer />

@@ -59,7 +59,7 @@ class Navigationbar extends Component {
               <FormControl
                 id="search"
                 type="text"
-                placeholder="Enter concern or pattern"
+                placeholder="Enter tactic or pattern"
               />
             </FormGroup>{" "}
             <Button type="submit">Search!</Button>

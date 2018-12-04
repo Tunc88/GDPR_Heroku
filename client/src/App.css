@@ -37,3 +37,11 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+.glyphicon-button {
+  margin-left: 10px;
+}
+
+.inline-flex {
+  display: inline-flex;
+}

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Create Schema
-const ConcernSchema = new Schema({
+const TacticSchema = new Schema({
   name: {
     type: String
     //required
@@ -13,4 +13,4 @@ const ConcernSchema = new Schema({
   }
 });
 
-module.exports = Concern = mongoose.model("concerns", ConcernSchema);
+module.exports = Tactic = mongoose.model("tactics", TacticSchema);

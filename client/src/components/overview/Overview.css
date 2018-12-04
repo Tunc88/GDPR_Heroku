@@ -1,9 +1,11 @@
 .Overview {
-    
 }
 .extendMore {
-    color: #337ab7
+  color: #337ab7;
 }
 .extendMore:hover {
-    text-decoration: underline;
+  text-decoration: underline;
+}
+.glyphicon-button {
+  margin-left: 10px;
 }

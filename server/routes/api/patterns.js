@@ -21,11 +21,17 @@ router.get("/", (req, res) =>
   Pattern.aggregate([
     {
       $lookup: {
-        from: "concerns",
-        localField: "assignedConcerns",
+        from: "tactics",
+        localField: "assignedTactics",
         foreignField: "_id",
-        as: "assignedConcerns"
-      }
+        as: "assignedTactics"
+      } /*,
+      $lookup: {
+        from: "strategies",
+        localField: "assignedTactics._id",
+        foreignField: "assignedTactics",
+        as: "assignedStrategies"
+      }*/
     }
   ])
     .exec()
@@ -63,11 +69,11 @@ router.post("/createpattern", (req, res) => {
     } else {
       const newPattern = new Pattern({
         name: req.body.name,
-        assignedConcerns: req.body.assignedConcerns,
+        assignedTactics: req.body.assignedTactics,
         context: req.body.context,
         summary: req.body.summary,
         problem: req.body.problem,
-        forcesConcerns: req.body.forcesConcerns,
+        forcesTactics: req.body.forcesTactics,
         solution: req.body.solution,
         structure: req.body.structure,
         implementation: req.body.implementation,

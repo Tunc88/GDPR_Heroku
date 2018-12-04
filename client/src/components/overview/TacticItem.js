@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Panel, Col, Tabs, Tab, Button, Collapse } from "react-bootstrap";
-import EditToolbarConcerns from "../common/EditToolbarConcerns";
+import EditToolbarTactics from "../common/EditToolbarTactics";
 
-class ConcernItem extends Component {
+class TacticItem extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -17,14 +17,14 @@ class ConcernItem extends Component {
   };
 
   render() {
-    const { concern, auth } = this.props;
+    const { tactic, auth } = this.props;
     const open = this.state.open;
     let more;
-    let concernDescriptionFirstPart = concern.concernDescription
+    let tacticDescriptionFirstPart = tactic.description
       .split(" ", 10)
       .join(" ");
-    let concernDescriptionSecondPart = concern.concernDescription.substring(
-      concernDescriptionFirstPart.length
+    let tacticDescriptionSecondPart = tactic.description.substring(
+      tacticDescriptionFirstPart.length
     );
     if (open) {
       more = <p>Less...</p>;
@@ -36,13 +36,13 @@ class ConcernItem extends Component {
       <Col xs={4}>
         <Panel>
           <Panel.Heading>
-            <h5>{concern.concernName}</h5>
-            <EditToolbarConcerns concern={concern} />
+            <h5>{tactic.tacticName}</h5>
+            <EditToolbarTactics tactic={tactic} />
           </Panel.Heading>
           <Panel.Body>
-            {concernDescriptionFirstPart}
+            {tacticDescriptionFirstPart}
             <Collapse in={this.state.open}>
-              <div>{concernDescriptionSecondPart}</div>
+              <div>{tacticDescriptionSecondPart}</div>
             </Collapse>
             <div className="extendMore" onClick={this.extendMore}>
               {more}
@@ -54,8 +54,8 @@ class ConcernItem extends Component {
   }
 }
 
-ConcernItem.propTypes = {
-  concern: PropTypes.object.isRequired,
+TacticItem.propTypes = {
+  tactic: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -66,4 +66,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {}
-)(ConcernItem);
+)(TacticItem);
