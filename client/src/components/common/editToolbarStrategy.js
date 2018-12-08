@@ -12,9 +12,9 @@ import {
   FormControl,
   HelpBlock
 } from "react-bootstrap";
-import { deleteTactic, editTactic } from "../../actions/tacticActions";
+import { deleteStrategy, editStrategy } from "../../actions/strategyActions";
 
-class EditToolbarTactics extends Component {
+class EditToolbarStrategy extends Component {
   constructor(props, context) {
     super(props, context);
     this.handleShowRemoveModal = this.handleShowRemoveModal.bind(this);
@@ -26,8 +26,8 @@ class EditToolbarTactics extends Component {
     this.state = {
       showRemoveModal: false,
       showRemoveModal: false,
-      name: this.props.tactic.name,
-      description: this.props.tactic.description
+      name: this.props.strategy.name,
+      description: this.props.strategy.description
     };
 
     this.onChange = this.onChange.bind(this);
@@ -67,24 +67,24 @@ class EditToolbarTactics extends Component {
     this.setState({ showEditModal: true });
   }
 
-  editTactic = () => {
-    const tacticData = {
+  editStrategy = () => {
+    const strategyData = {
       name: this.state.name,
       description: this.state.description,
-      id: this.props.tactic._id
+      id: this.props.strategy._id
     };
     console.log(
-      "function edittactic called in EditToolbar:" +
-        tacticData.name +
-        tacticData.description
+      "function editstrategy called in EditToolbar:" +
+        strategyData.name +
+        strategyData.description
     );
-    this.props.editTactic(tacticData);
+    this.props.editStrategy(strategyData);
     this.handleCloseEditModal();
   };
 
-  deleteTactic = id => {
-    console.log("function deletetactic called in EditToolbar");
-    this.props.deleteTactic(id);
+  deleteStrategy = id => {
+    console.log("function deletestrategy called in EditToolbar");
+    this.props.deleteStrategy(id);
   };
 
   render() {
@@ -105,14 +105,14 @@ class EditToolbarTactics extends Component {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Do you want to delete {this.props.tactic.name} ?
+                Do you want to delete {this.props.strategy.name} ?
               </Modal.Title>
             </Modal.Header>
 
             <Modal.Footer>
               <Button
                 class="btn-lg btn-info"
-                onClick={() => this.deleteTactic(this.props.tactic._id)}
+                onClick={() => this.deleteStrategy(this.props.strategy._id)}
               >
                 Confirm
               </Button>
@@ -126,29 +126,29 @@ class EditToolbarTactics extends Component {
             onHide={this.handleCloseEditModal}
           >
             <Modal.Header closeButton>
-              <Modal.Title>Edit {this.props.tactic.name}</Modal.Title>
+              <Modal.Title>Edit {this.props.strategy.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form>
                 <FormGroup>
-                  <ControlLabel>Tactic Name</ControlLabel>
+                  <ControlLabel>Strategy Name</ControlLabel>
                   <FormControl
                     type="text"
-                    name="tacticName"
+                    name="strategyName"
                     value={this.state.name}
-                    placeholder="Tactic Name"
+                    placeholder="Strategy Name"
                     onChange={this.onChange}
                   />
                   <FormControl.Feedback />
                 </FormGroup>
                 <FormGroup>
-                  <ControlLabel>Tactic Description</ControlLabel>
+                  <ControlLabel>Strategy Description</ControlLabel>
                   <FormControl
                     componentClass="textarea"
                     type="text"
-                    name="tacticDescription"
+                    name="strategyDescription"
                     value={this.state.description}
-                    placeholder="Tactic Description"
+                    placeholder="Strategy Description"
                     onChange={this.onChange}
                   />
                   <FormControl.Feedback />
@@ -156,7 +156,9 @@ class EditToolbarTactics extends Component {
               </form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={() => this.editTactic(this.props.tactic._id)}>
+              <Button
+                onClick={() => this.editStrategy(this.props.strategy._id)}
+              >
                 Confirm
               </Button>
 
@@ -169,8 +171,8 @@ class EditToolbarTactics extends Component {
   }
 }
 
-EditToolbarTactics.propTypes = {
-  deleteTactic: PropTypes.func.isRequired,
+EditToolbarStrategy.propTypes = {
+  deleteStrategy: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -180,5 +182,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { deleteTactic, editTactic }
-)(EditToolbarTactics);
+  { deleteStrategy, editStrategy }
+)(EditToolbarStrategy);

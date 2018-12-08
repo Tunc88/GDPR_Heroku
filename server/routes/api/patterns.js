@@ -8,6 +8,10 @@ const validatePatternInput = require("../../validation/createPattern");
 // Load Pattern model
 const Pattern = require("../../models/Pattern");
 
+// Load Strategy model
+const Strategy = require("../../models/Strategy");
+const Tactic = require("../../models/Tactic");
+
 // @route   GET api/patterns/test
 // @desc    Tests patterns route
 // @access  Public
@@ -25,7 +29,61 @@ router.get("/", (req, res) =>
         localField: "assignedTactics",
         foreignField: "_id",
         as: "assignedTactics"
-      } /*,
+      }
+    },
+    {
+      $lookup: {
+        from: "strategies",
+        localField: "assignedTactics._id",
+        foreignField: "assignedTactics",
+        as: "assignedStrategies"
+      }
+    },
+    {
+      $lookup: {
+        from: "patterns",
+        localField: "assignedStrategies.assignedTactics",
+        foreignField: "assignedTactics._id",
+        as: "assignedStrategiescomplete"
+      }
+    }
+  ])
+
+    .exec()
+    .then(patterns => {
+      //console.log(patterns[].assignedTactics[]._id);
+      // patterns.forEach(function(pattern) {
+      // pattern.assignedTactics.forEach(function(tactic) {
+      //console.log(tactic._id);
+      //  });
+      //console.log(pattern.assignedTactics);
+      //  });
+      if (!patterns)
+        return res.status(404).json({
+          error: "Not Found",
+          message: `Patterns not found`
+        });
+      res.status(200).json(patterns);
+    })
+    .catch(error =>
+      res.status(500).json({
+        error: "Internal Server Error",
+        message: error.message
+      })
+    )
+);
+
+router.get("/testing", (req, res) =>
+  Tactic.aggregate([
+    {
+      $lookup: {
+        from: "strategies",
+        localField: "_id",
+        foreignField: "assignedTactics",
+        as: "assignedTactics2"
+      }
+
+      /*,
       $lookup: {
         from: "strategies",
         localField: "assignedTactics._id",
@@ -34,12 +92,15 @@ router.get("/", (req, res) =>
       }*/
     }
   ])
+
     .exec()
     .then(patterns => {
+      //console.log(patterns[].assignedTactics[]._id);
+
       if (!patterns)
         return res.status(404).json({
           error: "Not Found",
-          message: `Pattern not found`
+          message: `Patterns not found`
         });
       res.status(200).json(patterns);
     })

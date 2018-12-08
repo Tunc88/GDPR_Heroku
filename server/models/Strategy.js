@@ -4,17 +4,20 @@ const Schema = mongoose.Schema;
 // Create Schema
 const StrategySchema = new Schema({
   name: {
-    type: String,
-    required
+    type: String
+    //required: true
   },
   description: {
-    type: String,
-    required
+    type: String
+    // required: true
   },
   assignedTactics: [
     {
-      tactic: {
-        type: [mongoose.Schema.Types.ObjectId]
+      name: {
+        type: String
+      },
+      description: {
+        type: String
       }
     }
   ]
