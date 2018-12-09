@@ -165,7 +165,7 @@ class EditToolbarProject extends Component {
                 </FormGroup>
                 <FormGroup>
                   <ControlLabel>Assigned Concerns</ControlLabel>
-                  {this.state.assignedConcerns.map(concern => (
+                  {/*this.state.assignedConcerns.map(concern => (
                     <Checkbox
                       name="assignedConcerns"
                       inline
@@ -173,12 +173,12 @@ class EditToolbarProject extends Component {
                       value={concern._id}
                       /* onChange={() =>
                         this.onChangeAssignedConcerns(concern._id)
-                      }*/
+                      }
                       //onChange={this.onChangeAssignedConcerns(concern._id)}
                     >
                       {concern.concernName}{" "}
                     </Checkbox>
-                  ))}
+                    ))*/}
                 </FormGroup>
               </form>
             </Modal.Body>

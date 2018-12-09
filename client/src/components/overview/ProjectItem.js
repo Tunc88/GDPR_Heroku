@@ -39,9 +39,9 @@ class ProjectItem extends Component {
           <EditToolbar project={project} />
 
           <div>
-            {project.assignedConcerns.map(concern => (
+            {/*project.assignedConcerns.map(concern => (
               <span key={concern.id}>{concern.concernName} </span>
-            ))}
+            ))*/}
           </div>
         </Panel.Heading>
         <Panel.Body>

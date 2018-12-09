@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Spinner from "../common/Spinner";
 import ProjectFeed from "../overview/ProjectFeed";
 import { getProjects } from "../../actions/projectActions";
+import { getDevelopers } from "../../actions/userActions";
 import {
   Col,
   Thumbnail,
@@ -21,6 +22,7 @@ import {
 class PMoverview extends Component {
   componentDidMount() {
     this.props.getProjects();
+    this.props.getDevelopers();
   }
 
   render() {
@@ -56,14 +58,17 @@ class PMoverview extends Component {
 
 PMoverview.propTypes = {
   getProjects: PropTypes.func.isRequired,
-  project: PropTypes.object.isRequired
+  project: PropTypes.object.isRequired,
+  getDevelopers: PropTypes.func.isRequired,
+  developer: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  project: state.project
+  project: state.project,
+  developer: state.user.developer
 });
 
 export default connect(
   mapStateToProps,
-  { getProjects }
+  { getProjects, getDevelopers }
 )(PMoverview);

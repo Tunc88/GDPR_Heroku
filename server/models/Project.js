@@ -17,7 +17,7 @@ const ProjectSchema = new Schema({
     required: true
   },
 
-  assignedtactics: [
+  /*  assignedtactics: [
     {
       tactic: {
         type: [mongoose.Schema.Types.ObjectId]
@@ -30,7 +30,7 @@ const ProjectSchema = new Schema({
       type: [String] //[mongoose.Schema.Types.ObjectId]
       //}
     }
-  ],
+  ], */
 
   user: {
     type: Schema.Types.ObjectId,

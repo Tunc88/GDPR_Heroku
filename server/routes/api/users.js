@@ -126,4 +126,13 @@ router.get(
   }
 );
 
+// @route   GET api/users/developers
+// @desc    Get all developer
+// @access  Public
+router.get("/developers", (req, res) =>
+  User.find({ role: "Developer" }).then(users => {
+    res.json(users);
+  })
+);
+
 module.exports = router;
