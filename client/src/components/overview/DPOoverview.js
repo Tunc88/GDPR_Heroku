@@ -10,7 +10,7 @@ import { getPatterns } from "../../actions/patternActions";
 import TacticFeed from "./TacticFeed";
 import { getTactics } from "../../actions/tacticActions";
 
-class OverviewDPO extends Component {
+class DPOoverview extends Component {
   componentDidMount() {
     this.props.getPatterns();
     this.props.getTactics();
@@ -64,7 +64,7 @@ class OverviewDPO extends Component {
   }
 }
 
-OverviewDPO.propTypes = {
+DPOoverview.propTypes = {
   getPatterns: PropTypes.func.isRequired,
   pattern: PropTypes.object.isRequired,
   getTactics: PropTypes.func.isRequired,
@@ -79,4 +79,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { getPatterns, getTactics }
-)(OverviewDPO);
+)(DPOoverview);

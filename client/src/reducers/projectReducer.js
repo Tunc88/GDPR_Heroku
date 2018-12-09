@@ -1,12 +1,16 @@
 import {
   PROJECT_LOADING,
   GET_PROJECTS,
-  DELETE_PROJECT
+  DELETE_PROJECT,
+  SET_ASSIGNED_DEVELOPER,
+  SET_ASSIGNED_TACTICS
 } from "../actions/types";
 
 const initialState = {
   projects: [],
   project: {},
+  assignedDevelopers: [],
+  assignedTactics: [],
   loading: false
 };
 
@@ -21,6 +25,28 @@ export default function(state = initialState, action) {
       return {
         ...state,
         projects: action.payload,
+        loading: false
+      };
+    case SET_ASSIGNED_DEVELOPER:
+      const addDeveloper = dev => {
+        return [...dev.concat(state.assignedDevelopers)];
+      };
+      var newArray = addDeveloper(action.payload);
+
+      return {
+        ...state,
+        assignedDevelopers: newArray,
+        loading: false
+      };
+    case SET_ASSIGNED_TACTICS:
+      const addTactics = tac => {
+        return [...tac.concat(state.assignedTactics)];
+      };
+      var newArray = addTactics(action.payload);
+
+      return {
+        ...state,
+        assignedTactics: newArray,
         loading: false
       };
     case DELETE_PROJECT:

@@ -4,10 +4,15 @@ import { withRouter } from "react-router-dom";
 import classnames from "classnames";
 import { connect } from "react-redux";
 
+import Spinner from "../common/Spinner";
 import { createPattern } from "../../actions/patternActions";
+import { setAssignedTactics } from "../../actions/projectActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
+import TacListGroupField from "../common/TacListGroupField";
+import { getTactics } from "../../actions/tacticActions";
 import { Button } from "react-bootstrap";
+import store from "../../store";
 
 class CreatePattern extends Component {
   constructor() {
@@ -28,6 +33,7 @@ class CreatePattern extends Component {
       relatedPatterns: "",
       sources: "",
       knownUses: "",
+      assignedTactics: [],
       errors: {}
     };
 
@@ -35,7 +41,9 @@ class CreatePattern extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.getTactics();
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
@@ -66,13 +74,24 @@ class CreatePattern extends Component {
       examples: this.state.examples,
       relatedPatterns: this.state.relatedPatterns,
       sources: this.state.sources,
-      knownUses: this.state.knownUser
+      knownUses: this.state.knownUser,
+      assignedTactics: store.getState().project.assignedTactics
     };
 
     this.props.createPattern(newPattern, this.props.history);
   }
 
   render() {
+    const { loading2, tactics } = this.props;
+
+    let tacticContent;
+
+    if (tactics === null || loading2) {
+      tacticContent = <Spinner />;
+    } else {
+      tacticContent = <TacListGroupField tactics={this.props.tactics} />;
+    }
+
     const { errors } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
@@ -132,6 +151,8 @@ class CreatePattern extends Component {
           onChange={this.onChange}
         />
 
+        <h4>Which Tactics will be covered</h4>
+        {tacticContent}
         <Button bsStyle="primary" onClick={this.onSubmit}>
           Create Pattern
         </Button>
@@ -143,15 +164,19 @@ class CreatePattern extends Component {
 CreatePattern.propTypes = {
   createPattern: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  setAssignedTactics: PropTypes.func.isRequired,
+  getTactics: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  assignedTactics: state.project.assignedTactics,
+  tactics: state.tactic.tactics
 });
 
 export default connect(
   mapStateToProps,
-  { createPattern }
+  { createPattern, getTactics, setAssignedTactics }
 )(withRouter(CreatePattern));

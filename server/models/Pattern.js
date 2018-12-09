@@ -52,13 +52,9 @@ const PatternSchema = new Schema({
     type: String
   },
 
-  assignedTactics: [
-    {
-      tactic: {
-        type: [mongoose.Schema.Types.ObjectId]
-      }
-    }
-  ]
+  assignedTactics: {
+    type: [String] //[mongoose.Schema.Types.ObjectId]
+  }
 });
 
 module.exports = Pattern = mongoose.model("patterns", PatternSchema);

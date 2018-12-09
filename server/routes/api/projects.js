@@ -45,7 +45,7 @@ router.post(
       } else {
         const newProject = new Project({
           name: req.body.name,
-          assignedConcerns: req.body.assignedConcerns,
+          assignedTactics: req.body.assignedTactics,
           finished: req.body.finished,
           description: req.body.description,
           assignedDevelopers: req.body.assignedDevelopers,

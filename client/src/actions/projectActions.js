@@ -5,7 +5,9 @@ import {
   DELETE_PROJECT,
   PROJECT_LOADING,
   GET_PROJECTS,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  SET_ASSIGNED_DEVELOPER,
+  SET_ASSIGNED_TACTICS
 } from "./types";
 
 // create Project
@@ -89,5 +91,21 @@ export const setProjectLoading = () => {
 export const clearErrors = () => {
   return {
     type: CLEAR_ERRORS
+  };
+};
+
+// Set assignedDevelopers
+export const setAssignedDevelopers = developer => {
+  return {
+    type: SET_ASSIGNED_DEVELOPER,
+    payload: developer
+  };
+};
+
+// Set assignedTactics
+export const setAssignedTactics = tactic => {
+  return {
+    type: SET_ASSIGNED_TACTICS,
+    payload: tactic
   };
 };

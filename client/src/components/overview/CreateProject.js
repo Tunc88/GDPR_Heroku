@@ -5,12 +5,19 @@ import classnames from "classnames";
 import { connect } from "react-redux";
 
 import Spinner from "../common/Spinner";
-import { createProject } from "../../actions/projectActions";
+import {
+  createProject,
+  setAssignedDevelopers,
+  setAssignedTactics
+} from "../../actions/projectActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
 import DevListGroupField from "../common/DevListGroupField";
+import TacListGroupField from "../common/TacListGroupField";
 import { Button, ListGroup, ListGroupItem, Row, Col } from "react-bootstrap";
 import { getDevelopers } from "../../actions/userActions";
+import { getTactics } from "../../actions/tacticActions";
+import store from "../../store";
 
 class CreateProject extends Component {
   constructor() {
@@ -18,7 +25,7 @@ class CreateProject extends Component {
     this.state = {
       description: "",
       name: "",
-      assignedConcerns: [],
+      assignedTactics: [],
       finished: false,
       assignedDevelopers: [],
       developers: [],
@@ -32,6 +39,7 @@ class CreateProject extends Component {
 
   componentDidMount() {
     this.props.getDevelopers();
+    this.props.getTactics();
   }
 
   onChange(e) {
@@ -44,8 +52,8 @@ class CreateProject extends Component {
     const newProject = {
       name: this.state.name,
       description: this.state.description,
-      assignedConcerns: this.state.assignedConcerns,
-      assignedDevelopers: this.state.assignedDevelopers,
+      assignedTactics: store.getState().project.assignedTactics,
+      assignedDevelopers: store.getState().project.assignedDevelopers,
       finished: this.state.finished
     };
 
@@ -53,19 +61,28 @@ class CreateProject extends Component {
   }
 
   render() {
-    const { loading } = this.props;
-    const { developers } = this.props;
+    const { loading, developers } = this.props;
+    const { loading2, tactics } = this.props;
 
     let developerContent;
+    let tacticContent;
 
     if (developers === null || loading) {
       developerContent = <Spinner />;
     } else {
       developerContent = (
-        <DevListGroupField developers={this.props.developers} />
+        <DevListGroupField
+          onClick={this.onClickSetState}
+          developers={this.props.developers}
+        />
       );
     }
-    console.log(developers);
+
+    if (tactics === null || loading2) {
+      tacticContent = <Spinner />;
+    } else {
+      tacticContent = <TacListGroupField tactics={this.props.tactics} />;
+    }
 
     const { errors } = this.state;
     return (
@@ -89,6 +106,7 @@ class CreateProject extends Component {
         <Row className="show-grid">
           <Col md={6} mdPush={6}>
             <h4>Choose your tactics</h4>
+            {tacticContent}
           </Col>
           <Col md={6} mdPull={6}>
             <h4>Choose your developer</h4>
@@ -108,17 +126,28 @@ CreateProject.propTypes = {
   createProject: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
-  getDevelopers: PropTypes.func.isRequired
-  //,  developer: PropTypes.object.isRequired
+  getDevelopers: PropTypes.func.isRequired,
+  getTactics: PropTypes.func.isRequired,
+  setAssignedDevelopers: PropTypes.func.isRequired,
+  setAssignedTactics: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  developers: state.user.developers
+  developers: state.user.developers,
+  tactics: state.tactic.tactics,
+  assignedDevelopers: state.project.assignedDevelopers,
+  assignedTactics: state.project.assignedTactics
 });
 
 export default connect(
   mapStateToProps,
-  { createProject, getDevelopers }
+  {
+    createProject,
+    getDevelopers,
+    getTactics,
+    setAssignedDevelopers,
+    setAssignedTactics
+  }
 )(withRouter(CreateProject));

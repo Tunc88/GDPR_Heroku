@@ -16,7 +16,7 @@ import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Overview from "./components/overview/Overview";
-import OverviewDPO from "./components/overview/OverviewDPO";
+import DPOoverview from "./components/overview/DPOoverview";
 import CreatePattern from "./components/overview/CreatePattern";
 import CreateProject from "./components/overview/CreateProject";
 //import Createtactic from "./components/overview/Createtactic";
@@ -61,18 +61,19 @@ class App extends Component {
               <Route exact path="/overview" component={Overview} />
               <Switch>
                 <PrivateRoute exact path="/PMoverview" component={PMoverview} />
-                {
-                  /*<PrivateRoute
+
+                <PrivateRoute
                   exact
-                  path="/overviewDPO"
-                  component={OverviewDPO}
+                  path="/DPOoverview"
+                  component={DPOoverview}
                 />
+
                 <PrivateRoute
                   exact
                   path="/create-pattern"
                   component={CreatePattern}
                 />
-              */
+                {/*
                   <PrivateRoute
                     exact
                     path="/create-project"
@@ -81,8 +82,7 @@ class App extends Component {
                   /* <PrivateRoute
                   path="/create-tactic"
                   component={Createtactic}
-                /> */
-                }
+                /> */}
               </Switch>
             </div>
             <Footer />
