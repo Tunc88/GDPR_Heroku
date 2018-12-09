@@ -18,7 +18,7 @@ const PatternSchema = new Schema({
     type: String,
     required: true
   },
-  forcestactics: {
+  forcesConcerns: {
     type: String
   },
   solution: {

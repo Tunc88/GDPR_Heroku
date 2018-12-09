@@ -9,10 +9,17 @@ export class Footer extends Component {
         <Navbar inverse collapseOnSelect fixedBottom>
           <Navbar.Collapse>
             <Nav pullRight>
-              <NavItem eventKey={1} href="#">
-                Terms of Use
+              <NavItem
+                eventKey={1}
+                target="_blank"
+                href="https://www.privacypatterns.org"
+              >
+                Patterns and Strategies taken from privacypatterns.org
               </NavItem>
               <NavItem eventKey={2} href="#">
+                Terms of Use
+              </NavItem>
+              <NavItem eventKey={3} href="#">
                 Privacy
               </NavItem>
             </Nav>

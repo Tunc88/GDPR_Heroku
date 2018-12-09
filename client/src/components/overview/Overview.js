@@ -17,6 +17,8 @@ import PatternFeed from "./PatternFeed";
 import { getPatterns } from "../../actions/patternActions";
 import TacticFeed from "./TacticFeed";
 import { getTactics } from "../../actions/tacticActions";
+import StrategyFeed from "./StrategyFeed";
+import { getStrategies } from "../../actions/strategyActions";
 import Sidebar from "react-sidebar";
 
 const mql = window.matchMedia(`(min-width: 800px)`);
@@ -39,6 +41,7 @@ class Overview extends Component {
   componentDidMount() {
     this.props.getPatterns();
     this.props.getTactics();
+    this.props.getStrategies();
   }
 
   componentWillUnmount() {
@@ -73,13 +76,22 @@ class Overview extends Component {
       tacticContent = <TacticFeed tactics={tactics} />;
     }
 
+    const { strategies, loading3 } = this.props.strategy;
+    let strategyContent;
+
+    if (strategies === null || loading3) {
+      strategyContent = <Spinner />;
+    } else {
+      strategyContent = <StrategyFeed strategies={strategies} />;
+    }
+
     return (
       <div>
         <Sidebar
           sidebar={
             <div>
               <h4>Filter</h4>
-              {tacticContent}
+              {strategyContent}
             </div>
           }
           open={this.state.sidebarOpen}
@@ -112,7 +124,7 @@ class Overview extends Component {
             <Col xs={12}>
               <h4>Tactics</h4>
             </Col>
-            {tacticContent}
+            {/*tacticContent*/}
           </Tab>
           <Tab eventKey={2} title="Diagramm View" />
         </Tabs>
@@ -125,15 +137,18 @@ Overview.propTypes = {
   getPatterns: PropTypes.func.isRequired,
   pattern: PropTypes.object.isRequired,
   getTactics: PropTypes.func.isRequired,
-  tactic: PropTypes.object.isRequired
+  tactic: PropTypes.object.isRequired,
+  getStrategies: PropTypes.func.isRequired,
+  strategy: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   pattern: state.pattern,
-  tactic: state.tactic
+  tactic: state.tactic,
+  strategy: state.strategy
 });
 
 export default connect(
   mapStateToProps,
-  { getPatterns, getTactics }
+  { getPatterns, getTactics, getStrategies }
 )(Overview);
