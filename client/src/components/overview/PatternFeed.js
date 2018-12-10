@@ -9,7 +9,7 @@ class PatternFeed extends Component {
     const { patterns } = this.props;
 
     return (
-      <Col xs={11}>
+      <Col xs={9}>
         {patterns.map(pattern => (
           <PatternItem key={pattern._id} pattern={pattern} />
         ))}

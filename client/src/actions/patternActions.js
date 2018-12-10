@@ -5,6 +5,7 @@ import {
   DELETE_PATTERN,
   PATTERN_LOADING,
   GET_PATTERNS,
+  GET_PATTERN,
   CLEAR_ERRORS
 } from "./types";
 
@@ -35,6 +36,27 @@ export const getPatterns = () => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_PATTERNS,
+        payload: null
+      })
+    );
+};
+
+// Get Pattern
+export const getPattern = id => dispatch => {
+  console.log("id" + id);
+  dispatch(setPatternLoading());
+  axios
+    .get(`/api/patterns/${id}`)
+    .then(res =>
+      // console.log("res" + res.data.pattern)
+      dispatch({
+        type: GET_PATTERN,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PATTERN,
         payload: null
       })
     );

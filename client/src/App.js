@@ -24,6 +24,7 @@ import Search from "./components/layout/Search";
 import PMoverview from "./components/layout/PMoverview";
 
 import "./App.css";
+import PatternDetail from "./components/overview/PatternDetail";
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -58,6 +59,10 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/search" component={Search} />
               <Route exact path="/overview" component={Overview} />
+              <Route
+                path="/patterndetail/:_id?/:editing?"
+                component={PatternDetail}
+              />
               <Switch>
                 <PrivateRoute exact path="/PMoverview" component={PMoverview} />
                 {/*<PrivateRoute

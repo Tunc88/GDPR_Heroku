@@ -73,6 +73,44 @@ router.get("/", (req, res) =>
     )
 );
 
+router.get("/", (req, res) => {
+  const { errors, isValid } = validatePatternInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  Pattern.findOne({ name: req.body.name }).then(pattern => {
+    if (pattern) {
+      errors.name = "Pattern already exists";
+      return res.status(400).json(errors);
+    } else {
+      const newPattern = new Pattern({
+        name: req.body.name,
+        assignedTactics: req.body.assignedTactics,
+        context: req.body.context,
+        summary: req.body.summary,
+        problem: req.body.problem,
+        forcesTactics: req.body.forcesTactics,
+        solution: req.body.solution,
+        structure: req.body.structure,
+        implementation: req.body.implementation,
+        consequences: req.body.consequences,
+        liabilities: req.body.liabilities,
+        relatedPatterns: req.body.relatedPatterns,
+        sources: req.body.sources,
+        knownUser: req.body.knownUser,
+        examples: req.body.examples
+      });
+      newPattern
+        .save()
+        .then(pattern => res.json(pattern))
+        .catch(err => console.log(err));
+    }
+  });
+});
+
 router.get("/testing", (req, res) =>
   Tactic.aggregate([
     {
@@ -115,43 +153,19 @@ router.get("/testing", (req, res) =>
 // @route   GET api/patterns/createpattern
 // @desc    Create Pattern
 // @access  Private
-router.post("/createpattern", (req, res) => {
-  const { errors, isValid } = validatePatternInput(req.body);
-
-  // Check Validation
-  if (!isValid) {
-    return res.status(400).json(errors);
+router.get(
+  "/:id",
+  //passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Pattern.findById(req.params.id)
+      .then(pattern => {
+        res.json({ pattern });
+      })
+      .catch(err =>
+        res.status(404).json({ patternnotfound: "No pattern found" })
+      );
   }
-
-  Pattern.findOne({ name: req.body.name }).then(pattern => {
-    if (pattern) {
-      errors.name = "Pattern already exists";
-      return res.status(400).json(errors);
-    } else {
-      const newPattern = new Pattern({
-        name: req.body.name,
-        assignedTactics: req.body.assignedTactics,
-        context: req.body.context,
-        summary: req.body.summary,
-        problem: req.body.problem,
-        forcesTactics: req.body.forcesTactics,
-        solution: req.body.solution,
-        structure: req.body.structure,
-        implementation: req.body.implementation,
-        consequences: req.body.consequences,
-        liabilities: req.body.liabilities,
-        relatedPatterns: req.body.relatedPatterns,
-        sources: req.body.sources,
-        knownUser: req.body.knownUser,
-        examples: req.body.examples
-      });
-      newPattern
-        .save()
-        .then(pattern => res.json(pattern))
-        .catch(err => console.log(err));
-    }
-  });
-});
+);
 
 // @route   DELETE api/patterns/:id
 // @desc    Delete pattern

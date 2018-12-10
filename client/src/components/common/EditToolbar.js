@@ -13,6 +13,7 @@ import {
   HelpBlock,
   Checkbox
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { deletePattern, editPattern } from "../../actions/patternActions";
 
 class EditToolbar extends Component {
@@ -98,15 +99,28 @@ class EditToolbar extends Component {
   };
 
   render() {
+    const { pattern } = this.props;
     return (
       <ButtonToolbar className={"glyphicon-button"}>
-        <ButtonGroup>
+        {/*<ButtonGroup>
           <Button onClick={this.handleShowEditModal}>
             <Glyphicon glyph="pencil" />
           </Button>
           <Button onClick={this.handleShowRemoveModal}>
             <Glyphicon glyph="remove" />
           </Button>
+              </ButtonGroup>*/}
+        <ButtonGroup>
+          <Link
+            to={{
+              pathname: "/patterndetail/" + pattern._id + "/editing",
+              state: { pattern }
+            }}
+          >
+            <Button>
+              <Glyphicon glyph="pencil" />
+            </Button>
+          </Link>
         </ButtonGroup>
         <div className="static-modal">
           <Modal

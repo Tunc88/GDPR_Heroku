@@ -45,7 +45,7 @@ class Overview extends Component {
   }
 
   componentWillUnmount() {
-    this.state.mql.removeListener(this.mediaQueryChanged);
+    mql.removeListener(this.mediaQueryChanged);
   }
 
   onSetSidebarOpen(open) {
@@ -90,7 +90,7 @@ class Overview extends Component {
         <Sidebar
           sidebar={
             <div>
-              <h4>Filter</h4>
+              <h4 style={{ textAlign: "center" }}>Filter</h4>
               {strategyContent}
             </div>
           }
@@ -121,9 +121,9 @@ class Overview extends Component {
             <br />
             <br />
             {patternContent}
-            <Col xs={12}>
+            {/*<Col xs={12}>
               <h4>Tactics</h4>
-            </Col>
+        </Col>*/}
             {/*tacticContent*/}
           </Tab>
           <Tab eventKey={2} title="Diagramm View" />

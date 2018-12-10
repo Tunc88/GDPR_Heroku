@@ -3,6 +3,7 @@ export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const PATTERN_LOADING = "PATTERN_LOADING";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const GET_PATTERNS = "GET_PATTERNS";
+export const GET_PATTERN = "GET_PATTERN";
 export const DELETE_PATTERN = "DELETE_PATTERN";
 export const TACTIC_LOADING = "TACTIC_LOADING";
 export const GET_TACTICS = "GET_TACTICS";

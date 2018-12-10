@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Panel, Col, Tabs, Tab, Button, Collapse } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import EditToolbar from "../common/EditToolbar";
 
 class PatternItem extends Component {
@@ -35,7 +36,15 @@ class PatternItem extends Component {
         <Panel>
           <Panel.Heading>
             <div className={"inline-flex"}>
-              <div className={"h4"}>{pattern.name}</div>
+              <Link
+                to={{
+                  pathname: "/patterndetail/" + pattern._id,
+                  state: { pattern }
+                }}
+              >
+                <div className={"h4"}>{pattern.name}</div>
+              </Link>
+
               <EditToolbar pattern={pattern} />
             </div>
 

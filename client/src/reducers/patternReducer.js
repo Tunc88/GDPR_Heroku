@@ -1,6 +1,7 @@
 import {
   PATTERN_LOADING,
   GET_PATTERNS,
+  GET_PATTERN,
   DELETE_PATTERN
 } from "../actions/types";
 
@@ -21,6 +22,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         patterns: action.payload,
+        loading: false
+      };
+    case GET_PATTERN:
+      return {
+        ...state,
+        pattern: action.payload,
         loading: false
       };
     case DELETE_PATTERN:

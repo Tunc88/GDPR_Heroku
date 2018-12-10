@@ -11,22 +11,27 @@ class StrategyItem extends Component {
 
   render() {
     const { strategy, auth } = this.props;
-
     return (
-      <Col xs={4}>
-        <Panel>
+      <Col xs={12}>
+        <Panel id="collapsible-panel-example-2">
           <Panel.Heading>
-            <h5>{strategy.name}</h5>
-            <EditToolbarStrategy strategy={strategy} />
+            <Panel.Title toggle>
+              <h5>{strategy.name}</h5>
+            </Panel.Title>
+            <Panel.Title>
+              <EditToolbarStrategy strategy={strategy} />
+            </Panel.Title>
           </Panel.Heading>
-          <Panel.Body />
-          {strategy.assignedTactics.map(tactic => (
-            <span>
-              <div>{tactic.name}</div>
-              <div>{tactic.description}</div>
-            </span>
-          ))}
-          <Panel.Body />
+          <Panel.Collapse>
+            <Panel.Body>
+              {strategy.assignedTactics.map(tactic => (
+                <span>
+                  <div>{tactic.name}</div>
+                  <div>{tactic.description}</div>
+                </span>
+              ))}
+            </Panel.Body>
+          </Panel.Collapse>
         </Panel>
       </Col>
     );
