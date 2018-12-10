@@ -28,6 +28,7 @@ class CreateProject extends Component {
       assignedTactics: [],
       finished: false,
       assignedDevelopers: [],
+      //nameDeveloper: "",
       developers: [],
 
       errors: {}
@@ -54,6 +55,7 @@ class CreateProject extends Component {
       description: this.state.description,
       assignedTactics: store.getState().project.assignedTactics,
       assignedDevelopers: store.getState().project.assignedDevelopers,
+      //nameDeveloper: store.getState().project.nameDeveloper,
       finished: this.state.finished
     };
 

@@ -22,7 +22,12 @@ const ProjectSchema = new Schema({
   },
 
   assignedDevelopers: {
-    type: [String] /*[mongoose.Schema.Types.ObjectId]*/
+    assignedDevelopers: {
+      type: [String]
+    } /*[mongoose.Schema.Types.ObjectId]*/,
+    nameDeveloper: {
+      type: String
+    }
   },
   user: {
     type: Schema.Types.ObjectId,

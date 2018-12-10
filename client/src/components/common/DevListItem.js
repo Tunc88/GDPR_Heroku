@@ -19,6 +19,7 @@ class DevListItem extends Component {
 
     this.state = {
       assignedDevelopers: []
+      //nameDeveloper: ""
     };
 
     this.onClick = this.onClick.bind(this);
@@ -33,7 +34,11 @@ class DevListItem extends Component {
 
       this.setState(() => {
         this.props.setAssignedDevelopers(newArray);
-        return { assignedDevelopers: newArray, bsStyle: newbsStyle };
+        return {
+          assignedDevelopers: newArray,
+          bsStyle: newbsStyle
+          //nameDeveloper: newArray[0]
+        };
       });
     } else {
       newArray = [this.state.assignedDevelopers];
@@ -72,6 +77,7 @@ DevListItem.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth,
   assignedDevelopers: state.assignedDevelopers
+  //nameDeveloper: state.nameDeveloper
 });
 
 export default connect(

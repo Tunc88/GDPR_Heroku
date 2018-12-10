@@ -45,3 +45,7 @@ img {
 .inline-flex {
   display: inline-flex;
 }
+
+#scroller {
+  color: black;
+}

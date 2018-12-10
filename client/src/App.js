@@ -54,7 +54,10 @@ class App extends Component {
           <div className="App">
             <NavigationBar />
             <Route exact path="/" component={Landing} />
-            <div className="container">
+            <div
+              className="container"
+              style={{ marginBottom: "75px", marginTop: "75px" }}
+            >
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/search" component={Search} />
@@ -73,16 +76,17 @@ class App extends Component {
                   path="/create-pattern"
                   component={CreatePattern}
                 />
-                {/*
+                {
                   <PrivateRoute
                     exact
                     path="/create-project"
                     component={CreateProject}
-                  />
+                  /> /*
                   /* <PrivateRoute
                   path="/create-tactic"
                   component={Createtactic}
-                /> */}
+                /> */
+                }
               </Switch>
             </div>
             <Footer />
