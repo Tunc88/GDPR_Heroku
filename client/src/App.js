@@ -61,28 +61,21 @@ class App extends Component {
               <Route exact path="/overview" component={Overview} />
               <Switch>
                 <PrivateRoute exact path="/PMoverview" component={PMoverview} />
-
                 <PrivateRoute
                   exact
                   path="/DPOoverview"
                   component={DPOoverview}
                 />
-
                 <PrivateRoute
                   exact
                   path="/create-pattern"
                   component={CreatePattern}
                 />
-                {/*
-                  <PrivateRoute
-                    exact
-                    path="/create-project"
-                    component={CreateProject}
-                  />
-                  /* <PrivateRoute
-                  path="/create-tactic"
-                  component={Createtactic}
-                /> */}
+                <PrivateRoute
+                  exact
+                  path="/create-project"
+                  component={CreateProject}
+                />
               </Switch>
             </div>
             <Footer />
