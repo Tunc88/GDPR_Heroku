@@ -63,10 +63,11 @@ export const getPattern = id => dispatch => {
 };
 
 // Delete Pattern
-export const deletePattern = id => dispatch => {
+export const deletePattern = (id, history) => dispatch => {
   console.log(id);
   axios
     .delete(`/api/patterns/${id}`)
+    .then(res => history.push("/overview"))
     .then(res =>
       dispatch({
         type: DELETE_PATTERN,
@@ -88,13 +89,13 @@ export const editPattern = patternData => dispatch => {
     .post("/api/patterns/editpattern", patternData)
     .then(res =>
       dispatch({
-        type: GET_PATTERNS,
+        type: GET_PATTERN,
         payload: res.data
       })
     )
     .catch(err =>
       dispatch({
-        type: GET_PATTERNS,
+        type: GET_PATTERN,
         payload: null
       })
     );

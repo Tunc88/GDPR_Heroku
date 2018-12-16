@@ -45,7 +45,7 @@ class PatternItem extends Component {
                 <div className={"h4"}>{pattern.name}</div>
               </Link>
 
-              <EditToolbar pattern={pattern} />
+              {/*<EditToolbar pattern={pattern} />*/}
             </div>
 
             {/*<div>

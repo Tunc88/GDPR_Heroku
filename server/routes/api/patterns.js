@@ -23,22 +23,22 @@ router.get("/test", (req, res) => res.json({ msg: "Patterns Works" }));
 
 router.get("/", (req, res) =>
   Pattern.aggregate([
-    {
+    /*{
       $lookup: {
         from: "tactics",
         localField: "assignedTactics",
         foreignField: "_id",
         as: "assignedTactics"
       }
-    },
+    },*/
     {
       $lookup: {
         from: "strategies",
-        localField: "assignedTactics._id",
+        localField: "assignedTactics",
         foreignField: "assignedTactics",
         as: "assignedStrategies"
       }
-    },
+    } /*,
     {
       $lookup: {
         from: "patterns",
@@ -46,7 +46,7 @@ router.get("/", (req, res) =>
         foreignField: "assignedTactics._id",
         as: "assignedStrategiescomplete"
       }
-    }
+    }*/
   ])
 
     .exec()

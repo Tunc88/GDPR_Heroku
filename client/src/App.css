@@ -45,3 +45,6 @@ img {
 .inline-flex {
   display: inline-flex;
 }
+.Toolbar {
+  display: inline-flex;
+}

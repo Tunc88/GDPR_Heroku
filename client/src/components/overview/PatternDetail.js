@@ -5,36 +5,42 @@ import classnames from "classnames";
 import { connect } from "react-redux";
 import isEmpty from "../../validation/is-empty";
 
-import { createPattern } from "../../actions/patternActions";
-import { getPattern } from "../../actions/patternActions";
+//import { createPattern } from "../../actions/patternActions";
+import {
+  getPattern,
+  editPattern,
+  createPattern
+} from "../../actions/patternActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
+import EditToolbar from "../common/EditToolbar";
 import { Button, FormGroup, Checkbox } from "react-bootstrap";
+/*GET_PATTERN ohne Funktion*/
 
 class PatternDetail extends Component {
   constructor(props) {
     super(props);
-    this.props.getPattern(this.props.match.params._id),
-      (this.state = {
-        pattern: this.props.pattern,
-        name: "",
-        context: "",
-        summary: "",
-        problem: "",
-        forcesConcerns: "",
-        solution: "",
-        structure: "",
-        implementation: "",
-        consequences: "",
-        liabilities: "",
-        examples: "",
-        relatedPatterns: "",
-        sources: "",
-        knownUses: "",
-        assignedTactics: [],
-        errors: {},
-        editing: this.props.match.params.editing
-      });
+    //this.props.getPattern(this.props.match.params._id),
+    this.state = {
+      pattern: this.props.pattern,
+      name: "",
+      context: "",
+      summary: "",
+      problem: "",
+      forcesConcerns: "",
+      solution: "",
+      structure: "",
+      implementation: "",
+      consequences: "",
+      liabilities: "",
+      examples: "",
+      relatedPatterns: "",
+      sources: "",
+      knownUses: "",
+      assignedTactics: [],
+      errors: {},
+      editing: false
+    };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -86,6 +92,7 @@ class PatternDetail extends Component {
 
       // Set component fields state
       this.setState({
+        id: this.props.match.params._id,
         name: pattern.name,
         context: pattern.context,
         summary: pattern.summary,
@@ -100,14 +107,30 @@ class PatternDetail extends Component {
         relatedPatterns: pattern.relatedPatterns,
         sources: pattern.sources,
         knownUses: pattern.knownUses,
-        assignedTactics: pattern.assignedTactics
+        assignedTactics: pattern.assignedTactics,
+
+        Editname: pattern.name,
+        Editcontext: pattern.context,
+        Editsummary: pattern.summary,
+        Editproblem: pattern.problem,
+        EditforcesConcerns: pattern.forcesConcerns,
+        Editsolution: pattern.solution,
+        Editstructure: pattern.structure,
+        Editimplementation: pattern.implementation,
+        Editconsequences: pattern.consequences,
+        // liabilities: pattern.liabilities,
+        Editexamples: pattern.examples,
+        EditrelatedPatterns: pattern.relatedPatterns,
+        Editsources: pattern.sources,
+        EditknownUses: pattern.knownUses,
+        EditassignedTactics: pattern.assignedTactics
       });
     }
   }
 
   onChange(e) {
-    alert(e.target.name);
-    alert(e.target.value);
+    //alert(e.target.name);
+    //alert(e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -126,7 +149,6 @@ class PatternDetail extends Component {
       implementation: this.state.implementation,
       consequences: this.state.consequences,
       benefits: this.state.benefits,
-      liabilities: this.state.liabilities,
       examples: this.state.examples,
       relatedPatterns: this.state.relatedPatterns,
       sources: this.state.sources,
@@ -135,6 +157,46 @@ class PatternDetail extends Component {
 
     this.props.createPattern(newPattern, this.props.history);
   }
+
+  editPattern = () => {
+    const patternData = {
+      name: this.state.Editname,
+      sources: this.state.Editsources,
+      summary: this.state.Editsummary,
+      context: this.state.Editcontext,
+      problem: this.state.Editproblem,
+      forcesConcerns: this.state.EditforcesConcerns,
+      solution: this.state.Editsolution,
+      structure: this.state.Editstructure,
+      implementation: this.state.Editimplementation,
+      consequences: this.state.Editconsequences,
+      benefits: this.state.Editbenefits,
+      examples: this.state.Editexamples,
+      relatedPatterns: this.state.EditrelatedPatterns,
+      sources: this.state.Editsources,
+      knownUses: this.state.EditknownUser,
+      id: this.state.id
+    };
+    console.log(
+      "function editpattern called in EditToolbar:" +
+        patternData.name +
+        patternData.summary
+    );
+    this.props.editPattern(patternData);
+    this.disableEditing();
+  };
+
+  enableEditing = () => {
+    this.setState({
+      editing: true
+    });
+  };
+
+  disableEditing = () => {
+    this.setState({
+      editing: false
+    });
+  };
 
   onChangeAssignedTactics = id => {
     let insertAssignedTactics = this.state.assignedTactics;
@@ -162,65 +224,66 @@ class PatternDetail extends Component {
   render() {
     const { errors } = this.state;
     const { isAuthenticated } = this.props.auth;
+    const { pattern } = this.props.location.state.pattern;
     return (
       <div>
         {this.state.editing && isAuthenticated ? (
           <form onSubmit={this.onSubmit}>
             <TextField
               label="Name of pattern"
-              name="name"
-              value={this.state.name} // must be changede to name
+              name="Editname"
+              value={this.state.Editname} // must be changede to name
               placeholder="Enter the name of the pattern"
               onChange={this.onChange}
             />
 
             <TextAreaField
               label="Description"
-              name="summary"
-              value={this.state.summary} // must be changed to summary
+              name="Editsummary"
+              value={this.state.Editsummary} // must be changed to summary
               placeholder="Enter Summary"
               onChange={this.onChange}
             />
             <TextAreaField
               label="Context"
-              name="context"
-              value={this.state.context}
+              name="Editcontext"
+              value={this.state.Editcontext}
               placeholder="Enter Context"
               onChange={this.onChange}
             />
 
             <TextAreaField
               label="Problem"
-              name="problem"
-              value={this.state.problem}
+              name="Editproblem"
+              value={this.state.Editproblem}
               placeholder="Enter Problem"
               onChange={this.onChange}
             />
 
             <TextAreaField
               label="Solution"
-              name="solution"
-              value={this.state.solution}
+              name="Editsolution"
+              value={this.state.Editsolution}
               placeholder="Enter Solution"
               onChange={this.onChange}
             />
 
             <TextAreaField
               label="Consequences"
-              name="consequences"
-              value={this.state.consequences}
+              name="Editconsequences"
+              value={this.state.Editconsequences}
               placeholder="Enter Consequences"
               onChange={this.onChange}
             />
 
             <TextAreaField
               label="Examples"
-              name="examples"
-              value={this.state.examples}
+              name="Editexamples"
+              value={this.state.Editexamples}
               placeholder="Enter Examples"
               onChange={this.onChange}
             />
-            <FormGroup>
+            {/*<FormGroup>
               {this.state.assignedTactics.map(tactic => (
                 <Checkbox
                   name="assignedTactics"
@@ -231,19 +294,35 @@ class PatternDetail extends Component {
                   {tactic.name}
                 </Checkbox>
               ))}
-            </FormGroup>
+              </FormGroup>*/}
 
             <Button
               bsStyle="primary"
               style={{ marginBottom: "70px" }}
-              onClick={this.onSubmit}
+              onClick={this.editPattern}
             >
-              Create Pattern
+              Save Changes
+            </Button>
+            <Button
+              bsStyle="primary"
+              style={{ marginBottom: "70px" }}
+              onClick={this.disableEditing}
+            >
+              Dismiss Changes
             </Button>
           </form>
         ) : (
           <div>
             <h3>{this.state.name}</h3>
+            {isAuthenticated ? (
+              <EditToolbar
+                name={this.state.name}
+                _id={this.props.match.params._id}
+                enableEditing={() => this.enableEditing()}
+              />
+            ) : (
+              ""
+            )}
             <h5>Summary</h5>
             <div>{this.state.summary}</div>
             <h5>Context</h5>
@@ -269,5 +348,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createPattern, getPattern }
+  { createPattern, getPattern, editPattern }
 )(withRouter(PatternDetail));

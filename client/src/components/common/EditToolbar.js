@@ -26,11 +26,7 @@ class EditToolbar extends Component {
     this.handleCloseEditModal = this.handleCloseEditModal.bind(this);
 
     this.state = {
-      showRemoveModal: false,
-      showRemoveModal: false,
-      patternName: this.props.pattern.patternName,
-      patternDescription: this.props.pattern.patternDescription,
-      assignedTactics: this.props.pattern.assignedTactics
+      showRemoveModal: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -94,8 +90,8 @@ class EditToolbar extends Component {
   };
 
   deletePattern = id => {
-    console.log("function deletepattern called in EditToolbar");
-    this.props.deletePattern(id);
+    console.log("function deletepattern called in EditToolbar" + id);
+    this.props.deletePattern(id, this.props.history);
   };
 
   render() {
@@ -111,16 +107,12 @@ class EditToolbar extends Component {
           </Button>
               </ButtonGroup>*/}
         <ButtonGroup>
-          <Link
-            to={{
-              pathname: "/patterndetail/" + pattern._id + "/editing",
-              state: { pattern }
-            }}
-          >
-            <Button>
-              <Glyphicon glyph="pencil" />
-            </Button>
-          </Link>
+          <Button onClick={this.props.enableEditing}>
+            <Glyphicon glyph="pencil" />
+          </Button>
+          <Button onClick={this.handleShowRemoveModal}>
+            <Glyphicon glyph="remove" />
+          </Button>
         </ButtonGroup>
         <div className="static-modal">
           <Modal
@@ -129,79 +121,19 @@ class EditToolbar extends Component {
           >
             <Modal.Header closeButton>
               <Modal.Title>
-                Do you want to delete {this.props.pattern.name} ?
+                Do you want to delete {this.props.name} ?
               </Modal.Title>
             </Modal.Header>
 
             <Modal.Footer>
               <Button
                 class="btn-lg btn-info"
-                onClick={() => this.deletePattern(this.props.pattern._id)}
+                onClick={() => this.deletePattern(this.props._id)}
               >
                 Confirm
               </Button>
 
               <Button onClick={this.handleCloseRemoveModal}>Cancel</Button>
-            </Modal.Footer>
-          </Modal>
-
-          <Modal
-            show={this.state.showEditModal}
-            onHide={this.handleCloseEditModal}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Edit {this.props.pattern.name}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <form>
-                <FormGroup>
-                  <ControlLabel>Pattern Name</ControlLabel>
-                  <FormControl
-                    type="text"
-                    name="name"
-                    value={this.state.name}
-                    placeholder="Pattern Name"
-                    onChange={this.onChange}
-                  />
-                  <FormControl.Feedback />
-                </FormGroup>
-                <FormGroup>
-                  <ControlLabel>Pattern Description</ControlLabel>
-                  <FormControl
-                    componentClass="textarea"
-                    type="text"
-                    name="summary"
-                    value={this.state.summary}
-                    placeholder="Pattern Description"
-                    onChange={this.onChange}
-                  />
-                  <FormControl.Feedback />
-                </FormGroup>
-                <FormGroup>
-                  <ControlLabel>Assigned Tactics</ControlLabel>
-                  {this.state.assignedTactics.map(tactic => (
-                    <Checkbox
-                      name="assignedTactics"
-                      inline
-                      checked
-                      value={tactic._id}
-                      /* onChange={() =>
-                        this.onChangeAssignedTactics(tactic._id)
-                      }*/
-                      //onChange={this.onChangeAssignedTactics(tactic._id)}
-                    >
-                      {tactic.tacticName}{" "}
-                    </Checkbox>
-                  ))}
-                </FormGroup>
-              </form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button onClick={() => this.editPattern(this.props.pattern._id)}>
-                Confirm
-              </Button>
-
-              <Button onClick={this.handleCloseEditModal}>Close</Button>
             </Modal.Footer>
           </Modal>
         </div>
@@ -221,5 +153,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { deletePattern, editPattern }
+  { deletePattern }
 )(EditToolbar);
