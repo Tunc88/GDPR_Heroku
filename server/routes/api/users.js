@@ -130,8 +130,8 @@ router.get(
 // @desc    Get all developer
 // @access  Public
 router.get("/developers", (req, res) =>
-  User.find({ role: "Developer" }).then(users => {
-    res.json(users);
+  User.find({ role: "Developer" }).then(user => {
+    res.json(user);
   })
 );
 

@@ -17,11 +17,25 @@ const ProjectSchema = new Schema({
     required: true
   },
 
-  assignedTactics: {
+  assignedTactics: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "strategies" //[mongoose.Schema.Types.ObjectId]
+    }
+  ],
+
+  assignedTactics2: {
     type: [String] //[mongoose.Schema.Types.ObjectId]
   },
 
-  assignedDevelopers: {
+  assignedDevelopers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "users"
+    }
+  ],
+
+  assignedDevelopers2: {
     assignedDevelopers: {
       type: [String]
     } /*[mongoose.Schema.Types.ObjectId]*/,

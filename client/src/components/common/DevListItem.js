@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import { connect } from "react-redux";
 import { setAssignedDevelopers } from "../../actions/projectActions";
 import {
@@ -18,39 +19,53 @@ class DevListItem extends Component {
     super(props, context);
 
     this.state = {
-      assignedDevelopers: []
+      assignedDevelopers: {}
       //nameDeveloper: ""
     };
 
     this.onClick = this.onClick.bind(this);
   }
 
+  // onClick(e) {
+  //   if (!this.state.bsStyle) {
+  //     var newArray = [...this.state.assignedDevelopers];
+  //     newArray.push(e.target.name);
+
+  //     var newbsStyle = "success";
+
+  //     this.setState(() => {
+  //       this.props.setAssignedDevelopers(newArray);
+  //       return {
+  //         assignedDevelopers: newArray,
+  //         bsStyle: newbsStyle
+  //         //nameDeveloper: newArray[0]
+  //       };
+  //     });
+  //   } else {
+  //     newArray = [this.state.assignedDevelopers];
+  //     newArray.pop();
+
+  //     newbsStyle = "";
+
+  //     this.setState(() => {
+  //       this.props.setAssignedDevelopers(newArray);
+  //       return { assignedDevelopers: newArray, bsStyle: newbsStyle };
+  //     });
+  //   }
+  // }
+
   onClick(e) {
-    if (!this.state.bsStyle) {
-      var newArray = [...this.state.assignedDevelopers];
-      newArray.push(e.target.name);
+    var newArray = [];
+    var newbsStyle = "success";
 
-      var newbsStyle = "success";
-
-      this.setState(() => {
-        this.props.setAssignedDevelopers(newArray);
-        return {
-          assignedDevelopers: newArray,
-          bsStyle: newbsStyle
-          //nameDeveloper: newArray[0]
-        };
-      });
-    } else {
-      newArray = [this.state.assignedDevelopers];
-      newArray.pop();
-
-      newbsStyle = "";
-
-      this.setState(() => {
-        this.props.setAssignedDevelopers(newArray);
-        return { assignedDevelopers: newArray, bsStyle: newbsStyle };
-      });
-    }
+    this.setState(() => {
+      this.props.setAssignedDevelopers(this.props.developer);
+      return {
+        assignedDevelopers: this.props.developer,
+        bsStyle: !this.state.bsStyle ? "success" : undefined
+        //nameDeveloper: newArray[0]
+      };
+    });
   }
 
   render() {

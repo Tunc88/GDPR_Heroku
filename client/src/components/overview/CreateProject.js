@@ -50,6 +50,8 @@ class CreateProject extends Component {
   onSubmit(e) {
     e.preventDefault();
 
+    //const { projectId } = this.props;
+
     const newProject = {
       name: this.state.name,
       description: this.state.description,
