@@ -20,13 +20,16 @@ const ProjectSchema = new Schema({
   assignedTactics: [
     {
       type: Schema.Types.ObjectId,
-      ref: "strategies" //[mongoose.Schema.Types.ObjectId]
+      ref: "tactics" //[mongoose.Schema.Types.ObjectId]
     }
   ],
 
-  assignedTactics2: {
-    type: [String] //[mongoose.Schema.Types.ObjectId]
-  },
+  assignedStrategies: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "strategies" //[mongoose.Schema.Types.ObjectId]
+    }
+  ],
 
   assignedDevelopers: [
     {
@@ -35,14 +38,6 @@ const ProjectSchema = new Schema({
     }
   ],
 
-  assignedDevelopers2: {
-    assignedDevelopers: {
-      type: [String]
-    } /*[mongoose.Schema.Types.ObjectId]*/,
-    nameDeveloper: {
-      type: String
-    }
-  },
   user: {
     type: Schema.Types.ObjectId,
     ref: "users"

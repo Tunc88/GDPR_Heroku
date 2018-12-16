@@ -55,9 +55,6 @@ class DevListItem extends Component {
   // }
 
   onClick(e) {
-    var newArray = [];
-    var newbsStyle = "success";
-
     this.setState(() => {
       this.props.setAssignedDevelopers(this.props.developer);
       return {

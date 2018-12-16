@@ -8,15 +8,18 @@ import Spinner from "../common/Spinner";
 import {
   createProject,
   setAssignedDevelopers,
-  setAssignedTactics
+  setAssignedTactics,
+  setAssignedStrategies
 } from "../../actions/projectActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
 import DevListGroupField from "../common/DevListGroupField";
 import TacListGroupField from "../common/TacListGroupField";
+import StrListGroupField from "../common/StrListGroupField";
 import { Button, ListGroup, ListGroupItem, Row, Col } from "react-bootstrap";
 import { getDevelopers } from "../../actions/userActions";
 import { getTactics } from "../../actions/tacticActions";
+import { getStrategies } from "../../actions/strategyActions";
 import store from "../../store";
 
 class CreateProject extends Component {
@@ -25,6 +28,7 @@ class CreateProject extends Component {
     this.state = {
       description: "",
       name: "",
+      assignedStrategies: [],
       assignedTactics: [],
       finished: false,
       assignedDevelopers: [],
@@ -40,7 +44,7 @@ class CreateProject extends Component {
 
   componentDidMount() {
     this.props.getDevelopers();
-    this.props.getTactics();
+    this.props.getStrategies();
   }
 
   onChange(e) {
@@ -55,7 +59,8 @@ class CreateProject extends Component {
     const newProject = {
       name: this.state.name,
       description: this.state.description,
-      assignedTactics: store.getState().project.assignedTactics,
+      assignedTactics: store.getState().project.assignedTactics._id, //fehlerquelle
+      assignedStrategies: store.getState().project.assignedStrategies,
       assignedDevelopers: store.getState().project.assignedDevelopers,
       //nameDeveloper: store.getState().project.nameDeveloper,
       finished: this.state.finished
@@ -67,25 +72,32 @@ class CreateProject extends Component {
   render() {
     const { loading, developers } = this.props;
     const { loading2, tactics } = this.props;
+    const { loading3, strategies } = this.props;
 
     let developerContent;
     let tacticContent;
+    let strategyContent;
 
     if (developers === null || loading) {
       developerContent = <Spinner />;
     } else {
       developerContent = (
-        <DevListGroupField
-          onClick={this.onClickSetState}
-          developers={this.props.developers}
-        />
+        <DevListGroupField developers={this.props.developers} />
       );
     }
 
     if (tactics === null || loading2) {
       tacticContent = <Spinner />;
     } else {
-      tacticContent = <TacListGroupField tactics={this.props.tactics} />;
+      tacticContent = <TacListGroupField tactics={this.props.strategies} />;
+    }
+
+    if (strategies === null || loading3) {
+      strategyContent = <Spinner />;
+    } else {
+      strategyContent = (
+        <StrListGroupField strategies={this.props.strategies} />
+      );
     }
 
     const { errors } = this.state;
@@ -108,11 +120,17 @@ class CreateProject extends Component {
         />
 
         <Row className="show-grid">
-          <Col md={6} mdPush={6}>
-            <h4>Choose your tactics</h4>
+          <Col md={3}>
+            <h4>Choose your strategies</h4>
+            {strategyContent}
+          </Col>
+          <Col md={3}>
+            {" "}
+            <h4>and the according tactics</h4>
             {tacticContent}
           </Col>
-          <Col md={6} mdPull={6}>
+
+          <Col md={6}>
             <h4>Choose your developer</h4>
             {developerContent}
           </Col>
@@ -132,8 +150,10 @@ CreateProject.propTypes = {
   errors: PropTypes.object.isRequired,
   getDevelopers: PropTypes.func.isRequired,
   getTactics: PropTypes.func.isRequired,
+  getStrategies: PropTypes.func.isRequired,
   setAssignedDevelopers: PropTypes.func.isRequired,
-  setAssignedTactics: PropTypes.func.isRequired
+  setAssignedTactics: PropTypes.func.isRequired,
+  setAssignedStrategies: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -141,8 +161,10 @@ const mapStateToProps = state => ({
   errors: state.errors,
   developers: state.user.developers,
   tactics: state.tactic.tactics,
+  strategies: state.strategy.strategies,
   assignedDevelopers: state.project.assignedDevelopers,
-  assignedTactics: state.project.assignedTactics
+  assignedTactics: state.project.assignedTactics,
+  assignedStrategies: state.project.assignedStrategies
 });
 
 export default connect(
@@ -151,7 +173,9 @@ export default connect(
     createProject,
     getDevelopers,
     getTactics,
+    getStrategies,
     setAssignedDevelopers,
-    setAssignedTactics
+    setAssignedTactics,
+    setAssignedStrategies
   }
 )(withRouter(CreateProject));

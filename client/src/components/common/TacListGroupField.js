@@ -9,7 +9,24 @@ class TacListGroupField extends Component {
     //console.log(tactics);
     //return <div />;
 
-    return tactics.map(tactic => (
+    //console.log(tactics);
+
+    function concatTactics() {
+      var tempArray = [];
+
+      tactics.map(strategy =>
+        strategy.assignedTactics.map(
+          tactic => (tempArray = tempArray.concat([tactic]))
+        )
+      );
+
+      return tempArray;
+    }
+
+    // console.log(concatTactics());
+
+    return concatTactics().map(tactic => (
+      //console.log(tactic.assignedTactics),
       <TacListItem key={tactic._id} tactic={tactic} />
     ));
   }

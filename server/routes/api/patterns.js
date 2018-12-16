@@ -130,6 +130,7 @@ router.post("/createpattern", (req, res) => {
     } else {
       const newPattern = new Pattern({
         name: req.body.name,
+        assignedStrategies: req.body.assignedStrategies,
         assignedTactics: req.body.assignedTactics,
         context: req.body.context,
         summary: req.body.summary,

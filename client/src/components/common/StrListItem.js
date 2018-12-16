@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { connect } from "react-redux";
-import { setAssignedTactics } from "../../actions/projectActions";
+import { setAssignedStrategies } from "../../actions/projectActions";
 import {
   Panel,
   Col,
@@ -12,14 +12,14 @@ import {
   Collapse,
   ListGroupItem
 } from "react-bootstrap";
-import EditToolbarTactics from "./EditToolbarTactics";
+import EditToolbarStrategies from "./EditToolbarTactics";
 
-class TacListItem extends Component {
+class StrListItem extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      assignedTactics: {}
+      assignedStrategies: {}
       //nameDeveloper: ""
     };
 
@@ -28,42 +28,42 @@ class TacListItem extends Component {
 
   onClick(e) {
     this.setState(() => {
-      this.props.setAssignedTactics(this.props.tactic);
+      this.props.setAssignedStrategies(this.props.strategy);
       return {
-        assignedTactics: this.props.tactic,
+        assignedStrategies: this.props.strategy,
         bsStyle: !this.state.bsStyle ? "success" : undefined
       };
     });
   }
 
   render() {
-    const { tactic, auth } = this.props;
+    const { strategy, auth } = this.props;
 
     return (
       <ListGroupItem
         onClick={this.onClick}
-        name={tactic.name}
+        name={strategy.name}
         bsStyle={this.state.bsStyle}
       >
-        {tactic.name}
+        {strategy.name}
       </ListGroupItem>
     );
   }
 }
 
-TacListItem.propTypes = {
-  tactic: PropTypes.object.isRequired,
+StrListItem.propTypes = {
+  strategy: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  setAssignedTactics: PropTypes.func.isRequired
+  setAssignedStrategies: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  assignedTactics: state.assignedTactics
+  assignedStrategies: state.assignedStrategies
   //nameDeveloper: state.nameDeveloper
 });
 
 export default connect(
   mapStateToProps,
-  { setAssignedTactics }
-)(TacListItem);
+  { setAssignedStrategies }
+)(StrListItem);

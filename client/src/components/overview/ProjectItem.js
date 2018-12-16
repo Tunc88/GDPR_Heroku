@@ -44,7 +44,7 @@ class ProjectItem extends Component {
       <Col xs={4}>
         <Panel className={panelHeight}>
           <Panel.Heading>
-            <Link to="/project/:id">
+            <Link to={`/project/${project._id}`}>
               <h4>{project.name}</h4>
             </Link>
 

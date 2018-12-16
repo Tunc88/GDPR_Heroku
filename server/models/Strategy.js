@@ -13,6 +13,15 @@ const StrategySchema = new Schema({
   },
   assignedTactics: [
     {
+      type: Schema.Types.ObjectId,
+      ref: "tactics" //[mongoose.Schema.Types.ObjectId]
+    }
+  ],
+  assignedTactics: [
+    {
+      id: {
+        type: String
+      },
       name: {
         type: String
       },

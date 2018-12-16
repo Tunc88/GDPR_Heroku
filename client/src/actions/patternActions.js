@@ -5,7 +5,9 @@ import {
   DELETE_PATTERN,
   PATTERN_LOADING,
   GET_PATTERNS,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  SET_ASSIGNED_TACTICS,
+  SET_ASSIGNED_STRATEGIES
 } from "./types";
 
 // create Pattern
@@ -89,5 +91,21 @@ export const setPatternLoading = () => {
 export const clearErrors = () => {
   return {
     type: CLEAR_ERRORS
+  };
+};
+
+// Set assignedTactics
+export const setAssignedTactics = tactic => {
+  return {
+    type: SET_ASSIGNED_TACTICS,
+    payload: tactic
+  };
+};
+
+// Set assignedStrategy
+export const setAssignedStrategies = strategy => {
+  return {
+    type: SET_ASSIGNED_STRATEGIES,
+    payload: strategy
   };
 };

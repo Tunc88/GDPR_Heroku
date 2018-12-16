@@ -19,6 +19,7 @@ import Overview from "./components/overview/Overview";
 import DPOoverview from "./components/overview/DPOoverview";
 import CreatePattern from "./components/overview/CreatePattern";
 import CreateProject from "./components/overview/CreateProject";
+import DetailProject from "./components/overview/DetailProject";
 //import Createtactic from "./components/overview/Createtactic";
 import { Footer } from "./components/layout/Footer";
 import Search from "./components/layout/Search";
@@ -64,29 +65,32 @@ class App extends Component {
               <Route exact path="/overview" component={Overview} />
               <Switch>
                 <PrivateRoute exact path="/PMoverview" component={PMoverview} />
-
                 <PrivateRoute
                   exact
                   path="/DPOoverview"
                   component={DPOoverview}
                 />
-
                 <PrivateRoute
                   exact
                   path="/create-pattern"
                   component={CreatePattern}
                 />
-                {
-                  <PrivateRoute
-                    exact
-                    path="/create-project"
-                    component={CreateProject}
-                  /> /*
-                  /* <PrivateRoute
+                <PrivateRoute
+                  exact
+                  path="/create-project"
+                  component={CreateProject}
+                />
+                <PrivateRoute
+                  exact
+                  path="/project/:id"
+                  component={DetailProject}
+                />
+                {/* /*{" "}
+                <PrivateRoute
                   path="/create-tactic"
                   component={Createtactic}
-                /> */
-                }
+                />{" "}
+                */}
               </Switch>
             </div>
             <Footer />

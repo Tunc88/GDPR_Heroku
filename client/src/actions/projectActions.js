@@ -7,7 +7,8 @@ import {
   GET_PROJECTS,
   CLEAR_ERRORS,
   SET_ASSIGNED_DEVELOPER,
-  SET_ASSIGNED_TACTICS
+  SET_ASSIGNED_TACTICS,
+  SET_ASSIGNED_STRATEGIES
 } from "./types";
 
 // create Project
@@ -107,5 +108,13 @@ export const setAssignedTactics = tactic => {
   return {
     type: SET_ASSIGNED_TACTICS,
     payload: tactic
+  };
+};
+
+// Set assignedStrategy
+export const setAssignedStrategies = strategy => {
+  return {
+    type: SET_ASSIGNED_STRATEGIES,
+    payload: strategy
   };
 };

@@ -45,11 +45,12 @@ router.post(
       } else {
         const newProject = new Project({
           name: req.body.name,
+          assignedStrategies: req.body.assignedStrategies,
           assignedTactics: req.body.assignedTactics,
           finished: req.body.finished,
           description: req.body.description,
           assignedDevelopers: req.body.assignedDevelopers,
-          user: req.user.id
+          creator: req.user.id
         });
         newProject
           .save()
@@ -116,5 +117,19 @@ router.delete(
       );
   }
 );
+
+// @route   GET api/profile/user/:user_id
+// @desc    Get profile by user ID
+// @access  Public
+
+router.get("/project/:_id", (req, res) => {
+  const errors = {};
+
+  Project.findOne({ project: req.params.project_id })
+    .then(project => {
+      res.json(project);
+    })
+    .catch(err => res.status(404).json({ project: "There is no project" }));
+});
 
 module.exports = router;
