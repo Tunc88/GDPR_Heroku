@@ -15,11 +15,12 @@ import Spinner from "../common/Spinner";
 import "./Overview.css";
 import PatternFeed from "./PatternFeed";
 import { getPatterns } from "../../actions/patternActions";
-import TacticFeed from "./TacticFeed";
+//import TacticFeed from "./TacticFeed";
 import { getTactics } from "../../actions/tacticActions";
 import StrategyFeed from "./StrategyFeed";
 import { getStrategies } from "../../actions/strategyActions";
 import Sidebar from "react-sidebar";
+import { Link } from "react-router-dom";
 
 const mql = window.matchMedia(`(min-width: 800px)`);
 
@@ -73,7 +74,7 @@ class Overview extends Component {
     if (tactics === null || loading2) {
       tacticContent = <Spinner />;
     } else {
-      tacticContent = <TacticFeed tactics={tactics} />;
+      // tacticContent = <TacticFeed tactics={tactics} />;
     }
 
     const { strategies, loading3 } = this.props.strategy;
@@ -113,9 +114,11 @@ class Overview extends Component {
               <span className={"h4"}>
                 Patterns <Badge>{patterns.length}</Badge>
               </span>
-              <Button className={"glyphicon-button"}>
-                <Glyphicon glyph="plus" />
-              </Button>
+              <Link to="/create-pattern">
+                <Button className={"glyphicon-button"}>
+                  <Glyphicon glyph="plus" />
+                </Button>
+              </Link>
             </Col>
             <br />
             <br />

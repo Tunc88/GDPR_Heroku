@@ -15,6 +15,7 @@ import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
 import EditToolbar from "../common/EditToolbar";
 import { Button, FormGroup, Checkbox } from "react-bootstrap";
+
 /*GET_PATTERN ohne Funktion*/
 
 class PatternDetail extends Component {
@@ -183,7 +184,9 @@ class PatternDetail extends Component {
         patternData.summary
     );
     this.props.editPattern(patternData);
-    this.disableEditing();
+    this.setState({
+      editing: false
+    });
   };
 
   enableEditing = () => {
@@ -192,7 +195,7 @@ class PatternDetail extends Component {
     });
   };
 
-  disableEditing = () => {
+  dismissChanges = () => {
     this.setState({
       editing: false
     });
@@ -224,7 +227,7 @@ class PatternDetail extends Component {
   render() {
     const { errors } = this.state;
     const { isAuthenticated } = this.props.auth;
-    const { pattern } = this.props.location.state.pattern;
+    const { pattern } = this.props.pattern;
     return (
       <div>
         {this.state.editing && isAuthenticated ? (
@@ -306,7 +309,7 @@ class PatternDetail extends Component {
             <Button
               bsStyle="primary"
               style={{ marginBottom: "70px" }}
-              onClick={this.disableEditing}
+              onClick={this.dismissChanges}
             >
               Dismiss Changes
             </Button>

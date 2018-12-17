@@ -17,7 +17,7 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Overview from "./components/overview/Overview";
 import OverviewDPO from "./components/overview/OverviewDPO";
-//import CreatePattern from "./components/overview/CreatePattern";
+import CreatePattern from "./components/overview/CreatePattern";
 //import Createtactic from "./components/overview/Createtactic";
 import { Footer } from "./components/layout/Footer";
 import Search from "./components/layout/Search";
@@ -69,17 +69,18 @@ class App extends Component {
                   exact
                   path="/overviewDPO"
                   component={OverviewDPO}
-                />
+                />*/}
                 <PrivateRoute
                   exact
                   path="/create-pattern"
                   component={CreatePattern}
                 />
+                {/*}
                 <PrivateRoute
                   exact
                   path="/create-tactic"
                   component={Createtactic}
-                />*/}
+              />*/}
               </Switch>
             </div>
             <Footer />

@@ -26,7 +26,7 @@ export default function(state = initialState, action) {
       };
     case GET_PATTERN:
       return {
-        // ...state,
+        ...state,
         pattern: action.payload,
         loading: false
       };

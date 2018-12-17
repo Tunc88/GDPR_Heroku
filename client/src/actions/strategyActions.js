@@ -63,7 +63,7 @@ export const deleteStrategy = id => dispatch => {
 export const editStrategy = strategyData => dispatch => {
   console.log(strategyData);
   axios
-    .post("/api/tactics/editstrategy", strategyData)
+    .post("/api/strategies/editstrategy", strategyData)
     .then(res =>
       dispatch({
         type: GET_STRATEGIES,
