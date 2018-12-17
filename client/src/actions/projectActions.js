@@ -5,6 +5,7 @@ import {
   DELETE_PROJECT,
   PROJECT_LOADING,
   GET_PROJECTS,
+  GET_PROJECT,
   CLEAR_ERRORS,
   SET_ASSIGNED_DEVELOPER,
   SET_ASSIGNED_TACTICS,
@@ -38,6 +39,25 @@ export const getProjects = () => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_PROJECTS,
+        payload: null
+      })
+    );
+};
+
+// Get Project
+export const getProject = id => dispatch => {
+  dispatch(setProjectLoading());
+  axios
+    .get(`/api/projects/project/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROJECT,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROJECT,
         payload: null
       })
     );

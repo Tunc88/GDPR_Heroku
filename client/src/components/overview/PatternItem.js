@@ -51,6 +51,7 @@ class PatternItem extends Component {
             <Collapse in={this.state.open}>
               <div>
                 {/*patternDescriptionSecondPart*/}
+                <h4>Context</h4>
                 {pattern.context}
                 {pattern.problem}
                 {pattern.forcesConcerns}

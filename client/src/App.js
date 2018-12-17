@@ -82,6 +82,11 @@ class App extends Component {
                 />
                 <PrivateRoute
                   exact
+                  path="/edit-project"
+                  component={CreateProject}
+                />
+                <PrivateRoute
+                  exact
                   path="/project/:id"
                   component={DetailProject}
                 />

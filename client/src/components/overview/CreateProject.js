@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import classnames from "classnames";
 import { connect } from "react-redux";
 
@@ -139,6 +139,9 @@ class CreateProject extends Component {
         <Button bsStyle="primary" onClick={this.onSubmit}>
           Create Project
         </Button>
+        <Link to="/PMoverview">
+          <Button bsStyle="info">Abort</Button>
+        </Link>
       </form>
     );
   }

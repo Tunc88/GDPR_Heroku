@@ -1,6 +1,7 @@
 import {
   PROJECT_LOADING,
   GET_PROJECTS,
+  GET_PROJECT,
   DELETE_PROJECT,
   SET_ASSIGNED_DEVELOPER,
   SET_ASSIGNED_TACTICS,
@@ -27,6 +28,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         projects: action.payload,
+        loading: false
+      };
+    case GET_PROJECT:
+      return {
+        ...state,
+        project: action.payload,
         loading: false
       };
     case SET_ASSIGNED_DEVELOPER:

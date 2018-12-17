@@ -118,14 +118,14 @@ router.delete(
   }
 );
 
-// @route   GET api/profile/user/:user_id
-// @desc    Get profile by user ID
+// @route   GET api/projects/project/:project_id
+// @desc    Get project by ID
 // @access  Public
 
-router.get("/project/:_id", (req, res) => {
+router.get("/project/:id", (req, res) => {
   const errors = {};
 
-  Project.findOne({ project: req.params.project_id })
+  Project.findById(req.params.id)
     .then(project => {
       res.json(project);
     })
