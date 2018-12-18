@@ -33,8 +33,8 @@ class PatternItem extends Component {
 
     return (
       <Col xs={4}>
-        <Panel>
-          <Panel.Heading>
+        <Panel className={"minHeightPatternPanel"}>
+          <Panel.Heading style={{ textAlign: "center" }}>
             <div className={"inline-flex"}>
               <Link
                 to={{
@@ -54,12 +54,12 @@ class PatternItem extends Component {
               ))}
               </div>*/}
           </Panel.Heading>
-          <Panel.Body>
+          <Panel.Body className={"adjusted-PanelBody"}>
             {/*patternDescriptionFirstPart*/}
             {pattern.summary}
-            <Collapse in={this.state.open}>
+            {/*<Collapse in={this.state.open}>
               <div>
-                {/*patternDescriptionSecondPart*/}
+                patternDescriptionSecondPart
                 {pattern.context}
                 {pattern.problem}
                 {pattern.forcesConcerns}
@@ -73,10 +73,18 @@ class PatternItem extends Component {
                 {pattern.sources}
                 {pattern.knownUses}
               </div>
-            </Collapse>
-            <div className="extendMore" onClick={this.extendMore}>
+            </Collapse>*/}
+            {/*<Link
+              to={{
+                pathname: "/patterndetail/" + pattern._id,
+                state: { pattern }
+              }}
+            >
+              <div className={"h4"}>More...</div>
+            </Link>*/}
+            {/*<div className="extendMore" onClick={this.extendMore}>
               {more}
-            </div>
+              </div>*/}
           </Panel.Body>
         </Panel>
       </Col>

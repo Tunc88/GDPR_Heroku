@@ -19,7 +19,7 @@ class StrategyItem extends Component {
               <h5>{strategy.name}</h5>
             </Panel.Title>
             <Panel.Title>
-              <EditToolbarStrategy strategy={strategy} />
+              {/*<EditToolbarStrategy strategy={strategy} />*/}
             </Panel.Title>
           </Panel.Heading>
           <Panel.Collapse>

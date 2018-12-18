@@ -65,8 +65,10 @@ export const getPattern = id => dispatch => {
 // Delete Pattern
 export const deletePattern = (id, history) => dispatch => {
   console.log(id);
+  //history.push("/overview");
   axios
     .delete(`/api/patterns/${id}`)
+    .then(res => history.push("/overview"))
     //.then(res => history.push("/overview"))
     .then(res =>
       dispatch({

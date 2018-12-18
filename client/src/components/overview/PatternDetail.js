@@ -14,7 +14,7 @@ import {
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
 import EditToolbar from "../common/EditToolbar";
-import { Button, FormGroup, Checkbox } from "react-bootstrap";
+import { Button, FormGroup, Checkbox, Col } from "react-bootstrap";
 
 /*GET_PATTERN ohne Funktion*/
 
@@ -201,6 +201,14 @@ class PatternDetail extends Component {
     });
   };
 
+  isEmpty(patternProperty) {
+    if ((patternProperty = "")) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   onChangeAssignedTactics = id => {
     let insertAssignedTactics = this.state.assignedTactics;
     //onChangeAssignedTactics(id) {
@@ -262,7 +270,13 @@ class PatternDetail extends Component {
               placeholder="Enter Problem"
               onChange={this.onChange}
             />
-
+            <TextAreaField
+              label="Forces and Concerns"
+              name="EditforcesConcerns"
+              value={this.state.EditforcesConcerns}
+              placeholder="Enter Forces and Concerns"
+              onChange={this.onChange}
+            />
             <TextAreaField
               label="Solution"
               name="Editsolution"
@@ -270,7 +284,20 @@ class PatternDetail extends Component {
               placeholder="Enter Solution"
               onChange={this.onChange}
             />
-
+            <TextAreaField
+              label="Structure"
+              name="Editstructure"
+              value={this.state.Editstructure}
+              placeholder="Enter Structure"
+              onChange={this.onChange}
+            />
+            <TextAreaField
+              label="Implementation"
+              name="Editimplementation"
+              value={this.state.Editimplementation}
+              placeholder="Enter Implementation"
+              onChange={this.onChange}
+            />
             <TextAreaField
               label="Consequences"
               name="Editconsequences"
@@ -284,6 +311,30 @@ class PatternDetail extends Component {
               name="Editexamples"
               value={this.state.Editexamples}
               placeholder="Enter Examples"
+              onChange={this.onChange}
+            />
+
+            <TextAreaField
+              label="known Uses"
+              name="EditknownUses"
+              value={this.state.EditknownUses}
+              placeholder="Enter known Uses"
+              onChange={this.onChange}
+            />
+
+            <TextAreaField
+              label="related Patterns"
+              name="EditrelatedPatterns"
+              value={this.state.EditrelatedPatterns}
+              placeholder="Enter related Patterns"
+              onChange={this.onChange}
+            />
+
+            <TextAreaField
+              label="Sources"
+              name="Editsources"
+              value={this.state.Editsources}
+              placeholder="Enter Sources"
               onChange={this.onChange}
             />
             {/*<FormGroup>
@@ -315,21 +366,91 @@ class PatternDetail extends Component {
             </Button>
           </form>
         ) : (
-          <div>
-            <h3>{this.state.name}</h3>
+          <div style={{ marginBottom: "70px" }}>
             {isAuthenticated ? (
-              <EditToolbar
-                name={this.state.name}
-                _id={this.props.match.params._id}
-                enableEditing={() => this.enableEditing()}
-              />
+              <Col xs={12}>
+                <Col xs={6}>
+                  <h3>{this.state.name}</h3>
+                </Col>
+                <Col xs={6}>
+                  <EditToolbar
+                    name={this.state.name}
+                    _id={this.props.match.params._id}
+                    enableEditing={() => this.enableEditing()}
+                  />
+                </Col>
+              </Col>
             ) : (
-              ""
+              <h3>{this.state.name}</h3>
             )}
+
             <h5>Summary</h5>
             <div>{this.state.summary}</div>
             <h5>Context</h5>
             <div>{this.state.context}</div>
+            <h5>Problem</h5>
+            <div>{this.state.problem}</div>
+            {!isEmpty(this.state.forcesConcerns) ? (
+              <span>
+                <h5>forces Concerns</h5>
+                <div>{this.state.forcesConcerns}</div>
+              </span>
+            ) : (
+              ""
+            )}
+            <h5>Solution</h5>
+            <div>{this.state.solution}</div>
+            {!isEmpty(this.state.structure) ? (
+              <span>
+                <h5>Structure</h5>
+                <div>{this.state.structure}</div>
+              </span>
+            ) : (
+              ""
+            )}
+            {!isEmpty(this.state.implementation) ? (
+              <span>
+                <h5>Implementation</h5>
+                <div>{this.state.implementation}</div>
+              </span>
+            ) : (
+              ""
+            )}
+            {!isEmpty(this.state.consequences) ? (
+              <span>
+                <h5>Consequences</h5>
+                <div>{this.state.consequences}</div>
+              </span>
+            ) : (
+              ""
+            )}
+            <h5>Examples</h5>
+            <div>{this.state.examples}</div>
+            {!isEmpty(this.state.knownUses) ? (
+              <span>
+                <h5>Known Uses</h5>
+                <div>{this.state.knownUses}</div>
+              </span>
+            ) : (
+              ""
+            )}
+            {!isEmpty(this.state.relatedPatterns) ? (
+              <span>
+                <h5>related Patterns</h5>
+                <div>{this.state.relatedPatterns}</div>
+              </span>
+            ) : (
+              ""
+            )}
+
+            {!isEmpty(this.state.sources) ? (
+              <span>
+                <h5>Sources</h5>
+                <div>{this.state.sources}</div>
+              </span>
+            ) : (
+              ""
+            )}
           </div>
         )}
       </div>

@@ -22,6 +22,7 @@ import CreatePattern from "./components/overview/CreatePattern";
 import { Footer } from "./components/layout/Footer";
 import Search from "./components/layout/Search";
 import PMoverview from "./components/layout/PMoverview";
+import StrategyOverview from "./components/overview/StrategyOverview";
 
 import "./App.css";
 import PatternDetail from "./components/overview/PatternDetail";
@@ -59,6 +60,11 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/search" component={Search} />
               <Route exact path="/overview" component={Overview} />
+              <Route
+                exact
+                path="/strategyoverview"
+                component={StrategyOverview}
+              />
               <Route
                 path="/patterndetail/:_id?/:editing?"
                 component={PatternDetail}

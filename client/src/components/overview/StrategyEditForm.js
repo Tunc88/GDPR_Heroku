@@ -10,23 +10,20 @@ import {
   FormGroup,
   ControlLabel,
   FormControl,
-  HelpBlock
+  HelpBlock,
+  Panel,
+  Col
 } from "react-bootstrap";
 import { deleteStrategy, editStrategy } from "../../actions/strategyActions";
-import TacticItem from "../overview/TacticItem";
+//import TacticItem from "../overview/TacticItem";
+//import StrategyEditForm from "../overview/StrategyEditForm";
 
-class EditToolbarStrategy extends Component {
+class StrategyEditForm extends Component {
   constructor(props, context) {
     super(props, context);
-    this.handleShowRemoveModal = this.handleShowRemoveModal.bind(this);
-    this.handleCloseRemoveModal = this.handleCloseRemoveModal.bind(this);
-
-    this.handleShowEditModal = this.handleShowEditModal.bind(this);
-    this.handleCloseEditModal = this.handleCloseEditModal.bind(this);
 
     this.state = {
-      showRemoveModal: false,
-      showRemoveModal: false,
+      //editing: false,
       name: this.props.strategy.name,
       description: this.props.strategy.description,
       assignedTactics: this.props.strategy.assignedTactics
@@ -36,19 +33,7 @@ class EditToolbarStrategy extends Component {
     this.onChangeAssignmentArray = this.onChangeAssignmentArray.bind(this);
     this.onChangeArray = this.onChangeArray.bind(this);
     this.onChangeAssignedTactics = this.onChangeAssignedTactics.bind(this);
-    //this.state.assignedTactics = this.state.assignedTactics.bind(this);
-    //this.onSubmit = this.onSubmit.bind(this);
   }
-  /*onSubmit(e) {
-    e.preventDefault();
-
-    const patternData = {
-      patternName: this.state.patternName,
-      patternDescription: this.state.patternDescription
-    };
-
-    this.props.editPattern(patternData);
-  }*/
 
   onChange(e) {
     //alert(e.target.name);
@@ -72,28 +57,6 @@ class EditToolbarStrategy extends Component {
     alert(e.target.value);
     this.setState({ [e.target.name[index]]: e.target.value });
   }
-  /*onDelete(id) {
-    this.props.onDelete(id);
-  }*/
-  handleCloseRemoveModal() {
-    this.setState({ showRemoveModal: false });
-  }
-
-  handleShowRemoveModal() {
-    this.setState({ showRemoveModal: true });
-  }
-  handleCloseEditModal() {
-    this.setState({ showEditModal: false });
-  }
-
-  handleShowEditModal() {
-    this.setState({
-      name: this.props.strategy.name,
-      description: this.props.strategy.description,
-      assignedTactics: this.props.strategy.assignedTactics,
-      showEditModal: true
-    });
-  }
 
   editStrategy = () => {
     const strategyData = {
@@ -108,13 +71,7 @@ class EditToolbarStrategy extends Component {
         strategyData.description
     );
     this.props.editStrategy(strategyData);
-    this.handleCloseEditModal();
-  };
-
-  deleteStrategy = id => {
-    console.log("function deletestrategy called in EditToolbar");
-    this.props.deleteStrategy(id, this.props.history);
-    //this.props.history.push("/overview");
+    this.props.disableEditing();
   };
 
   removeTacticFromArray = index => {
@@ -158,49 +115,12 @@ class EditToolbarStrategy extends Component {
     //alert("render");
     const tactics = this.state.assignedTactics;
     return (
-      <ButtonToolbar>
-        <ButtonGroup>
-          <Button onClick={this.handleShowEditModal}>
-            <Glyphicon glyph="pencil" />
-          </Button>
-          <Button onClick={this.handleShowRemoveModal}>
-            <Glyphicon glyph="remove" />
-          </Button>
-        </ButtonGroup>
-        <div className="static-modal">
-          <Modal
-            show={this.state.showRemoveModal}
-            onHide={this.handleCloseRemoveModal}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>
-                Do you want to delete {this.props.strategy.name} ?
-              </Modal.Title>
-            </Modal.Header>
-
-            <Modal.Footer>
-              <Button
-                class="btn-lg btn-info"
-                onClick={() => this.deleteStrategy(this.props.strategy._id)}
-              >
-                Confirm
-              </Button>
-
-              <Button onClick={this.handleCloseRemoveModal}>Cancel</Button>
-            </Modal.Footer>
-          </Modal>
-
-          <Modal
-            show={this.state.showEditModal}
-            onHide={this.handleCloseEditModal}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Edit {this.props.strategy.name}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <form>
+      <Col xs={3}>
+        <Panel className={"minHeightStrategy"}>
+          <form>
+            <Panel.Heading>
+              <Panel.Title>
                 <FormGroup>
-                  <ControlLabel>Strategy Name</ControlLabel>
                   <FormControl
                     type="text"
                     name="name"
@@ -210,26 +130,39 @@ class EditToolbarStrategy extends Component {
                   />
                   <FormControl.Feedback />
                 </FormGroup>
-                <FormGroup>
-                  <ControlLabel>Strategy Description</ControlLabel>
-                  <FormControl
-                    componentClass="textarea"
-                    type="text"
-                    name="description"
-                    value={this.state.description}
-                    placeholder="Strategy Description"
-                    onChange={this.onChange}
-                  />
-                  <FormControl.Feedback />
-                </FormGroup>
-                <FormGroup>
+              </Panel.Title>
+            </Panel.Heading>
+            <Panel.Body>
+              <FormGroup>
+                <ControlLabel>Strategy Description</ControlLabel>
+                <FormControl
+                  componentClass="textarea"
+                  type="text"
+                  name="description"
+                  value={this.state.description}
+                  placeholder="Strategy Description"
+                  onChange={this.onChange}
+                />
+                <FormControl.Feedback />
+              </FormGroup>
+              <FormGroup>
+                <Col xs={9}>
                   <ControlLabel>Assigned Tactics</ControlLabel>
-                  <Button onClick={() => this.newTacticField()}>
+                </Col>
+                <Col xs={3}>
+                  <Button
+                    onClick={() => this.newTacticField()}
+                    //style={{ marginLeft: "70px" }}
+                  >
                     <Glyphicon glyph="plus" />
                   </Button>
-
-                  {this.state.assignedTactics.map((tactic, index) => (
-                    <span>
+                </Col>
+                <br />
+                <br />
+                <br />
+                {this.state.assignedTactics.map((tactic, index) => (
+                  <div>
+                    <Col xs={9}>
                       <FormControl
                         type="text"
                         name={index}
@@ -241,32 +174,32 @@ class EditToolbarStrategy extends Component {
                         }*/
                         // onChange={this.onChangeArray(index)}
                       />
-
+                    </Col>
+                    <Col xs={3}>
                       <Button onClick={() => this.removeTacticFromArray(index)}>
                         <Glyphicon glyph="remove" />
                       </Button>
-                    </span>
-                  ))}
-                </FormGroup>
-              </form>
-            </Modal.Body>
-            <Modal.Footer>
+                    </Col>
+                  </div>
+                ))}
+              </FormGroup>
+            </Panel.Body>
+            <Panel.Footer>
               <Button
                 onClick={() => this.editStrategy(this.props.strategy._id)}
+                //style={{ marginBottom: "100px" }}
               >
-                Confirm
+                Confirm Changes
               </Button>
-
-              <Button onClick={this.handleCloseEditModal}>Close</Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </ButtonToolbar>
+            </Panel.Footer>
+          </form>
+        </Panel>
+      </Col>
     );
   }
 }
 
-EditToolbarStrategy.propTypes = {
+StrategyEditForm.propTypes = {
   deleteStrategy: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -277,5 +210,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { deleteStrategy, editStrategy }
-)(EditToolbarStrategy);
+  { editStrategy }
+)(StrategyEditForm);

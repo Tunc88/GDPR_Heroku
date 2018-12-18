@@ -9,9 +9,11 @@ import {
   Button,
   Glyphicon,
   InputGroup,
-  Badge
+  Badge,
+  Image
 } from "react-bootstrap";
 import Spinner from "../common/Spinner";
+import SankeyDiagram from "../../img/background.jpeg";
 import "./Overview.css";
 import PatternFeed from "./PatternFeed";
 import { getPatterns } from "../../actions/patternActions";
@@ -29,10 +31,12 @@ class Overview extends Component {
     super(props);
     this.state = {
       sidebarOpen: false,
-      sidebarDocked: mql.matches
+      sidebarDocked: mql.matches,
+      displaySidebar: "block"
     };
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+    this.hideFilterbar = this.hideFilterbar.bind(this);
   }
 
   componentWillMount() {
@@ -55,6 +59,34 @@ class Overview extends Component {
 
   mediaQueryChanged() {
     this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
+  }
+
+  hideFilterbar = () => {
+    //alert((document.getElementById("Filterbar").innerHTML = "hallo"));
+    //document.getElementById("Filterbar").style.display = "none";
+    alert("hallo");
+    this.setState({
+      displaySidebar: "none"
+    });
+  };
+
+  hideFilterbar() {
+    //preventDefault();
+    //alert((document.getElementById("Filterbar").innerHTML = "hallo"));
+    //document.getElementById("Filterbar").style.display = "none";
+    alert("hallo");
+    this.setState({
+      displaySidebar: "none"
+    });
+  }
+
+  onSelect() {
+    //alert((document.getElementById("Filterbar").innerHTML = "hallo"));
+    //document.getElementById("Filterbar").style.display = "none";
+    alert("hallo");
+    this.setState({
+      displaySidebar: "none"
+    });
   }
 
   render() {
@@ -89,6 +121,7 @@ class Overview extends Component {
     return (
       <div>
         <Sidebar
+          sidebarId="Filterbar"
           sidebar={
             <div>
               <h4 style={{ textAlign: "center" }}>Filter</h4>
@@ -103,11 +136,16 @@ class Overview extends Component {
             sidebar: {
               background: "white",
               position: "fixed",
-              marginTop: "52px"
+              marginTop: "52px",
+              display: this.state.displaySidebar
             }
           }}
         />
-        <Tabs defaultActiveKey={1} id="Select-View">
+        <Tabs
+          defaultActiveKey={1}
+          id="Select-View"
+          onSelect={this.handleSelect}
+        >
           <Tab eventKey={1} title="Grid View">
             <br />
             <Col xs={12}>
@@ -119,6 +157,9 @@ class Overview extends Component {
                   <Glyphicon glyph="plus" />
                 </Button>
               </Link>
+              <Link to="/strategyoverview" style={{ marginLeft: "450px" }}>
+                Manage Strategies and Tactics...
+              </Link>
             </Col>
             <br />
             <br />
@@ -129,7 +170,18 @@ class Overview extends Component {
         </Col>*/}
             {/*tacticContent*/}
           </Tab>
-          <Tab eventKey={2} title="Diagramm View" />
+
+          <Tab
+            //onSelect={this.hideFilterbar}
+            eventKey={2}
+            title="Diagramm View"
+            // onClick={() => this.hideFilterbar()}
+            //   onClick={this.hideFilterbar}
+          >
+            <br />
+
+            <Image src={SankeyDiagram} responsive />
+          </Tab>
         </Tabs>
       </div>
     );

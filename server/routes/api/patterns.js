@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const mongoose = require("mongoose");
 
 // Load Input Validation
 const validatePatternInput = require("../../validation/createPattern");
@@ -24,6 +25,124 @@ router.get("/test", (req, res) => res.json({ msg: "Patterns Works" }));
 router.get("/", (req, res) =>
   Pattern.aggregate([
     /*{
+      $match: {
+        _id: mongoose.Types.ObjectId("5c053cd672c1ae69c48b76d3")
+      }
+    },*/
+    {
+      $lookup: {
+        from: "strategies",
+        localField: "assignedTactics",
+        foreignField: "assignedTactics._id",
+        as: "assignedStrategiesWithAllTactics"
+      }
+
+      /*,
+      $lookup: {
+        from: "strategies",
+        localField: "assignedTactics._id",
+        foreignField: "assignedTactics",
+        as: "assignedStrategies"
+      }*/
+    }
+  ])
+
+    .exec()
+    .then(patterns => {
+      patterns.forEach(function(pattern) {
+        pattern.assignedTactics.forEach(function(
+          assignedTactic,
+          assignedTacticIndex
+        ) {
+          pattern.assignedTactics[
+            assignedTacticIndex
+          ] = assignedTactic.toString();
+        });
+        pattern.assignedStrategiesWithAllTactics.forEach(function(
+          assignedStrategy
+        ) {
+          var NewAssignedTactics = [];
+          assignedStrategy.assignedTactics.forEach(function(
+            tactic,
+            tacticIndex
+          ) {
+            // if (pattern.assignedTactics.includes(tactic._id)) {
+            // console.log(typeof tactic._id);
+            // console.log(typeof pattern.assignedTactics[0]);
+            // console.log(pattern.assignedTactics[0].toString());
+            // console.log(pattern.assignedTactics.includes(tactic._id));
+            //tactic._id.toString();
+            /* pattern.assignedTactics.forEach(function(
+              assignedTactic,
+              assignedTacticIndex
+            ) {
+              pattern.assignedTactics[
+                assignedTacticIndex
+              ] = assignedTactic.toString();
+            });*/
+
+            //  console.log(typeof pattern.assignedTactics[0]);
+            if (pattern.assignedTactics.includes(tactic._id.toString())) {
+              console.log("true");
+              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              NewAssignedTactics.push(
+                assignedStrategy.assignedTactics[tacticIndex]
+              );
+            } else {
+              console.log("false");
+              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+
+              // assignedStrategy.assignedTactics.splice(tacticIndex, 1);
+              // NewAssignedTactics.push(
+              // assignedStrategy.assignedTactics[tacticIndex]
+              //);
+              console.log(NewAssignedTactics);
+            }
+
+            // }
+          });
+          assignedStrategy.assignedTactics = NewAssignedTactics;
+          //console.log(assignedStrategy);
+
+          console.log(assignedStrategy);
+        });
+      });
+
+      //console.log(patterns[].assignedStrategiesWithAllTactics[]._id);
+      //console.log(patterns[].assignedTactics[]._id);
+      //console.log(patterns[].assignedTactics[]._id);
+      // patterns.forEach(function(pattern) {
+      // pattern.assignedTactics.forEach(function(tactic) {
+      //console.log(tactic._id);
+      //  });
+      //console.log(pattern.assignedTactics);
+      //  });
+      if (!patterns)
+        return res.status(404).json({
+          error: "Not Found",
+          message: `Patterns not found`
+        });
+      res.status(200).json(patterns);
+    })
+    .catch(error =>
+      res.status(500).json({
+        error: "Internal Server Error",
+        message: error.message
+      })
+    )
+);
+
+router.get("/old", (req, res) =>
+  Pattern.aggregate([
+    {
+      $lookup: {
+        from: "strategies",
+        localField: "assignedStrategies._id",
+        foreignField: "assignedStrategies",
+        as: "assignedStrategies2"
+      }
+    }
+    /*{
       $lookup: {
         from: "tactics",
         localField: "assignedTactics",
@@ -31,6 +150,7 @@ router.get("/", (req, res) =>
         as: "assignedTactics"
       }
     },*/
+    /*
     {
       $lookup: {
         from: "strategies",
@@ -38,7 +158,8 @@ router.get("/", (req, res) =>
         foreignField: "assignedTactics",
         as: "assignedStrategies"
       }
-    } /*,
+    }*/
+    /*,
     {
       $lookup: {
         from: "patterns",
@@ -112,13 +233,18 @@ router.get("/", (req, res) => {
 });
 
 router.get("/testing", (req, res) =>
-  Tactic.aggregate([
+  Pattern.aggregate([
+    /*{
+      $match: {
+        _id: mongoose.Types.ObjectId("5c053cd672c1ae69c48b76d3")
+      }
+    },*/
     {
       $lookup: {
         from: "strategies",
-        localField: "_id",
-        foreignField: "assignedTactics",
-        as: "assignedTactics2"
+        localField: "assignedTactics",
+        foreignField: "assignedTactics._id",
+        as: "assignedStrategiesWithAllTactics"
       }
 
       /*,
@@ -133,8 +259,74 @@ router.get("/testing", (req, res) =>
 
     .exec()
     .then(patterns => {
-      //console.log(patterns[].assignedTactics[]._id);
+      patterns.forEach(function(pattern) {
+        pattern.assignedTactics.forEach(function(
+          assignedTactic,
+          assignedTacticIndex
+        ) {
+          pattern.assignedTactics[
+            assignedTacticIndex
+          ] = assignedTactic.toString();
+        });
+        pattern.assignedStrategiesWithAllTactics.forEach(function(
+          assignedStrategy
+        ) {
+          var NewAssignedTactics = [];
+          assignedStrategy.assignedTactics.forEach(function(
+            tactic,
+            tacticIndex
+          ) {
+            // if (pattern.assignedTactics.includes(tactic._id)) {
+            // console.log(typeof tactic._id);
+            // console.log(typeof pattern.assignedTactics[0]);
+            // console.log(pattern.assignedTactics[0].toString());
+            // console.log(pattern.assignedTactics.includes(tactic._id));
+            //tactic._id.toString();
+            /* pattern.assignedTactics.forEach(function(
+              assignedTactic,
+              assignedTacticIndex
+            ) {
+              pattern.assignedTactics[
+                assignedTacticIndex
+              ] = assignedTactic.toString();
+            });*/
 
+            //  console.log(typeof pattern.assignedTactics[0]);
+            if (pattern.assignedTactics.includes(tactic._id.toString())) {
+              console.log("true");
+              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              NewAssignedTactics.push(
+                assignedStrategy.assignedTactics[tacticIndex]
+              );
+            } else {
+              console.log("false");
+              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+
+              // assignedStrategy.assignedTactics.splice(tacticIndex, 1);
+              // NewAssignedTactics.push(
+              // assignedStrategy.assignedTactics[tacticIndex]
+              //);
+              console.log(NewAssignedTactics);
+            }
+
+            // }
+          });
+          assignedStrategy.assignedTactics = NewAssignedTactics;
+          //console.log(assignedStrategy);
+
+          console.log(assignedStrategy);
+        });
+      });
+
+      //console.log(patterns[].assignedStrategiesWithAllTactics[]._id);
+      //console.log(patterns[].assignedTactics[]._id);
+      //console.log(patterns[].assignedTactics[]._id);
+      // patterns.forEach(function(pattern) {
+      // pattern.assignedTactics.forEach(function(tactic) {
+      //console.log(tactic._id);
+      //  });
+      //console.log(pattern.assignedTactics);
+      //  });
       if (!patterns)
         return res.status(404).json({
           error: "Not Found",

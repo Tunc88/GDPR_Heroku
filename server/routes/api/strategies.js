@@ -87,14 +87,22 @@ router.post(
     // Get fields
     const strategyFields = {};
     strategyFields.id = req.body.id;
-    console.log("id:");
-    console.log(strategyFields);
+    //console.log("id:");
+    //console.log(strategyFields);
     if (req.body.name) strategyFields.name = req.body.name;
-    console.log(strategyFields);
+    //console.log(strategyFields);
     if (req.body.description) strategyFields.description = req.body.description;
     console.log(strategyFields);
     if (req.body.assignedTactics)
       strategyFields.assignedTactics = req.body.assignedTactics;
+    /* strategyFields.assignedTactics.forEach(tactic => {
+      if (tactic.hasOwnProperty("id")) {
+        console.log(tactic);
+      } else {
+        console.log(tactic);
+        tactic.id = ObjectId();
+      }
+    });*/
     console.log("fields:");
     console.log(strategyFields);
 
