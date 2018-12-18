@@ -95,7 +95,7 @@ router.post("/login", (req, res) => {
         jwt.sign(
           payload,
           keys.secretOrKey,
-          { expiresIn: 3600 },
+          { expiresIn: 100000 /** 3600 */ },
           (err, token) => {
             res.json({
               success: true,
@@ -125,5 +125,28 @@ router.get(
     });
   }
 );
+
+// @route   GET api/users/developers
+// @desc    Get all developer
+// @access  Public
+router.get("/developers", (req, res) =>
+  User.find({ role: "Developer" }).then(user => {
+    res.json(user);
+  })
+);
+
+// @route   GET api/projects/project/:project_id
+// @desc    Get project by ID
+// @access  Public
+
+router.get("/user/:id", (req, res) => {
+  const errors = {};
+
+  User.findById(req.params.id)
+    .then(user => {
+      res.json({ name: user.name, id: user._id });
+    })
+    .catch(err => res.status(404).json({ msg: "Not found" }));
+});
 
 module.exports = router;

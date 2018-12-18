@@ -16,8 +16,11 @@ import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Overview from "./components/overview/Overview";
-import OverviewDPO from "./components/overview/OverviewDPO";
+import DPOoverview from "./components/overview/DPOoverview";
 import CreatePattern from "./components/overview/CreatePattern";
+import CreateProject from "./components/overview/CreateProject";
+import EditProject from "./components/overview/EditProject";
+import DetailProject from "./components/overview/DetailProject";
 //import Createtactic from "./components/overview/Createtactic";
 import { Footer } from "./components/layout/Footer";
 import Search from "./components/layout/Search";
@@ -55,7 +58,10 @@ class App extends Component {
           <div className="App">
             <NavigationBar />
             <Route exact path="/" component={Landing} />
-            <div className="container">
+            <div
+              className="container"
+              style={{ marginBottom: "75px", marginTop: "75px" }}
+            >
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/search" component={Search} />
@@ -71,19 +77,34 @@ class App extends Component {
               />
               <Switch>
                 <PrivateRoute exact path="/PMoverview" component={PMoverview} />
-                {/*<PrivateRoute
+                <PrivateRoute
                   exact
-                  path="/overviewDPO"
-                  component={OverviewDPO}
-                />*/}
+                  path="/DPOoverview"
+                  component={DPOoverview}
+                />
                 <PrivateRoute
                   exact
                   path="/create-pattern"
                   component={CreatePattern}
                 />
-                {/*}
+
                 <PrivateRoute
                   exact
+                  path="/create-project"
+                  component={CreateProject}
+                />
+                <PrivateRoute
+                  exact
+                  path="/project/edit-project/:id"
+                  component={EditProject}
+                />
+                <PrivateRoute
+                  exact
+                  path="/project/:id"
+                  component={DetailProject}
+                />
+                {/*{" "}
+                <PrivateRoute
                   path="/create-tactic"
                   component={Createtactic}
               />*/}

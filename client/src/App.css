@@ -60,3 +60,6 @@ img {
 .minHeightStrategyPanel-Heading {
   min-height: 35px !important;
 }
+#scroller {
+  color: black;
+}
