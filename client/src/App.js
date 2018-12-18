@@ -19,6 +19,7 @@ import Overview from "./components/overview/Overview";
 import DPOoverview from "./components/overview/DPOoverview";
 import CreatePattern from "./components/overview/CreatePattern";
 import CreateProject from "./components/overview/CreateProject";
+import EditProject from "./components/overview/EditProject";
 import DetailProject from "./components/overview/DetailProject";
 //import Createtactic from "./components/overview/Createtactic";
 import { Footer } from "./components/layout/Footer";
@@ -82,8 +83,8 @@ class App extends Component {
                 />
                 <PrivateRoute
                   exact
-                  path="/edit-project"
-                  component={CreateProject}
+                  path="/project/edit-project/:id"
+                  component={EditProject}
                 />
                 <PrivateRoute
                   exact

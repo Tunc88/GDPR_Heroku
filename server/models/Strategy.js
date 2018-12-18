@@ -11,17 +11,9 @@ const StrategySchema = new Schema({
     type: String
     // required: true
   },
+
   assignedTactics: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "tactics" //[mongoose.Schema.Types.ObjectId]
-    }
-  ],
-  assignedTactics: [
-    {
-      id: {
-        type: String
-      },
       name: {
         type: String
       },

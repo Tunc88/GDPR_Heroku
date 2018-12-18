@@ -52,17 +52,16 @@ const PatternSchema = new Schema({
     type: String
   },
 
-  assignedTactics: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "strategies" //[mongoose.Schema.Types.ObjectId]
-    }
-  ],
-
   assignedStrategies: [
     {
       type: Schema.Types.ObjectId,
-      ref: "strategies" //[mongoose.Schema.Types.ObjectId]
+      ref: "strategies", //[mongoose.Schema.Types.ObjectId]
+      assignedTactics: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "strategies.assignedTactics" //[mongoose.Schema.Types.ObjectId]
+        }
+      ]
     }
   ]
 });

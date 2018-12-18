@@ -135,4 +135,18 @@ router.get("/developers", (req, res) =>
   })
 );
 
+// @route   GET api/projects/project/:project_id
+// @desc    Get project by ID
+// @access  Public
+
+router.get("/user/:id", (req, res) => {
+  const errors = {};
+
+  User.findById(req.params.id)
+    .then(user => {
+      res.json({ name: user.name, id: user._id });
+    })
+    .catch(err => res.status(404).json({ msg: "Not found" }));
+});
+
 module.exports = router;

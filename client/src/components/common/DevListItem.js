@@ -20,39 +20,10 @@ class DevListItem extends Component {
 
     this.state = {
       assignedDevelopers: {}
-      //nameDeveloper: ""
     };
 
     this.onClick = this.onClick.bind(this);
   }
-
-  // onClick(e) {
-  //   if (!this.state.bsStyle) {
-  //     var newArray = [...this.state.assignedDevelopers];
-  //     newArray.push(e.target.name);
-
-  //     var newbsStyle = "success";
-
-  //     this.setState(() => {
-  //       this.props.setAssignedDevelopers(newArray);
-  //       return {
-  //         assignedDevelopers: newArray,
-  //         bsStyle: newbsStyle
-  //         //nameDeveloper: newArray[0]
-  //       };
-  //     });
-  //   } else {
-  //     newArray = [this.state.assignedDevelopers];
-  //     newArray.pop();
-
-  //     newbsStyle = "";
-
-  //     this.setState(() => {
-  //       this.props.setAssignedDevelopers(newArray);
-  //       return { assignedDevelopers: newArray, bsStyle: newbsStyle };
-  //     });
-  //   }
-  // }
 
   onClick(e) {
     this.setState(() => {

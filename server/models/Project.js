@@ -30,6 +30,18 @@ const ProjectSchema = new Schema({
       ref: "strategies" //[mongoose.Schema.Types.ObjectId]
     }
   ],
+  assignedStrategiesTest: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "strategies", //[mongoose.Schema.Types.ObjectId]
+      assignedTactics: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "strategies.assignedTactics" //[mongoose.Schema.Types.ObjectId]
+        }
+      ]
+    }
+  ],
 
   assignedDevelopers: [
     {

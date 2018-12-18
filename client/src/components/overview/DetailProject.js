@@ -8,7 +8,7 @@ import StrListGroupField from "../common/StrListGroupField";
 import TacListGroupField from "../common/TacListGroupField";
 import PropTypes from "prop-types";
 
-import {} from "../../actions/projectActions";
+import { matchDev } from "../../actions/projectActions";
 
 import Spinner from "../common/Spinner";
 
@@ -17,19 +17,14 @@ class DetailProject extends Component {
     super();
     this.state = {
       project: {},
+      assignedDevelopers: [],
 
       errors: {}
     };
-
-    this.listItems = this.listItems.bind(this);
   }
 
   componentDidMount() {
     this.props.getProject(this.props.match.params.id);
-  }
-
-  listItems(arr) {
-    arr.map(item => <div>{item}</div>);
   }
 
   render() {
@@ -61,7 +56,7 @@ class DetailProject extends Component {
                   <Panel.Body>
                     {this.props.project.assignedDevelopers
                       ? this.props.project.assignedDevelopers.map(dev => (
-                          <div>{dev}</div>
+                          <div key={dev}>{dev}</div>
                         ))
                       : ""}
                   </Panel.Body>
@@ -77,7 +72,7 @@ class DetailProject extends Component {
                   <Panel.Body>
                     {this.props.project.assignedStrategies
                       ? this.props.project.assignedStrategies.map(str => (
-                          <div>{str}</div>
+                          <div key={str}>{str}</div>
                         ))
                       : ""}
                   </Panel.Body>
@@ -102,7 +97,8 @@ class DetailProject extends Component {
           <Link to="/PMoverview">
             <Button>Back to Overview</Button>
           </Link>
-          <Link to="/edit-project">
+
+          <Link to={`/project/edit-project/${this.props.project._id}`}>
             <Button>Edit Project</Button>
           </Link>
         </Panel>
@@ -114,7 +110,8 @@ class DetailProject extends Component {
 DetailProject.propTypes = {
   getProject: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  matchDev: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -126,6 +123,7 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    getProject
+    getProject,
+    matchDev
   }
 )(withRouter(DetailProject));

@@ -2,7 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
 
-const TextField = ({ label, name, type, placeholder, value, onChange }) => {
+const TextField = ({
+  label,
+  name,
+  type,
+  placeholder,
+  value,
+  onChange,
+  disabled
+}) => {
   return (
     <FormGroup controlId="formBasicText">
       <ControlLabel>{label}</ControlLabel>
@@ -13,6 +21,7 @@ const TextField = ({ label, name, type, placeholder, value, onChange }) => {
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+        disabled={disabled}
       />
     </FormGroup>
   );

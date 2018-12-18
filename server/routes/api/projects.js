@@ -79,12 +79,15 @@ router.post(
 
     // Get fields
     const projectFields = {};
+
     projectFields.id = req.body.id;
     if (req.body.name) projectFields.name = req.body.name;
     if (req.body.finished) projectFields.finished = req.body.finished;
     if (req.body.description) projectFields.description = req.body.description;
-    if (req.body.assignedConcerns)
-      projectFields.assignedConcerns = req.body.assignedConcerns;
+    if (req.body.assignedStrategies)
+      projectFields.assignedStrategies = req.body.assignedStrategies;
+    if (req.body.assignedTactics)
+      projectFields.assignedTactics = req.body.assignedTactics;
     if (req.body.assignedDevelopers)
       projectFields.assignedDevelopers = req.body.assignedDevelopers;
 
@@ -93,9 +96,7 @@ router.post(
       { $set: projectFields },
       { new: true }
     ).then(project => {
-      Project.find({}).then(projects => {
-        res.json(projects);
-      });
+      res.json(req.params.id);
     });
   }
 );
@@ -128,6 +129,33 @@ router.get("/project/:id", (req, res) => {
   Project.findById(req.params.id)
     .then(project => {
       res.json(project);
+    })
+    .catch(err => res.status(404).json({ project: "There is no project" }));
+});
+
+// @route   POST api/projects/project/edit/:project_id
+// @desc    Edit project by ID
+// @access  Public
+
+router.post("/project/edit/:id", (req, res) => {
+  const errors = {};
+
+  Project.findbyIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        name: req.body.name,
+        description: req.body.description,
+        finished: req.body.finshed,
+        assignedTactics: req.body.assignedTactics,
+        assignedStrategies: req.body.assignedStrategies,
+        assignedDevelopers: req.body.assignedDevelopers
+      }
+    },
+    { new: true }
+  )
+    .then(project => {
+      res.json(true);
     })
     .catch(err => res.status(404).json({ project: "There is no project" }));
 });

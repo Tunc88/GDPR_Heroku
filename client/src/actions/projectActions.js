@@ -9,7 +9,8 @@ import {
   CLEAR_ERRORS,
   SET_ASSIGNED_DEVELOPER,
   SET_ASSIGNED_TACTICS,
-  SET_ASSIGNED_STRATEGIES
+  SET_ASSIGNED_STRATEGIES,
+  MATCH_USER
 } from "./types";
 
 // create Project
@@ -63,11 +64,30 @@ export const getProject = id => dispatch => {
     );
 };
 
+// Match Developer
+export const matchDev = id => dispatch => {
+  dispatch(setProjectLoading());
+  axios
+    .get(`/api/users/user/${id}`)
+    .then(res =>
+      dispatch({
+        type: MATCH_USER,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: MATCH_USER,
+        payload: err.data
+      })
+    );
+};
+
 // Delete Project
 export const deleteProject = id => dispatch => {
-  console.log(id);
+  console.log(id.id);
   axios
-    .delete(`/api/projects/${id}`)
+    .delete(`/api/projects/${id.id}`)
     .then(res =>
       dispatch({
         type: DELETE_PROJECT,
@@ -83,10 +103,10 @@ export const deleteProject = id => dispatch => {
 };
 
 // Edit Project
-export const editProject = projectData => dispatch => {
-  console.log(projectData);
+export const editProject = id => dispatch => {
   axios
-    .post("/api/projects/editproject", projectData)
+
+    .post(`/api/projects/project/edit/${id}`)
     .then(res =>
       dispatch({
         type: GET_PROJECTS,
