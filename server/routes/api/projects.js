@@ -294,8 +294,46 @@ router.get("/project/:id", (req, res) => {
     }
   ])
 
-    .then(project => {
-      res.json(project[0]);
+    .then(projects => {
+      projects.forEach(function(project) {
+        project.assignedTactics.forEach(function(
+          assignedTactic,
+          assignedTacticIndex
+        ) {
+          project.assignedTactics[
+            assignedTacticIndex
+          ] = assignedTactic.toString();
+        });
+        project.assignedStrategiesWithAllTactics.forEach(function(
+          assignedStrategy
+        ) {
+          var NewAssignedTactics = [];
+          assignedStrategy.assignedTactics.forEach(function(
+            tactic,
+            tacticIndex
+          ) {
+            if (project.assignedTactics.includes(tactic._id.toString())) {
+              console.log("true");
+              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              NewAssignedTactics.push(
+                assignedStrategy.assignedTactics[tacticIndex]
+              );
+            } else {
+              console.log("false");
+              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+
+              console.log(NewAssignedTactics);
+            }
+
+            // }
+          });
+          assignedStrategy.assignedTactics = NewAssignedTactics;
+          //console.log(assignedStrategy);
+
+          console.log(assignedStrategy);
+        });
+      });
+      res.json(projects[0]);
     })
     .catch(err => res.status(404).json({ project: "There is no project" }));
 });

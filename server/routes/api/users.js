@@ -100,7 +100,9 @@ router.post("/login", (req, res) => {
         jwt.sign(
           payload,
           keys.secretOrKey,
-          { expiresIn: 100000 /** 3600 */ },
+          {
+            expiresIn: 100000 /** 3600 changed it to 100000 because of annoying automatic logout*/
+          },
           (err, token) => {
             res.json({
               success: true,
