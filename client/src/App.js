@@ -66,16 +66,16 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/search" component={Search} />
 
-              <Route
-                exact
-                path="/strategyoverview"
-                component={StrategyOverview}
-              />
-              <Route
-                path="/patterndetail/:_id?/:editing?"
-                component={PatternDetail}
-              />
               <Switch>
+                <PrivateRoute
+                  exact
+                  path="/strategyoverview"
+                  component={StrategyOverview}
+                />
+                <PrivateRoute
+                  path="/patterndetail/:_id?/:editing?"
+                  component={PatternDetail}
+                />
                 <PrivateRoute exact path="/PMoverview" component={PMoverview} />
                 <PrivateRoute exact path="/overview" component={Overview} />
                 <PrivateRoute
