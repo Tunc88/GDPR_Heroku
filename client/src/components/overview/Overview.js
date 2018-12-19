@@ -13,7 +13,7 @@ import {
   Image
 } from "react-bootstrap";
 import Spinner from "../common/Spinner";
-import SankeyDiagram from "../../img/background.jpeg";
+import SankeyDiagram from "../../img/SankeyDiagram.png";
 import "./Overview.css";
 import PatternFeed from "./PatternFeed";
 import { getPatterns } from "../../actions/patternActions";
@@ -32,7 +32,8 @@ class Overview extends Component {
     this.state = {
       sidebarOpen: false,
       sidebarDocked: mql.matches,
-      displaySidebar: "block"
+      displaySidebar: "block",
+      sidebarCounter: 0
     };
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
@@ -89,6 +90,21 @@ class Overview extends Component {
     });
   }
 
+  handleSelect = key => {
+    //alert(key);
+    if (this.state.sidebarCounter === 1) {
+      this.setState({
+        displaySidebar: "block",
+        sidebarCounter: 0
+      });
+    } else {
+      this.setState({
+        displaySidebar: "none",
+        sidebarCounter: 1
+      });
+    }
+  };
+
   render() {
     const { patterns, loading } = this.props.pattern;
 
@@ -119,7 +135,7 @@ class Overview extends Component {
     }
 
     return (
-      <div>
+      <div style={{ paddingBottom: "660px" }}>
         <Sidebar
           sidebarId="Filterbar"
           sidebar={
@@ -137,14 +153,15 @@ class Overview extends Component {
               background: "white",
               position: "fixed",
               marginTop: "52px",
-              display: this.state.displaySidebar
+              display: this.state.displaySidebar,
+              maxWidth: "275px"
             }
           }}
         />
         <Tabs
           defaultActiveKey={1}
           id="Select-View"
-          onSelect={this.handleSelect}
+          onSelect={() => this.handleSelect()}
         >
           <Tab eventKey={1} title="Grid View">
             <br />
@@ -174,12 +191,12 @@ class Overview extends Component {
           <Tab
             //onSelect={this.hideFilterbar}
             eventKey={2}
-            title="Diagramm View"
+            title="Diagram View"
             // onClick={() => this.hideFilterbar()}
             //   onClick={this.hideFilterbar}
           >
             <br />
-
+            <h3>Strategies, Tactics and Privacy Patterns</h3>
             <Image src={SankeyDiagram} responsive />
           </Tab>
         </Tabs>

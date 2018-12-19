@@ -52,11 +52,36 @@ img {
   /*min-height: 200px;*/
 }
 .minHeightPatternPanel {
-  min-height: 250px !important;
+  min-height: 290px !important;
+}
+
+.minHeightPatternPanelHeading {
+  min-height: 80px !important;
 }
 .minHeightStrategyPanel {
   min-height: 450px !important;
 }
 .minHeightStrategyPanel-Heading {
   min-height: 35px !important;
+}
+.StrategyListInPatterns li {
+  display: inline;
+}
+.StrategyListInPatterns {
+  list-style-type: square;
+}
+
+.dotForTactic {
+  height: 10px;
+  width: 10px;
+  background-color: #337ab7;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dotForStrategy {
+  height: 10px;
+  width: 10px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
 }
