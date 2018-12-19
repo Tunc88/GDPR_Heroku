@@ -27,7 +27,7 @@ class Register extends Component {
       name: "",
       email: "",
       username: "",
-      role: "",
+      role: "Data Protection Officer",
       password: "",
       password2: "",
       errors: {}
