@@ -60,14 +60,16 @@ class ProjectItem extends Component {
                 <Row>
                   <Col md="6" mdPush="6">
                     <h4>Tactics:</h4>
+                    {/*
                     {project.assignedTactics.map(tactic => (
                       <div key={tactic}>{tactic} </div>
                     ))}
+                    */}
                   </Col>
                   <Col md="6" mdPull="6">
                     <h4>Developer:</h4>
                     {project.assignedDevelopers.map(developer => (
-                      <div key={developer}>{developer} </div>
+                      <div key={developer.id}>{developer.name} </div>
                     ))}
                   </Col>
                 </Row>

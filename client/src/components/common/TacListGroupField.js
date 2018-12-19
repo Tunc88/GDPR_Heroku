@@ -5,7 +5,7 @@ import TacListItem from "./TacListItem";
 
 class TacListGroupField extends Component {
   render() {
-    const tactics = this.props.tactics;
+    var tactics = this.props.tactics;
     //console.log(tactics);
     //return <div />;
 

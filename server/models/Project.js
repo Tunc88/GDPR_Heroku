@@ -36,8 +36,8 @@ const ProjectSchema = new Schema({
       ref: "strategies", //[mongoose.Schema.Types.ObjectId]
       assignedTactics: [
         {
-          type: Schema.Types.ObjectId,
-          ref: "strategies.assignedTactics" //[mongoose.Schema.Types.ObjectId]
+          type: Schema.Types.ObjectId
+          //ref: "strategies.assignedTactics" //[mongoose.Schema.Types.ObjectId]
         }
       ]
     }
@@ -50,7 +50,7 @@ const ProjectSchema = new Schema({
     }
   ],
 
-  user: {
+  creator: {
     type: Schema.Types.ObjectId,
     ref: "users"
   },

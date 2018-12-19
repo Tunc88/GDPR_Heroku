@@ -32,7 +32,6 @@ class CreateProject extends Component {
       assignedTactics: [],
       finished: false,
       assignedDevelopers: [],
-      //nameDeveloper: "",
       developers: [],
 
       errors: {}
@@ -59,7 +58,7 @@ class CreateProject extends Component {
     const newProject = {
       name: this.state.name,
       description: this.state.description,
-      assignedTactics: store.getState().project.assignedTactics._id, //fehlerquelle
+      assignedTactics: store.getState().project.assignedTactics, //fehlerquelle
       assignedStrategies: store.getState().project.assignedStrategies,
       assignedDevelopers: store.getState().project.assignedDevelopers,
       //nameDeveloper: store.getState().project.nameDeveloper,
@@ -89,14 +88,22 @@ class CreateProject extends Component {
     if (tactics === null || loading2) {
       tacticContent = <Spinner />;
     } else {
-      tacticContent = <TacListGroupField tactics={this.props.strategies} />;
+      tacticContent = (
+        <TacListGroupField
+          onClick={this.componentWillUpdate}
+          tactics={this.props.assignedStrategies}
+        />
+      );
     }
 
     if (strategies === null || loading3) {
       strategyContent = <Spinner />;
     } else {
       strategyContent = (
-        <StrListGroupField strategies={this.props.strategies} />
+        <StrListGroupField
+          onClick={this.componentWillUpdate}
+          strategies={this.props.strategies}
+        />
       );
     }
 

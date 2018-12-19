@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 import { Panel, Row, Col, Button } from "react-bootstrap";
 import { withRouter, Link } from "react-router-dom";
@@ -21,13 +22,49 @@ class DetailProject extends Component {
 
       errors: {}
     };
+
+    // this.matchItem = this.matchItem.bind(this);
   }
 
   componentDidMount() {
     this.props.getProject(this.props.match.params.id);
   }
 
+  /*   matchItemTry(id) {
+    const temp = axios.get(`/api/users/user/${id}`).then(res => {
+      return res.data.name;
+    });
+    return temp;
+  }
+
+  matchItem(id) {
+    const temp = axios.get(`/api/users/user/${id}`).then(res => {
+      return res.data.name;
+    });
+    return temp;
+  }
+
+  createNewArray() {
+    var arr = [];
+    if (this.props.project.assignedDevelopers != undefined)
+      for (var i = 0; i < this.props.project.assignedDevelopers.length; i++) {
+        arr.push(this.props.project.assignedDevelopers[i]);
+      }
+    return arr;
+  }
+ */
   render() {
+    /*     var devName = [];
+    for (var i = 0; i < this.createNewArray().length; i++) {
+      devName.push(this.matchItem(this.createNewArray()[i]));
+    }
+
+    console.log();
+
+    setTimeout(console.log(Promise.resolve(devName)), 2000);
+    this.createNewArray();
+    this.matchItem("5bf9449f9c505c1ec0a7f628").then(val => console.log(val)); */
+    //console.log(this.props.project);
     return (
       <div>
         <Panel>
@@ -56,7 +93,7 @@ class DetailProject extends Component {
                   <Panel.Body>
                     {this.props.project.assignedDevelopers
                       ? this.props.project.assignedDevelopers.map(dev => (
-                          <div key={dev}>{dev}</div>
+                          <div key={dev.id}>{dev.name}</div>
                         ))
                       : ""}
                   </Panel.Body>
@@ -85,11 +122,13 @@ class DetailProject extends Component {
                       Assigned Tactics
                     </Panel.Title>
                   </Panel.Heading>
-                  {
-                    //<TacListGroupField
-                    //tactics={this.props.project.assignedTactics}
-                    ///>
-                  }
+                  <Panel.Body>
+                    {this.props.project.assignedTactics
+                      ? this.props.project.assignedTactics.map(tac => (
+                          <div key={tac}>{tac}</div>
+                        ))
+                      : ""}
+                  </Panel.Body>
                 </Panel>
               </Col>
             </Row>

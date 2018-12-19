@@ -24,11 +24,6 @@ router.get("/test", (req, res) => res.json({ msg: "Patterns Works" }));
 
 router.get("/", (req, res) =>
   Pattern.aggregate([
-    /*{
-      $match: {
-        _id: mongoose.Types.ObjectId("5c053cd672c1ae69c48b76d3")
-      }
-    },*/
     {
       $lookup: {
         from: "strategies",
@@ -36,14 +31,6 @@ router.get("/", (req, res) =>
         foreignField: "assignedTactics._id",
         as: "assignedStrategiesWithAllTactics"
       }
-
-      /*,
-      $lookup: {
-        from: "strategies",
-        localField: "assignedTactics._id",
-        foreignField: "assignedTactics",
-        as: "assignedStrategies"
-      }*/
     }
   ])
 
@@ -66,22 +53,6 @@ router.get("/", (req, res) =>
             tactic,
             tacticIndex
           ) {
-            // if (pattern.assignedTactics.includes(tactic._id)) {
-            // console.log(typeof tactic._id);
-            // console.log(typeof pattern.assignedTactics[0]);
-            // console.log(pattern.assignedTactics[0].toString());
-            // console.log(pattern.assignedTactics.includes(tactic._id));
-            //tactic._id.toString();
-            /* pattern.assignedTactics.forEach(function(
-              assignedTactic,
-              assignedTacticIndex
-            ) {
-              pattern.assignedTactics[
-                assignedTacticIndex
-              ] = assignedTactic.toString();
-            });*/
-
-            //  console.log(typeof pattern.assignedTactics[0]);
             if (pattern.assignedTactics.includes(tactic._id.toString())) {
               console.log("true");
               console.log(assignedStrategy.assignedTactics[tacticIndex].name);
@@ -92,10 +63,6 @@ router.get("/", (req, res) =>
               console.log("false");
               console.log(assignedStrategy.assignedTactics[tacticIndex].name);
 
-              // assignedStrategy.assignedTactics.splice(tacticIndex, 1);
-              // NewAssignedTactics.push(
-              // assignedStrategy.assignedTactics[tacticIndex]
-              //);
               console.log(NewAssignedTactics);
             }
 
