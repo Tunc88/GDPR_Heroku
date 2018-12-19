@@ -21,7 +21,12 @@ class PatternItem extends Component {
     const { pattern, auth } = this.props;
     const open = this.state.open;
     let more;
-    let patternDescriptionFirstPart = pattern.summary.split(" ", 10).join(" ");
+    let patternDescriptionFirstPart = pattern.summary;
+    if (pattern.summary.split(" ").length > 30) {
+      patternDescriptionFirstPart = pattern.summary.split(" ", 32).join(" ");
+      patternDescriptionFirstPart = patternDescriptionFirstPart + "...";
+    }
+    //let patternDescriptionFirstPart = pattern.summary.split(" ", 30).join(" ");
     let patternDescriptionSecondPart = pattern.summary.substring(
       patternDescriptionFirstPart.length
     );
@@ -34,7 +39,10 @@ class PatternItem extends Component {
     return (
       <Col xs={4}>
         <Panel className={"minHeightPatternPanel"}>
-          <Panel.Heading style={{ textAlign: "center" }}>
+          <Panel.Heading
+            style={{ textAlign: "center" }}
+            className="minHeightPatternPanelHeading"
+          >
             <div className={"inline-flex"}>
               <Link
                 to={{
@@ -56,7 +64,14 @@ class PatternItem extends Component {
           </Panel.Heading>
           <Panel.Body className={"adjusted-PanelBody"}>
             {/*patternDescriptionFirstPart*/}
-            {pattern.summary}
+            <ul className={"StrategyListInPatterns"}>
+              {pattern.assignedStrategiesWithAllTactics.map(strategy => (
+                <li>
+                  <span class="dotForStrategy" /> {strategy.name}
+                </li>
+              ))}
+            </ul>
+            {patternDescriptionFirstPart}
             {/*<Collapse in={this.state.open}>
               <div>
                 patternDescriptionSecondPart

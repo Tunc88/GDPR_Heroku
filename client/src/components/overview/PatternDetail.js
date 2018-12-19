@@ -14,6 +14,7 @@ import {
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
 import EditToolbar from "../common/EditToolbar";
+import PatternDetail_StrategiesWithTactics from "../overview/PatternDetail_StrategiesWithTactics";
 import { Button, FormGroup, Checkbox, Col } from "react-bootstrap";
 
 /*GET_PATTERN ohne Funktion*/
@@ -40,7 +41,8 @@ class PatternDetail extends Component {
       knownUses: "",
       assignedTactics: [],
       errors: {},
-      editing: false
+      editing: false,
+      assignedStrategiesWithAllTactics: []
     };
 
     this.onChange = this.onChange.bind(this);
@@ -90,6 +92,11 @@ class PatternDetail extends Component {
       pattern.assignedTactics = !isEmpty(pattern.assignedTactics)
         ? pattern.assignedTactics
         : [];
+      pattern.assignedStrategiesWithAllTactics = !isEmpty(
+        pattern.assignedStrategiesWithAllTactics
+      )
+        ? pattern.assignedStrategiesWithAllTactics
+        : [];
 
       // Set component fields state
       this.setState({
@@ -109,6 +116,8 @@ class PatternDetail extends Component {
         sources: pattern.sources,
         knownUses: pattern.knownUses,
         assignedTactics: pattern.assignedTactics,
+        assignedStrategiesWithAllTactics:
+          pattern.assignedStrategiesWithAllTactics,
 
         Editname: pattern.name,
         Editcontext: pattern.context,
@@ -124,7 +133,9 @@ class PatternDetail extends Component {
         EditrelatedPatterns: pattern.relatedPatterns,
         Editsources: pattern.sources,
         EditknownUses: pattern.knownUses,
-        EditassignedTactics: pattern.assignedTactics
+        EditassignedTactics: pattern.assignedTactics,
+        EditassignedStrategiesWithAllTactics:
+          pattern.EditassignedStrategiesWithAllTactics
       });
     }
   }
@@ -237,7 +248,7 @@ class PatternDetail extends Component {
     const { isAuthenticated } = this.props.auth;
     const { pattern } = this.props.pattern;
     return (
-      <div>
+      <Col xs={12}>
         {this.state.editing && isAuthenticated ? (
           <form onSubmit={this.onSubmit}>
             <TextField
@@ -383,77 +394,85 @@ class PatternDetail extends Component {
             ) : (
               <h3>{this.state.name}</h3>
             )}
+            <PatternDetail_StrategiesWithTactics
+              assignedStrategiesWithAllTactics={
+                this.state.assignedStrategiesWithAllTactics
+              }
+            />
+            <Col xs={12}>
+              <Col xs={12}>
+                <h5>Summary</h5>
+                <div>{this.state.summary}</div>
+                <h5>Context</h5>
+                <div>{this.state.context}</div>
+                <h5>Problem</h5>
+                <div>{this.state.problem}</div>
+                {!isEmpty(this.state.forcesConcerns) ? (
+                  <span>
+                    <h5>Forces and Concerns</h5>
+                    <div>{this.state.forcesConcerns}</div>
+                  </span>
+                ) : (
+                  ""
+                )}
+                <h5>Solution</h5>
+                <div>{this.state.solution}</div>
+                {!isEmpty(this.state.structure) ? (
+                  <span>
+                    <h5>Structure</h5>
+                    <div>{this.state.structure}</div>
+                  </span>
+                ) : (
+                  ""
+                )}
+                {!isEmpty(this.state.implementation) ? (
+                  <span>
+                    <h5>Implementation</h5>
+                    <div>{this.state.implementation}</div>
+                  </span>
+                ) : (
+                  ""
+                )}
+                {!isEmpty(this.state.consequences) ? (
+                  <span>
+                    <h5>Consequences</h5>
+                    <div>{this.state.consequences}</div>
+                  </span>
+                ) : (
+                  ""
+                )}
+                <h5>Examples</h5>
+                <div>{this.state.examples}</div>
+                {!isEmpty(this.state.knownUses) ? (
+                  <span>
+                    <h5>Known Uses</h5>
+                    <div>{this.state.knownUses}</div>
+                  </span>
+                ) : (
+                  ""
+                )}
+                {!isEmpty(this.state.relatedPatterns) ? (
+                  <span>
+                    <h5>related Patterns</h5>
+                    <div>{this.state.relatedPatterns}</div>
+                  </span>
+                ) : (
+                  ""
+                )}
 
-            <h5>Summary</h5>
-            <div>{this.state.summary}</div>
-            <h5>Context</h5>
-            <div>{this.state.context}</div>
-            <h5>Problem</h5>
-            <div>{this.state.problem}</div>
-            {!isEmpty(this.state.forcesConcerns) ? (
-              <span>
-                <h5>forces Concerns</h5>
-                <div>{this.state.forcesConcerns}</div>
-              </span>
-            ) : (
-              ""
-            )}
-            <h5>Solution</h5>
-            <div>{this.state.solution}</div>
-            {!isEmpty(this.state.structure) ? (
-              <span>
-                <h5>Structure</h5>
-                <div>{this.state.structure}</div>
-              </span>
-            ) : (
-              ""
-            )}
-            {!isEmpty(this.state.implementation) ? (
-              <span>
-                <h5>Implementation</h5>
-                <div>{this.state.implementation}</div>
-              </span>
-            ) : (
-              ""
-            )}
-            {!isEmpty(this.state.consequences) ? (
-              <span>
-                <h5>Consequences</h5>
-                <div>{this.state.consequences}</div>
-              </span>
-            ) : (
-              ""
-            )}
-            <h5>Examples</h5>
-            <div>{this.state.examples}</div>
-            {!isEmpty(this.state.knownUses) ? (
-              <span>
-                <h5>Known Uses</h5>
-                <div>{this.state.knownUses}</div>
-              </span>
-            ) : (
-              ""
-            )}
-            {!isEmpty(this.state.relatedPatterns) ? (
-              <span>
-                <h5>related Patterns</h5>
-                <div>{this.state.relatedPatterns}</div>
-              </span>
-            ) : (
-              ""
-            )}
-
-            {!isEmpty(this.state.sources) ? (
-              <span>
-                <h5>Sources</h5>
-                <div>{this.state.sources}</div>
-              </span>
-            ) : (
-              ""
-            )}
+                {!isEmpty(this.state.sources) ? (
+                  <span>
+                    <h5>Sources</h5>
+                    <div>{this.state.sources}</div>
+                  </span>
+                ) : (
+                  ""
+                )}
+              </Col>
+            </Col>
           </div>
         )}
-      </div>
+      </Col>
     );
   }
 }
