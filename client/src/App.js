@@ -65,7 +65,7 @@ class App extends Component {
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/search" component={Search} />
-              <Route exact path="/overview" component={Overview} />
+
               <Route
                 exact
                 path="/strategyoverview"
@@ -77,6 +77,7 @@ class App extends Component {
               />
               <Switch>
                 <PrivateRoute exact path="/PMoverview" component={PMoverview} />
+                <PrivateRoute exact path="/overview" component={Overview} />
                 <PrivateRoute
                   exact
                   path="/DPOoverview"

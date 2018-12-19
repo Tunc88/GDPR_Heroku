@@ -77,14 +77,14 @@ class ProjectItem extends Component {
               <div>
                 {descriptionSecondPart}
                 <Row>
-                  <Col md="6" mdPush="6">
+                  <Col md={6} mdPush={6}>
                     <h4>Tactics:</h4>
 
                     {aggrTac().map(tactic => (
                       <div key={tactic.id}>{tactic.name} </div>
                     ))}
                   </Col>
-                  <Col md="6" mdPull="6">
+                  <Col md={6} mdPull={6}>
                     <h4>Developer:</h4>
                     {project.assignedDevelopers.map(developer => (
                       <div key={developer.id}>{developer.name} </div>
