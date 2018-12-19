@@ -9,17 +9,20 @@ import {
   Button,
   Glyphicon,
   InputGroup,
-  Badge
+  Badge,
+  Image
 } from "react-bootstrap";
 import Spinner from "../common/Spinner";
+import SankeyDiagram from "../../img/SankeyDiagram.png";
 import "./Overview.css";
 import PatternFeed from "./PatternFeed";
 import { getPatterns } from "../../actions/patternActions";
-import TacticFeed from "./TacticFeed";
+//import TacticFeed from "./TacticFeed";
 import { getTactics } from "../../actions/tacticActions";
 import StrategyFeed from "./StrategyFeed";
 import { getStrategies } from "../../actions/strategyActions";
 import Sidebar from "react-sidebar";
+import { Link } from "react-router-dom";
 
 const mql = window.matchMedia(`(min-width: 800px)`);
 
@@ -28,10 +31,13 @@ class Overview extends Component {
     super(props);
     this.state = {
       sidebarOpen: false,
-      sidebarDocked: mql.matches
+      sidebarDocked: mql.matches,
+      displaySidebar: "block",
+      sidebarCounter: 0
     };
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+    this.hideFilterbar = this.hideFilterbar.bind(this);
   }
 
   componentWillMount() {
@@ -45,7 +51,7 @@ class Overview extends Component {
   }
 
   componentWillUnmount() {
-    this.state.mql.removeListener(this.mediaQueryChanged);
+    mql.removeListener(this.mediaQueryChanged);
   }
 
   onSetSidebarOpen(open) {
@@ -55,6 +61,49 @@ class Overview extends Component {
   mediaQueryChanged() {
     this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
   }
+
+  hideFilterbar = () => {
+    //alert((document.getElementById("Filterbar").innerHTML = "hallo"));
+    //document.getElementById("Filterbar").style.display = "none";
+    alert("hallo");
+    this.setState({
+      displaySidebar: "none"
+    });
+  };
+
+  hideFilterbar() {
+    //preventDefault();
+    //alert((document.getElementById("Filterbar").innerHTML = "hallo"));
+    //document.getElementById("Filterbar").style.display = "none";
+    alert("hallo");
+    this.setState({
+      displaySidebar: "none"
+    });
+  }
+
+  onSelect() {
+    //alert((document.getElementById("Filterbar").innerHTML = "hallo"));
+    //document.getElementById("Filterbar").style.display = "none";
+    alert("hallo");
+    this.setState({
+      displaySidebar: "none"
+    });
+  }
+
+  handleSelect = key => {
+    //alert(key);
+    if (this.state.sidebarCounter === 1) {
+      this.setState({
+        displaySidebar: "block",
+        sidebarCounter: 0
+      });
+    } else {
+      this.setState({
+        displaySidebar: "none",
+        sidebarCounter: 1
+      });
+    }
+  };
 
   render() {
     const { patterns, loading } = this.props.pattern;
@@ -73,7 +122,7 @@ class Overview extends Component {
     if (tactics === null || loading2) {
       tacticContent = <Spinner />;
     } else {
-      tacticContent = <TacticFeed tactics={tactics} />;
+      // tacticContent = <TacticFeed tactics={tactics} />;
     }
 
     const { strategies, loading3 } = this.props.strategy;
@@ -86,11 +135,12 @@ class Overview extends Component {
     }
 
     return (
-      <div>
+      <div style={{ paddingBottom: "660px" }}>
         <Sidebar
+          sidebarId="Filterbar"
           sidebar={
             <div>
-              <h4>Filter</h4>
+              <h4 style={{ textAlign: "center" }}>Filter</h4>
               {strategyContent}
             </div>
           }
@@ -102,31 +152,53 @@ class Overview extends Component {
             sidebar: {
               background: "white",
               position: "fixed",
-              marginTop: "52px"
+              marginTop: "52px",
+              display: this.state.displaySidebar,
+              maxWidth: "275px"
             }
           }}
         />
-        <Tabs defaultActiveKey={1} id="Select-View">
+        <Tabs
+          defaultActiveKey={1}
+          id="Select-View"
+          onSelect={() => this.handleSelect()}
+        >
           <Tab eventKey={1} title="Grid View">
             <br />
             <Col xs={12}>
               <span className={"h4"}>
                 Patterns <Badge>{patterns.length}</Badge>
               </span>
-              <Button className={"glyphicon-button"}>
-                <Glyphicon glyph="plus" />
-              </Button>
+              <Link to="/create-pattern">
+                <Button className={"glyphicon-button"}>
+                  <Glyphicon glyph="plus" />
+                </Button>
+              </Link>
+              <Link to="/strategyoverview" style={{ marginLeft: "450px" }}>
+                Manage Strategies and Tactics...
+              </Link>
             </Col>
             <br />
             <br />
             <br />
             {patternContent}
-            <Col xs={12}>
+            {/*<Col xs={12}>
               <h4>Tactics</h4>
-            </Col>
+        </Col>*/}
             {/*tacticContent*/}
           </Tab>
-          <Tab eventKey={2} title="Diagramm View" />
+
+          <Tab
+            //onSelect={this.hideFilterbar}
+            eventKey={2}
+            title="Diagram View"
+            // onClick={() => this.hideFilterbar()}
+            //   onClick={this.hideFilterbar}
+          >
+            <br />
+            <h3>Strategies, Tactics and Privacy Patterns</h3>
+            <Image src={SankeyDiagram} responsive />
+          </Tab>
         </Tabs>
       </div>
     );

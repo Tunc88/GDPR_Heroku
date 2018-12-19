@@ -11,8 +11,12 @@ const StrategySchema = new Schema({
     type: String
     // required: true
   },
+
   assignedTactics: [
     {
+      /* id: {
+        type: [mongoose.Schema.Types.ObjectId]
+      },*/
       name: {
         type: String
       },

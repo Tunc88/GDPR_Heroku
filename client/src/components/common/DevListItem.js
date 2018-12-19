@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import { connect } from "react-redux";
 import { setAssignedDevelopers } from "../../actions/projectActions";
 import {
@@ -18,34 +19,21 @@ class DevListItem extends Component {
     super(props, context);
 
     this.state = {
-      assignedDevelopers: []
+      assignedDevelopers: {}
     };
 
     this.onClick = this.onClick.bind(this);
   }
 
   onClick(e) {
-    if (!this.state.bsStyle) {
-      var newArray = [...this.state.assignedDevelopers];
-      newArray.push(e.target.name);
-
-      var newbsStyle = "success";
-
-      this.setState(() => {
-        this.props.setAssignedDevelopers(newArray);
-        return { assignedDevelopers: newArray, bsStyle: newbsStyle };
-      });
-    } else {
-      newArray = [this.state.assignedDevelopers];
-      newArray.pop();
-
-      newbsStyle = "";
-
-      this.setState(() => {
-        this.props.setAssignedDevelopers(newArray);
-        return { assignedDevelopers: newArray, bsStyle: newbsStyle };
-      });
-    }
+    this.setState(() => {
+      this.props.setAssignedDevelopers(this.props.developer);
+      return {
+        assignedDevelopers: this.props.developer,
+        bsStyle: !this.state.bsStyle ? "success" : undefined
+        //nameDeveloper: newArray[0]
+      };
+    });
   }
 
   render() {
@@ -72,6 +60,7 @@ DevListItem.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth,
   assignedDevelopers: state.assignedDevelopers
+  //nameDeveloper: state.nameDeveloper
 });
 
 export default connect(

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Panel, Col, Tabs, Tab, Button, Collapse } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import EditToolbar from "../common/EditToolbar";
 
 class PatternItem extends Component {
@@ -20,7 +21,12 @@ class PatternItem extends Component {
     const { pattern, auth } = this.props;
     const open = this.state.open;
     let more;
-    let patternDescriptionFirstPart = pattern.summary.split(" ", 10).join(" ");
+    let patternDescriptionFirstPart = pattern.summary;
+    if (pattern.summary.split(" ").length > 30) {
+      patternDescriptionFirstPart = pattern.summary.split(" ", 32).join(" ");
+      patternDescriptionFirstPart = patternDescriptionFirstPart + "...";
+    }
+    //let patternDescriptionFirstPart = pattern.summary.split(" ", 30).join(" ");
     let patternDescriptionSecondPart = pattern.summary.substring(
       patternDescriptionFirstPart.length
     );
@@ -32,11 +38,22 @@ class PatternItem extends Component {
 
     return (
       <Col xs={4}>
-        <Panel>
-          <Panel.Heading>
+        <Panel className={"minHeightPatternPanel"}>
+          <Panel.Heading
+            style={{ textAlign: "center" }}
+            className="minHeightPatternPanelHeading"
+          >
             <div className={"inline-flex"}>
-              <div className={"h4"}>{pattern.name}</div>
-              <EditToolbar pattern={pattern} />
+              <Link
+                to={{
+                  pathname: "/patterndetail/" + pattern._id,
+                  state: { pattern }
+                }}
+              >
+                <div className={"h4"}>{pattern.name}</div>
+              </Link>
+
+              {/*<EditToolbar pattern={pattern} />*/}
             </div>
 
             {/*<div>
@@ -45,12 +62,19 @@ class PatternItem extends Component {
               ))}
               </div>*/}
           </Panel.Heading>
-          <Panel.Body>
+          <Panel.Body className={"adjusted-PanelBody"}>
             {/*patternDescriptionFirstPart*/}
-            {pattern.summary}
-            <Collapse in={this.state.open}>
+            <ul className={"StrategyListInPatterns"}>
+              {pattern.assignedStrategiesWithAllTactics.map(strategy => (
+                <li>
+                  <span class="dotForStrategy" /> {strategy.name}
+                </li>
+              ))}
+            </ul>
+            {patternDescriptionFirstPart}
+            {/*<Collapse in={this.state.open}>
               <div>
-                {/*patternDescriptionSecondPart*/}
+                patternDescriptionSecondPart
                 {pattern.context}
                 {pattern.problem}
                 {pattern.forcesConcerns}
@@ -64,10 +88,18 @@ class PatternItem extends Component {
                 {pattern.sources}
                 {pattern.knownUses}
               </div>
-            </Collapse>
-            <div className="extendMore" onClick={this.extendMore}>
+            </Collapse>*/}
+            {/*<Link
+              to={{
+                pathname: "/patterndetail/" + pattern._id,
+                state: { pattern }
+              }}
+            >
+              <div className={"h4"}>More...</div>
+            </Link>*/}
+            {/*<div className="extendMore" onClick={this.extendMore}>
               {more}
-            </div>
+              </div>*/}
           </Panel.Body>
         </Panel>
       </Col>

@@ -14,7 +14,8 @@ export class Footer extends Component {
                 target="_blank"
                 href="https://www.privacypatterns.org"
               >
-                Patterns and Strategies taken from privacypatterns.org
+                Patterns and Strategies taken from privacypatterns.org, licensed
+                under Creative Commons Attribution License
               </NavItem>
               <NavItem eventKey={2} href="#">
                 Terms of Use

@@ -40,16 +40,10 @@ class PMoverview extends Component {
       <div>
         <PageHeader>Project Overview</PageHeader>
         <Grid>
-          <Row>
-            <Col xs={6} sm={4}>
-              {projectContent}
-            </Col>
-          </Row>
-          <Col xs={2} xsOffset={10}>
-            <Link to="/create-project">
-              <Button bsStyle="primary">Create New Project</Button>
-            </Link>
-          </Col>
+          {projectContent}
+          <Link to="/create-project">
+            <Button bsStyle="primary">Create New Project</Button>
+          </Link>
         </Grid>
       </div>
     );

@@ -1,69 +1,47 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Panel, Col, Tabs, Tab, Button, Collapse } from "react-bootstrap";
-import EditToolbarTactics from "../common/EditToolbarTactics";
+import {
+  ButtonToolbar,
+  ButtonGroup,
+  Button,
+  Glyphicon,
+  Modal,
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  HelpBlock,
+  Checkbox
+} from "react-bootstrap";
 
 class TacticItem extends Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      open: false
-    };
+  onChange(e) {
+    // alert(e.target.name);
+    // alert(e.target.value);
+    this.setState({ [e.target.name]: e.target.value });
   }
-  extendMore = () => {
-    this.setState({ open: !this.state.open });
+  /*onDelete(id) {
+    this.props.onDelete(id);
+  }*/
+  onChangeAssignedTactics = id => {
+    //onChangeAssignedTactics(id) {
+    //this.setState({ assignedTactics[this.state.assignedTactics.indexOf(id)]: true });
+    this.state.assignedTactics.splice(
+      this.state.assignedTactics.indexOf(id),
+      1
+    );
   };
 
   render() {
-    const { tactic, auth } = this.props;
-    const open = this.state.open;
-    let more;
-    let tacticDescriptionFirstPart = tactic.description
-      .split(" ", 10)
-      .join(" ");
-    let tacticDescriptionSecondPart = tactic.description.substring(
-      tacticDescriptionFirstPart.length
-    );
-    if (open) {
-      more = <p>Less...</p>;
-    } else {
-      more = <p>More...</p>;
-    }
-
+    const { tactics } = this.props.tactics;
     return (
-      <Col xs={4}>
-        <Panel>
-          <Panel.Heading>
-            <h5>{tactic.tacticName}</h5>
-            <EditToolbarTactics tactic={tactic} />
-          </Panel.Heading>
-          <Panel.Body>
-            {tacticDescriptionFirstPart}
-            <Collapse in={this.state.open}>
-              <div>{tacticDescriptionSecondPart}</div>
-            </Collapse>
-            <div className="extendMore" onClick={this.extendMore}>
-              {more}
-            </div>
-          </Panel.Body>
-        </Panel>
-      </Col>
+      <ul>
+        {tactics.map(tactic => (
+          <li>{tactic.name}</li>
+        ))}
+      </ul>
     );
   }
 }
 
-TacticItem.propTypes = {
-  tactic: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  auth: state.auth
-});
-
-export default connect(
-  mapStateToProps,
-  {}
-)(TacticItem);
+export default TacticItem;

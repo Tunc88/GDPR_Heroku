@@ -6,12 +6,16 @@ import { connect } from "react-redux";
 
 import Spinner from "../common/Spinner";
 import { createPattern } from "../../actions/patternActions";
-import { setAssignedTactics } from "../../actions/projectActions";
+import {
+  setAssignedTactics,
+  setAssignedStrategies
+} from "../../actions/patternActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
+import StrListGroupField from "../common/StrListGroupField";
 import TacListGroupField from "../common/TacListGroupField";
-import { getTactics } from "../../actions/tacticActions";
-import { Button } from "react-bootstrap";
+import { getStrategies } from "../../actions/strategyActions";
+import { Button, Row, Col } from "react-bootstrap";
 import store from "../../store";
 
 class CreatePattern extends Component {
@@ -34,6 +38,7 @@ class CreatePattern extends Component {
       sources: "",
       knownUses: "",
       assignedTactics: [],
+      assignedStrategies: [],
       errors: {}
     };
 
@@ -42,7 +47,7 @@ class CreatePattern extends Component {
   }
 
   componentDidMount() {
-    this.props.getTactics();
+    this.props.getStrategies();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -75,21 +80,32 @@ class CreatePattern extends Component {
       relatedPatterns: this.state.relatedPatterns,
       sources: this.state.sources,
       knownUses: this.state.knownUser,
-      assignedTactics: store.getState().project.assignedTactics
+      assignedStrategies: store.getState().pattern.assignedStrategies,
+      assignedTactics: store.getState().pattern.assignedTactics.id //Fehlerquelle
     };
 
     this.props.createPattern(newPattern, this.props.history);
   }
 
   render() {
-    const { loading2, tactics } = this.props;
+    const { loading2, strategies } = this.props;
+    const { loading, tactics } = this.props;
 
+    let strategyContent;
     let tacticContent;
 
-    if (tactics === null || loading2) {
+    if (tactics === null || loading) {
       tacticContent = <Spinner />;
     } else {
-      tacticContent = <TacListGroupField tactics={this.props.tactics} />;
+      tacticContent = <TacListGroupField tactics={this.props.strategies} />;
+    }
+
+    if (strategies === null || loading2) {
+      strategyContent = <Spinner />;
+    } else {
+      strategyContent = (
+        <StrListGroupField strategies={this.props.strategies} />
+      );
     }
 
     const { errors } = this.state;
@@ -151,8 +167,16 @@ class CreatePattern extends Component {
           onChange={this.onChange}
         />
 
-        <h4>Which Tactics will be covered</h4>
-        {tacticContent}
+        <Row className="show-grid">
+          <Col md={6}>
+            <h4>Which Strategies will be covered</h4>
+            {strategyContent}
+          </Col>
+          <Col md={6}>
+            <h4>Choose also the covered Tactic</h4>
+            {tacticContent}
+          </Col>
+        </Row>
         <Button bsStyle="primary" onClick={this.onSubmit}>
           Create Pattern
         </Button>
@@ -166,17 +190,21 @@ CreatePattern.propTypes = {
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   setAssignedTactics: PropTypes.func.isRequired,
-  getTactics: PropTypes.func.isRequired
+  setAssignedStrategies: PropTypes.func.isRequired,
+  getTactics: PropTypes.func.isRequired,
+  getStrategies: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  assignedTactics: state.project.assignedTactics,
-  tactics: state.tactic.tactics
+  assignedTactics: state.pattern.assignedTactics,
+  assignedStrategies: state.pattern.assignedStrategies,
+  tactics: state.tactic.tactics,
+  strategies: state.strategy.strategies
 });
 
 export default connect(
   mapStateToProps,
-  { createPattern, getTactics, setAssignedTactics }
+  { createPattern, getStrategies, setAssignedStrategies, setAssignedTactics }
 )(withRouter(CreatePattern));

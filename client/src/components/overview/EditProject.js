@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 
 import Spinner from "../common/Spinner";
 import {
-  createProject,
+  editProject,
   setAssignedDevelopers,
   setAssignedTactics,
   setAssignedStrategies
@@ -22,16 +22,17 @@ import { getTactics } from "../../actions/tacticActions";
 import { getStrategies } from "../../actions/strategyActions";
 import store from "../../store";
 
-class CreateProject extends Component {
+class EditProject extends Component {
   constructor() {
     super();
     this.state = {
-      description: "",
-      name: "",
+      description: store.getState().project.project.description,
+      name: store.getState().project.project.name,
       assignedStrategies: [],
       assignedTactics: [],
       finished: false,
       assignedDevelopers: [],
+      //nameDeveloper: "",
       developers: [],
 
       errors: {}
@@ -44,6 +45,7 @@ class CreateProject extends Component {
   componentDidMount() {
     this.props.getDevelopers();
     this.props.getStrategies();
+    this.props.match.params.id;
   }
 
   onChange(e) {
@@ -56,16 +58,17 @@ class CreateProject extends Component {
     //const { projectId } = this.props;
 
     const newProject = {
+      id: this.props.match.params.id,
       name: this.state.name,
       description: this.state.description,
-      assignedTactics: store.getState().project.assignedTactics, //fehlerquelle
+      assignedTactics: store.getState().project.assignedTactics._id, //fehlerquelle
       assignedStrategies: store.getState().project.assignedStrategies,
       assignedDevelopers: store.getState().project.assignedDevelopers,
       //nameDeveloper: store.getState().project.nameDeveloper,
       finished: this.state.finished
     };
 
-    this.props.createProject(newProject, this.props.history);
+    this.props.editProject(newProject, this.props.history);
   }
 
   render() {
@@ -88,22 +91,14 @@ class CreateProject extends Component {
     if (tactics === null || loading2) {
       tacticContent = <Spinner />;
     } else {
-      tacticContent = (
-        <TacListGroupField
-          onClick={this.componentWillUpdate}
-          tactics={this.props.assignedStrategies}
-        />
-      );
+      tacticContent = <TacListGroupField tactics={this.props.strategies} />;
     }
 
     if (strategies === null || loading3) {
       strategyContent = <Spinner />;
     } else {
       strategyContent = (
-        <StrListGroupField
-          onClick={this.componentWillUpdate}
-          strategies={this.props.strategies}
-        />
+        <StrListGroupField strategies={this.props.strategies} />
       );
     }
 
@@ -114,7 +109,7 @@ class CreateProject extends Component {
           label="Name of project"
           name="name"
           value={this.state.name}
-          placeholder="Enter the name of the project"
+          placeholder={store.getState().project.project.name}
           onChange={this.onChange}
         />
 
@@ -122,7 +117,7 @@ class CreateProject extends Component {
           label="Description"
           name="description"
           value={this.state.description}
-          placeholder="Enter description"
+          placeholder={store.getState().project.project.description}
           onChange={this.onChange}
         />
 
@@ -144,7 +139,7 @@ class CreateProject extends Component {
         </Row>
 
         <Button bsStyle="primary" onClick={this.onSubmit}>
-          Create Project
+          Edit Project
         </Button>
         <Link to="/PMoverview">
           <Button bsStyle="info">Abort</Button>
@@ -154,8 +149,8 @@ class CreateProject extends Component {
   }
 }
 
-CreateProject.propTypes = {
-  createProject: PropTypes.func.isRequired,
+EditProject.propTypes = {
+  editProject: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   getDevelopers: PropTypes.func.isRequired,
@@ -180,7 +175,7 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    createProject,
+    editProject,
     getDevelopers,
     getTactics,
     getStrategies,
@@ -188,4 +183,4 @@ export default connect(
     setAssignedTactics,
     setAssignedStrategies
   }
-)(withRouter(CreateProject));
+)(withRouter(EditProject));

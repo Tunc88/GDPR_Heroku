@@ -7,7 +7,7 @@ import Spinner from "../common/Spinner";
 import "./Overview.css";
 import PatternFeed from "./PatternFeed";
 import { getPatterns } from "../../actions/patternActions";
-import TacticFeed from "./TacticFeed";
+//import TacticFeed from "./TacticFeed";
 import { getTactics } from "../../actions/tacticActions";
 
 class DPOoverview extends Component {
@@ -33,7 +33,7 @@ class DPOoverview extends Component {
     if (tactics === null || loading2) {
       tacticContent = <Spinner />;
     } else {
-      tacticContent = <tacticFeed tactics={tactics} />;
+      //tacticContent = <tacticFeed tactics={tactics} />;
     }
 
     return (
@@ -55,7 +55,7 @@ class DPOoverview extends Component {
               </Link>
             </Col>
 
-            {tacticContent}
+            {/*tacticContent*/}
           </Tab>
           <Tab eventKey={2} title="Diagramm View" />
         </Tabs>

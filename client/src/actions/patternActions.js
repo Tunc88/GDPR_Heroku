@@ -5,7 +5,10 @@ import {
   DELETE_PATTERN,
   PATTERN_LOADING,
   GET_PATTERNS,
-  CLEAR_ERRORS
+  GET_PATTERN,
+  CLEAR_ERRORS,
+  SET_ASSIGNED_TACTICS,
+  SET_ASSIGNED_STRATEGIES
 } from "./types";
 
 // create Pattern
@@ -40,11 +43,35 @@ export const getPatterns = () => dispatch => {
     );
 };
 
+// Get Pattern
+export const getPattern = id => dispatch => {
+  console.log("id" + id);
+  dispatch(setPatternLoading());
+  axios
+    .get(`/api/patterns/${id}`)
+    .then(res =>
+      // console.log("res" + res.data.pattern)
+      dispatch({
+        type: GET_PATTERN,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PATTERN,
+        payload: null
+      })
+    );
+};
+
 // Delete Pattern
-export const deletePattern = id => dispatch => {
+export const deletePattern = (id, history) => dispatch => {
   console.log(id);
+  //history.push("/overview");
   axios
     .delete(`/api/patterns/${id}`)
+    .then(res => history.push("/overview"))
+    //.then(res => history.push("/overview"))
     .then(res =>
       dispatch({
         type: DELETE_PATTERN,
@@ -66,13 +93,13 @@ export const editPattern = patternData => dispatch => {
     .post("/api/patterns/editpattern", patternData)
     .then(res =>
       dispatch({
-        type: GET_PATTERNS,
+        type: GET_PATTERN,
         payload: res.data
       })
     )
     .catch(err =>
       dispatch({
-        type: GET_PATTERNS,
+        type: GET_PATTERN,
         payload: null
       })
     );
@@ -89,5 +116,21 @@ export const setPatternLoading = () => {
 export const clearErrors = () => {
   return {
     type: CLEAR_ERRORS
+  };
+};
+
+// Set assignedTactics
+export const setAssignedTactics = tactic => {
+  return {
+    type: SET_ASSIGNED_TACTICS,
+    payload: tactic
+  };
+};
+
+// Set assignedStrategy
+export const setAssignedStrategies = strategy => {
+  return {
+    type: SET_ASSIGNED_STRATEGIES,
+    payload: strategy
   };
 };

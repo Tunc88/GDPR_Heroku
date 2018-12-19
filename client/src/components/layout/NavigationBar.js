@@ -45,7 +45,7 @@ class Navigationbar extends Component {
       </MenuItem>
     );
     return (
-      <Navbar inverse collapseOnSelect>
+      <Navbar inverse collapseOnSelect fixedTop>
         <Navbar.Header>
           <Navbar.Brand>
             <a href="/overview">GDPR</a>

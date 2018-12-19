@@ -51,10 +51,31 @@ const PatternSchema = new Schema({
   knownUses: {
     type: String
   },
-
-  assignedTactics: {
-    type: [String] //[mongoose.Schema.Types.ObjectId]
-  }
+  assignedStrategies: [
+    {
+      type: Schema.Types.ObjectId,
+      //  ref: "strategies", //[mongoose.Schema.Types.ObjectId]
+      assignedTactics: [
+        {
+          type: Schema.Types.ObjectId
+          //     ref: "strategies.assignedTactics" //[mongoose.Schema.Types.ObjectId]
+        }
+      ]
+    }
+  ]
+  /*
+  assignedTactics: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "strategies", //[mongoose.Schema.Types.ObjectId]
+      assignedTactics: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "strategies.assignedTactics" //[mongoose.Schema.Types.ObjectId]
+        }
+      ]
+    }
+  ]*/
 });
 
 module.exports = Pattern = mongoose.model("patterns", PatternSchema);

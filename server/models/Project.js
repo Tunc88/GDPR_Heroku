@@ -17,14 +17,40 @@ const ProjectSchema = new Schema({
     required: true
   },
 
-  assignedTactics: {
-    type: [String] //[mongoose.Schema.Types.ObjectId]
-  },
+  assignedTactics: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "tactics" //[mongoose.Schema.Types.ObjectId]
+    }
+  ],
 
-  assignedDevelopers: {
-    type: [String] /*[mongoose.Schema.Types.ObjectId]*/
-  },
-  user: {
+  assignedStrategies: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "strategies" //[mongoose.Schema.Types.ObjectId]
+    }
+  ],
+  assignedStrategiesTest: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "strategies", //[mongoose.Schema.Types.ObjectId]
+      assignedTactics: [
+        {
+          type: Schema.Types.ObjectId
+          //ref: "strategies.assignedTactics" //[mongoose.Schema.Types.ObjectId]
+        }
+      ]
+    }
+  ],
+
+  assignedDevelopers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "users"
+    }
+  ],
+
+  creator: {
     type: Schema.Types.ObjectId,
     ref: "users"
   },
