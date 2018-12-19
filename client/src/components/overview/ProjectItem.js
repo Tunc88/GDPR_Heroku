@@ -21,6 +21,25 @@ class ProjectItem extends Component {
   };
 
   render() {
+    var tactics = this.props.project.assignedStrategiesWithAllTactics;
+
+    function aggrTac() {
+      var arr = [];
+
+      tactics.map(strategies =>
+        strategies.assignedTactics.map(tactic => (arr = arr.concat(tactic)))
+      );
+
+      return arr;
+    }
+
+    console.log(aggrTac());
+    //console.log(tactics);
+
+    // this.props.project.assignedStrategiesWithAllTactics.map(strategies =>
+    //   strategies.assignedTactics.map(tactic => console.log(tactic))
+    // );
+
     const { project, auth } = this.props;
     const open = this.state.open;
     let more;
@@ -60,11 +79,10 @@ class ProjectItem extends Component {
                 <Row>
                   <Col md="6" mdPush="6">
                     <h4>Tactics:</h4>
-                    {/*
-                    {project.assignedTactics.map(tactic => (
-                      <div key={tactic}>{tactic} </div>
+
+                    {aggrTac().map(tactic => (
+                      <div key={tactic.id}>{tactic.name} </div>
                     ))}
-                    */}
                   </Col>
                   <Col md="6" mdPull="6">
                     <h4>Developer:</h4>

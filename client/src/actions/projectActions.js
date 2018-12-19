@@ -85,9 +85,9 @@ export const matchDev = id => dispatch => {
 
 // Delete Project
 export const deleteProject = id => dispatch => {
-  console.log(id.id);
+  console.log(id);
   axios
-    .delete(`/api/projects/${id.id}`)
+    .delete(`/api/projects/${id}`)
     .then(res =>
       dispatch({
         type: DELETE_PROJECT,

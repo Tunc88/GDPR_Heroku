@@ -29,11 +29,66 @@ router.get("/", (req, res) =>
         foreignField: "_id",
         as: "assignedDevelopers"
       }
+    },
+    {
+      $lookup: {
+        from: "strategies",
+        localField: "assignedTactics",
+        foreignField: "assignedTactics._id",
+        as: "assignedStrategiesWithAllTactics"
+      }
+    },
+    {
+      $lookup: {
+        from: "strategies",
+        localField: "assignedStrategies",
+        foreignField: "_id",
+        as: "assignedStrategies"
+      }
     }
   ])
 
     .exec()
     .then(projects => {
+      projects.forEach(function(project) {
+        project.assignedTactics.forEach(function(
+          assignedTactic,
+          assignedTacticIndex
+        ) {
+          project.assignedTactics[
+            assignedTacticIndex
+          ] = assignedTactic.toString();
+        });
+        project.assignedStrategiesWithAllTactics.forEach(function(
+          assignedStrategy
+        ) {
+          var NewAssignedTactics = [];
+          assignedStrategy.assignedTactics.forEach(function(
+            tactic,
+            tacticIndex
+          ) {
+            if (project.assignedTactics.includes(tactic._id.toString())) {
+              console.log("true");
+              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              NewAssignedTactics.push(
+                assignedStrategy.assignedTactics[tacticIndex]
+              );
+            } else {
+              console.log("false");
+              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+
+              console.log(NewAssignedTactics);
+            }
+
+            // }
+          });
+          assignedStrategy.assignedTactics = NewAssignedTactics;
+          //console.log(assignedStrategy);
+
+          console.log(assignedStrategy);
+        });
+      });
+
       /* projects.forEach(function(project) {
         project.assignedTactics.forEach(function(
           assignedTactic,
@@ -220,10 +275,24 @@ router.get("/project/:id", (req, res) => {
         foreignField: "_id",
         as: "assignedDevelopers"
       }
+    },
+    {
+      $lookup: {
+        from: "strategies",
+        localField: "assignedTactics",
+        foreignField: "assignedTactics._id",
+        as: "assignedStrategiesWithAllTactics"
+      }
+    },
+    {
+      $lookup: {
+        from: "strategies",
+        localField: "assignedStrategies",
+        foreignField: "_id",
+        as: "assignedStrategies"
+      }
     }
   ])
-
-    //Project.findById(req.params.id)
 
     .then(project => {
       res.json(project[0]);

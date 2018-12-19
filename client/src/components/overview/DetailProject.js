@@ -54,6 +54,22 @@ class DetailProject extends Component {
   }
  */
   render() {
+    var tactics = this.props.project.assignedStrategiesWithAllTactics;
+
+    function aggrTac() {
+      var arr = [];
+
+      if (tactics != undefined) {
+        tactics.map(strategies =>
+          strategies.assignedTactics.map(tactic => (arr = arr.concat(tactic)))
+        );
+      }
+
+      return arr;
+    }
+
+    console.log(aggrTac());
+    //console.log(tactics);
     /*     var devName = [];
     for (var i = 0; i < this.createNewArray().length; i++) {
       devName.push(this.matchItem(this.createNewArray()[i]));
@@ -65,6 +81,7 @@ class DetailProject extends Component {
     this.createNewArray();
     this.matchItem("5bf9449f9c505c1ec0a7f628").then(val => console.log(val)); */
     //console.log(this.props.project);
+
     return (
       <div>
         <Panel>
@@ -109,7 +126,7 @@ class DetailProject extends Component {
                   <Panel.Body>
                     {this.props.project.assignedStrategies
                       ? this.props.project.assignedStrategies.map(str => (
-                          <div key={str}>{str}</div>
+                          <div key={str.id}>{str.name}</div>
                         ))
                       : ""}
                   </Panel.Body>
@@ -123,10 +140,8 @@ class DetailProject extends Component {
                     </Panel.Title>
                   </Panel.Heading>
                   <Panel.Body>
-                    {this.props.project.assignedTactics
-                      ? this.props.project.assignedTactics.map(tac => (
-                          <div key={tac}>{tac}</div>
-                        ))
+                    {aggrTac()
+                      ? aggrTac().map(tac => <div key={tac.id}>{tac.name}</div>)
                       : ""}
                   </Panel.Body>
                 </Panel>
