@@ -26,7 +26,10 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
+    if (
+      nextProps.auth.isAuthenticated &&
+      this.props.auth.user.role != undefined
+    ) {
       if (this.props.auth.user.role == "Data Protection Officer") {
         this.props.history.push("/DPOoverview");
       } else if (this.props.auth.user.role == "Project Manager") {
