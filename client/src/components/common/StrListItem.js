@@ -13,17 +13,36 @@ import {
   ListGroupItem
 } from "react-bootstrap";
 import EditToolbarStrategies from "./EditToolbarTactics";
+import store from "../../store";
 
 class StrListItem extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      assignedStrategies: {}
+      assignedStrategies: {},
+      assignedStrategiesForProject: store.getState().project.project
+        .assignedStrategies
       //nameDeveloper: ""
     };
 
     this.onClick = this.onClick.bind(this);
+  }
+
+  componentDidMount() {
+    var arr = this.state.assignedStrategiesForProject;
+
+    if (arr !== undefined) {
+      arr.map(el =>
+        el.name === this.props.strategy.name
+          ? this.setState(() => {
+              return {
+                bsStyle: !this.state.bsStyle ? "success" : undefined
+              };
+            })
+          : ""
+      );
+    }
   }
 
   onClick(e) {
@@ -37,6 +56,11 @@ class StrListItem extends Component {
   }
 
   render() {
+    // if (this.props.assignedStrategies != undefined) {
+    //console.log(this.props.strategy);
+
+    //}
+
     const { strategy, auth } = this.props;
 
     return (
