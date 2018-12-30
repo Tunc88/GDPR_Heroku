@@ -60,7 +60,7 @@ export default function(state = initialState, action) {
       const remStrategy = str => {
         var arr = state.assignedStrategies;
         var index = arr.indexOf(str);
-        console.log(index);
+        //console.log(index);
         //console.log(str);
 
         if (index !== -1) {
@@ -72,7 +72,7 @@ export default function(state = initialState, action) {
 
       //console.log(state.assignedDevelopers);
 
-      console.log(action.payload);
+      //console.log(action.payload);
       if (state.assignedStrategies.indexOf(action.payload) === -1) {
         var newArray = addStrategy(action.payload);
       } else {
@@ -102,7 +102,7 @@ export default function(state = initialState, action) {
       const remTactic = tac => {
         var arr = state.assignedTactics;
         var index = arr.indexOf(tac);
-        console.log(index);
+        //console.log(index);
         //console.log(tac);
 
         if (index !== -1) {
@@ -111,7 +111,7 @@ export default function(state = initialState, action) {
         return arr;
       };
 
-      console.log(action.payload);
+      //console.log(action.payload);
       if (state.assignedTactics.indexOf(action.payload) === -1) {
         var newArray = addTactic(action.payload);
       } else {

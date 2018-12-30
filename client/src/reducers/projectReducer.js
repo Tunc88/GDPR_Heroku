@@ -5,6 +5,7 @@ import {
   DELETE_PROJECT,
   SET_ASSIGNED_DEVELOPER,
   SET_ASSIGNED_TACTICS,
+  RESET_ASSIGNED_STRATEGIES,
   SET_ASSIGNED_STRATEGIES
 } from "../actions/types";
 
@@ -67,7 +68,7 @@ export default function(state = initialState, action) {
 
       //console.log(state.assignedDevelopers);
 
-      console.log(action.payload);
+      //console.log(action.payload);
       if (state.assignedDevelopers.indexOf(action.payload) === -1) {
         var newArray = addDeveloper(action.payload);
       } else {
@@ -90,7 +91,7 @@ export default function(state = initialState, action) {
       const remTactic = tac => {
         var arr = state.assignedTactics;
         var index = arr.indexOf(tac);
-        console.log(index);
+        //console.log(index);
         //console.log(tac);
 
         if (index !== -1) {
@@ -99,7 +100,7 @@ export default function(state = initialState, action) {
         return arr;
       };
 
-      console.log(action.payload);
+      //console.log(action.payload);
       if (state.assignedTactics.indexOf(action.payload) === -1) {
         var newArray = addTactic(action.payload);
       } else {
@@ -118,6 +119,14 @@ export default function(state = initialState, action) {
         loading: false
       };
 
+    case RESET_ASSIGNED_STRATEGIES:
+      return {
+        ...state,
+        assignedTactics: [],
+        assignedStrategies: [],
+        assignedDevelopers: [],
+        loading: false
+      };
     case SET_ASSIGNED_STRATEGIES:
       const addStrategy = str => {
         //console.log([...str].concat(state.assignedStrategies));
@@ -137,7 +146,7 @@ export default function(state = initialState, action) {
       const remStrategy = str => {
         var arr = state.assignedStrategies;
         var index = arr.indexOf(str);
-        console.log(index);
+        //console.log(index);
         //console.log(str);
 
         if (index !== -1) {
@@ -149,11 +158,30 @@ export default function(state = initialState, action) {
 
       //console.log(state.assignedDevelopers);
 
-      console.log(action.payload);
+      //console.log(action.payload);
       if (state.assignedStrategies.indexOf(action.payload) === -1) {
         var newArray = addStrategy(action.payload);
+        var remTactic = undefined;
       } else {
+        //console.log(state.assignedTactics);
+        //console.log(action.payload.assignedTactics);
+
+        var arr2 = state.assignedTactics;
+
+        for (var i = 0; i < action.payload.assignedTactics.length; i++) {
+          var index2 = arr2.indexOf(action.payload.assignedTactics[i]);
+          console.log(arr2);
+          console.log(action.payload.assignedTactics[i]);
+
+          if (index2 !== -1) {
+            arr2.splice(index2, 1);
+            console.log(arr2);
+          }
+        }
+
         var newArray = remStrategy(action.payload);
+
+        const remTactic = arr2;
       }
 
       // console.log(newArray.indexOf(action.payload));
@@ -162,11 +190,20 @@ export default function(state = initialState, action) {
       //console.log(action.payload[0]);
       //console.log(state.assignedDevelopers.indexOf(action.payload[0]));
       //console.log(state.nameDeveloper);
-      return {
-        ...state,
-        assignedStrategies: newArray,
-        loading: false
-      };
+      if (remTactic === undefined) {
+        return {
+          ...state,
+          assignedStrategies: newArray,
+          loading: false
+        };
+      } else {
+        return {
+          ...state,
+          assignedStrategies: newArray,
+          assignedTactics: remTactic,
+          loading: false
+        };
+      }
 
     case DELETE_PROJECT:
       return {

@@ -9,6 +9,7 @@ import {
   CLEAR_ERRORS,
   SET_ASSIGNED_DEVELOPER,
   SET_ASSIGNED_TACTICS,
+  RESET_ASSIGNED_STRATEGIES,
   SET_ASSIGNED_STRATEGIES,
   MATCH_USER
 } from "./types";
@@ -155,6 +156,14 @@ export const setAssignedTactics = tactic => {
 export const setAssignedStrategies = strategy => {
   return {
     type: SET_ASSIGNED_STRATEGIES,
+    payload: strategy
+  };
+};
+
+// Reset assignedTactics
+export const resetAssignedStrategies = strategy => {
+  return {
+    type: RESET_ASSIGNED_STRATEGIES,
     payload: strategy
   };
 };

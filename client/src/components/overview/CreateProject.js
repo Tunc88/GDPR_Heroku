@@ -9,7 +9,8 @@ import {
   createProject,
   setAssignedDevelopers,
   setAssignedTactics,
-  setAssignedStrategies
+  setAssignedStrategies,
+  resetAssignedStrategies
 } from "../../actions/projectActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
@@ -89,10 +90,7 @@ class CreateProject extends Component {
       tacticContent = <Spinner />;
     } else {
       tacticContent = (
-        <TacListGroupField
-          onClick={this.componentWillUpdate}
-          tactics={this.props.assignedStrategies}
-        />
+        <TacListGroupField tactics={this.props.assignedStrategies} />
       );
     }
 
@@ -147,7 +145,9 @@ class CreateProject extends Component {
           Create Project
         </Button>
         <Link to="/PMoverview">
-          <Button bsStyle="info">Abort</Button>
+          <Button bsStyle="info" onClick={this.props.resetAssignedStrategies}>
+            Abort
+          </Button>
         </Link>
       </form>
     );
@@ -163,7 +163,8 @@ CreateProject.propTypes = {
   getStrategies: PropTypes.func.isRequired,
   setAssignedDevelopers: PropTypes.func.isRequired,
   setAssignedTactics: PropTypes.func.isRequired,
-  setAssignedStrategies: PropTypes.func.isRequired
+  setAssignedStrategies: PropTypes.func.isRequired,
+  resetAssignedStrategies: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -186,6 +187,7 @@ export default connect(
     getStrategies,
     setAssignedDevelopers,
     setAssignedTactics,
-    setAssignedStrategies
+    setAssignedStrategies,
+    resetAssignedStrategies
   }
 )(withRouter(CreateProject));
