@@ -13,16 +13,35 @@ import {
   ListGroupItem
 } from "react-bootstrap";
 import EditToolbarTactics from "./EditToolbarTactics";
+import store from "../../store";
 
 class DevListItem extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      assignedDevelopers: {}
+      assignedDevelopers: {},
+      assignedDevelopersForProject: store.getState().project.project
+        .assignedDevelopers
     };
 
     this.onClick = this.onClick.bind(this);
+  }
+
+  componentDidMount() {
+    var arr = this.state.assignedDevelopersForProject;
+
+    if (arr !== undefined) {
+      arr.map(el =>
+        el.name === this.props.developer.name
+          ? this.setState(() => {
+              return {
+                bsStyle: !this.state.bsStyle ? "success" : undefined
+              };
+            })
+          : ""
+      );
+    }
   }
 
   onClick(e) {

@@ -13,17 +13,36 @@ import {
   ListGroupItem
 } from "react-bootstrap";
 import EditToolbarTactics from "./EditToolbarTactics";
+import store from "../../store";
 
 class TacListItem extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      assignedTactics: {}
+      assignedTactics: {},
+      assignedTacticsForProject: store.getState().project.project
+        .assignedTactics
       //nameDeveloper: ""
     };
 
     this.onClick = this.onClick.bind(this);
+  }
+
+  componentDidMount() {
+    var arr = this.state.assignedTacticsForProject;
+
+    if (arr !== undefined) {
+      arr.map(el =>
+        el === this.props.tactic._id
+          ? this.setState(() => {
+              return {
+                bsStyle: !this.state.bsStyle ? "success" : undefined
+              };
+            })
+          : ""
+      );
+    }
   }
 
   onClick(e) {
