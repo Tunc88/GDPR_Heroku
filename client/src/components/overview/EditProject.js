@@ -9,7 +9,9 @@ import {
   editProject,
   setAssignedDevelopers,
   setAssignedTactics,
-  setAssignedStrategies
+  setAssignedStrategies,
+  resetAssignedStrategies,
+  switchAttrForEditProject
 } from "../../actions/projectActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
@@ -46,6 +48,7 @@ class EditProject extends Component {
     this.props.getDevelopers();
     this.props.getStrategies();
     this.props.match.params.id;
+    this.props.switchAttrForEditProject();
   }
 
   onChange(e) {
@@ -84,21 +87,32 @@ class EditProject extends Component {
       developerContent = <Spinner />;
     } else {
       developerContent = (
-        <DevListGroupField developers={this.props.developers} />
+        <DevListGroupField
+          developers={this.props.developers}
+          location={this.props.location}
+        />
       );
     }
 
     if (tactics === null || loading2) {
       tacticContent = <Spinner />;
     } else {
-      tacticContent = <TacListGroupField tactics={this.props.strategies} />;
+      tacticContent = (
+        <TacListGroupField
+          tactics={this.props.strategies}
+          location={this.props.location}
+        />
+      );
     }
 
     if (strategies === null || loading3) {
       strategyContent = <Spinner />;
     } else {
       strategyContent = (
-        <StrListGroupField strategies={this.props.strategies} />
+        <StrListGroupField
+          strategies={this.props.strategies}
+          location={this.props.location}
+        />
       );
     }
 
@@ -139,10 +153,15 @@ class EditProject extends Component {
         </Row>
 
         <Button bsStyle="primary" onClick={this.onSubmit}>
-          Edit Project
+          Save changes
         </Button>
-        <Link to="/PMoverview">
-          <Button bsStyle="info">Abort</Button>
+
+        <Link
+          to={`/project/${this.props.location.pathname.substr(
+            this.props.location.pathname.length - 24
+          )}`}
+        >
+          <Button bsStyle="info">Stop editing and discard changes </Button>
         </Link>
       </form>
     );
@@ -158,7 +177,9 @@ EditProject.propTypes = {
   getStrategies: PropTypes.func.isRequired,
   setAssignedDevelopers: PropTypes.func.isRequired,
   setAssignedTactics: PropTypes.func.isRequired,
-  setAssignedStrategies: PropTypes.func.isRequired
+  setAssignedStrategies: PropTypes.func.isRequired,
+  resetAssignedStrategies: PropTypes.func.isRequired,
+  switchAttrForEditProject: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -181,6 +202,8 @@ export default connect(
     getStrategies,
     setAssignedDevelopers,
     setAssignedTactics,
-    setAssignedStrategies
+    setAssignedStrategies,
+    resetAssignedStrategies,
+    switchAttrForEditProject
   }
 )(withRouter(EditProject));

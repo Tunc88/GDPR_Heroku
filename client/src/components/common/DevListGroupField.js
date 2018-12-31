@@ -10,7 +10,11 @@ class DevListGroupField extends Component {
     //return <div />;
 
     return developers.map(developer => (
-      <DevListItem key={developer._id} developer={developer} />
+      <DevListItem
+        key={developer._id}
+        developer={developer}
+        location={this.props.location}
+      />
     ));
   }
 }

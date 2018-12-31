@@ -31,7 +31,10 @@ class DevListItem extends Component {
   componentDidMount() {
     var arr = this.state.assignedDevelopersForProject;
 
-    if (arr !== undefined) {
+    if (
+      arr !== undefined &&
+      this.props.location.pathname !== "/create-project"
+    ) {
       arr.map(el =>
         el.name === this.props.developer.name
           ? this.setState(() => {

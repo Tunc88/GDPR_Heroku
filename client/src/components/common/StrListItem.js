@@ -32,7 +32,10 @@ class StrListItem extends Component {
   componentDidMount() {
     var arr = this.state.assignedStrategiesForProject;
 
-    if (arr !== undefined) {
+    if (
+      arr !== undefined &&
+      this.props.location.pathname !== "/create-project"
+    ) {
       arr.map(el =>
         el.name === this.props.strategy.name
           ? this.setState(() => {

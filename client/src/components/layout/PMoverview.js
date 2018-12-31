@@ -5,7 +5,10 @@ import "./PMoverview.css";
 import { Link } from "react-router-dom";
 import Spinner from "../common/Spinner";
 import ProjectFeed from "../overview/ProjectFeed";
-import { getProjects } from "../../actions/projectActions";
+import {
+  getProjects,
+  resetAssignedStrategies
+} from "../../actions/projectActions";
 import { getDevelopers } from "../../actions/userActions";
 import {
   Col,
@@ -23,6 +26,7 @@ class PMoverview extends Component {
   componentDidMount() {
     this.props.getProjects();
     this.props.getDevelopers();
+    this.props.resetAssignedStrategies();
   }
 
   render() {
@@ -54,6 +58,7 @@ PMoverview.propTypes = {
   getProjects: PropTypes.func.isRequired,
   project: PropTypes.object.isRequired,
   getDevelopers: PropTypes.func.isRequired,
+  resetAssignedStrategies: PropTypes.func.isRequired,
   developer: PropTypes.object.isRequired
 };
 
@@ -64,5 +69,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getProjects, getDevelopers }
+  { getProjects, getDevelopers, resetAssignedStrategies }
 )(PMoverview);

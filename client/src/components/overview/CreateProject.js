@@ -82,7 +82,10 @@ class CreateProject extends Component {
       developerContent = <Spinner />;
     } else {
       developerContent = (
-        <DevListGroupField developers={this.props.developers} />
+        <DevListGroupField
+          developers={this.props.developers}
+          location={this.props.location}
+        />
       );
     }
 
@@ -90,7 +93,10 @@ class CreateProject extends Component {
       tacticContent = <Spinner />;
     } else {
       tacticContent = (
-        <TacListGroupField tactics={this.props.assignedStrategies} />
+        <TacListGroupField
+          tactics={this.props.assignedStrategies}
+          location={this.props.location}
+        />
       );
     }
 
@@ -101,6 +107,7 @@ class CreateProject extends Component {
         <StrListGroupField
           onClick={this.componentWillUpdate}
           strategies={this.props.strategies}
+          location={this.props.location}
         />
       );
     }

@@ -6,7 +6,8 @@ import {
   SET_ASSIGNED_DEVELOPER,
   SET_ASSIGNED_TACTICS,
   RESET_ASSIGNED_STRATEGIES,
-  SET_ASSIGNED_STRATEGIES
+  SET_ASSIGNED_STRATEGIES,
+  SWITCH_ATTR_FOR_EDIT_PROJECT
 } from "../actions/types";
 
 const initialState = {
@@ -35,6 +36,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         project: action.payload,
+        loading: false
+      };
+    case SWITCH_ATTR_FOR_EDIT_PROJECT:
+      console.log(state.project.assignedStrategies);
+      console.log(state.project.assignedTactics);
+      console.log(state.project.assignedDevelopers);
+
+      return {
+        ...state,
+        assignedStrategies: state.project.assignedStrategies,
+        assignedTactics: state.project.assignedTactics,
+        assignedDevelopers: state.project.assignedDevelopers,
         loading: false
       };
     case SET_ASSIGNED_DEVELOPER:
@@ -170,8 +183,8 @@ export default function(state = initialState, action) {
 
         for (var i = 0; i < action.payload.assignedTactics.length; i++) {
           var index2 = arr2.indexOf(action.payload.assignedTactics[i]);
-          console.log(arr2);
-          console.log(action.payload.assignedTactics[i]);
+          //console.log(arr2);
+          //console.log(action.payload.assignedTactics[i]);
 
           if (index2 !== -1) {
             arr2.splice(index2, 1);

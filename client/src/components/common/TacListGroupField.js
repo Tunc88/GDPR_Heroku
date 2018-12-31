@@ -27,7 +27,11 @@ class TacListGroupField extends Component {
 
     return concatTactics().map(tactic => (
       //console.log(tactic.assignedTactics),
-      <TacListItem key={tactic._id} tactic={tactic} />
+      <TacListItem
+        key={tactic._id}
+        tactic={tactic}
+        location={this.props.location}
+      />
     ));
   }
 }

@@ -32,7 +32,10 @@ class TacListItem extends Component {
   componentDidMount() {
     var arr = this.state.assignedTacticsForProject;
 
-    if (arr !== undefined) {
+    if (
+      arr !== undefined &&
+      this.props.location.pathname !== "/create-project"
+    ) {
       arr.map(el =>
         el === this.props.tactic._id
           ? this.setState(() => {

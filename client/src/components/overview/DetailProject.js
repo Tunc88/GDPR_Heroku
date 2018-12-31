@@ -68,7 +68,7 @@ class DetailProject extends Component {
       return arr;
     }
 
-    console.log(aggrTac());
+    // console.log(aggrTac());
     //console.log(tactics);
     /*     var devName = [];
     for (var i = 0; i < this.createNewArray().length; i++) {

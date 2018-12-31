@@ -11,7 +11,8 @@ import {
   SET_ASSIGNED_TACTICS,
   RESET_ASSIGNED_STRATEGIES,
   SET_ASSIGNED_STRATEGIES,
-  MATCH_USER
+  MATCH_USER,
+  SWITCH_ATTR_FOR_EDIT_PROJECT
 } from "./types";
 
 // create Project
@@ -165,5 +166,13 @@ export const resetAssignedStrategies = strategy => {
   return {
     type: RESET_ASSIGNED_STRATEGIES,
     payload: strategy
+  };
+};
+
+// switch Attributes to edit project
+export const switchAttrForEditProject = attr => {
+  return {
+    type: SWITCH_ATTR_FOR_EDIT_PROJECT,
+    payload: attr
   };
 };
