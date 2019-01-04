@@ -33,7 +33,7 @@ class ProjectItem extends Component {
       return arr;
     }
 
-    console.log(aggrTac());
+    //console.log(aggrTac());
     //console.log(tactics);
 
     // this.props.project.assignedStrategiesWithAllTactics.map(strategies =>

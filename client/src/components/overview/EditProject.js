@@ -18,7 +18,16 @@ import TextField from "../common/TextField";
 import DevListGroupField from "../common/DevListGroupField";
 import TacListGroupField from "../common/TacListGroupField";
 import StrListGroupField from "../common/StrListGroupField";
-import { Button, ListGroup, ListGroupItem, Row, Col } from "react-bootstrap";
+import {
+  Button,
+  ListGroup,
+  ListGroupItem,
+  Row,
+  Col,
+  ToggleButton,
+  ToggleButtonGroup,
+  ButtonToolbar
+} from "react-bootstrap";
 import { getDevelopers } from "../../actions/userActions";
 import { getTactics } from "../../actions/tacticActions";
 import { getStrategies } from "../../actions/strategyActions";
@@ -33,6 +42,7 @@ class EditProject extends Component {
       assignedStrategies: [],
       assignedTactics: [],
       finished: false,
+      progress: 0,
       assignedDevelopers: [],
       //nameDeveloper: "",
       developers: [],
@@ -42,6 +52,7 @@ class EditProject extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onClickProgress = this.onClickProgress.bind(this);
   }
 
   componentDidMount() {
@@ -55,23 +66,29 @@ class EditProject extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  onClickProgress(e) {
+    this.setState({ progress: e.target.value * 10 });
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
     //const { projectId } = this.props;
 
-    const newProject = {
+    const editedProject = {
       id: this.props.match.params.id,
       name: this.state.name,
       description: this.state.description,
-      assignedTactics: store.getState().project.assignedTactics._id, //fehlerquelle
+      assignedTactics: store.getState().project.assignedTactics,
       assignedStrategies: store.getState().project.assignedStrategies,
       assignedDevelopers: store.getState().project.assignedDevelopers,
       //nameDeveloper: store.getState().project.nameDeveloper,
-      finished: this.state.finished
+      finished: this.state.finished,
+      progress: this.state.progress
     };
 
-    this.props.editProject(newProject, this.props.history);
+    //console.log(editedProject);
+    this.props.editProject(editedProject, this.props.history);
   }
 
   render() {
@@ -99,7 +116,7 @@ class EditProject extends Component {
     } else {
       tacticContent = (
         <TacListGroupField
-          tactics={this.props.strategies}
+          tactics={this.props.assignedStrategies}
           location={this.props.location}
         />
       );
@@ -152,9 +169,62 @@ class EditProject extends Component {
           </Col>
         </Row>
 
-        <Button bsStyle="primary" onClick={this.onSubmit}>
-          Save changes
-        </Button>
+        <Row className="show-grid">
+          <Col md={12}>
+            <h4>Current state of the Project</h4>
+            <ButtonToolbar>
+              <ToggleButtonGroup
+                type="radio"
+                name="options"
+                defaultValue={store.getState().project.project.progress / 10}
+              >
+                <ToggleButton value={0} onClick={this.onClickProgress}>
+                  0 %
+                </ToggleButton>
+                <ToggleButton value={1} onClick={this.onClickProgress}>
+                  10 %
+                </ToggleButton>
+                <ToggleButton value={2} onClick={this.onClickProgress}>
+                  20 %
+                </ToggleButton>
+                <ToggleButton value={3} onClick={this.onClickProgress}>
+                  30 %
+                </ToggleButton>
+                <ToggleButton value={4} onClick={this.onClickProgress}>
+                  40 %
+                </ToggleButton>
+                <ToggleButton value={5} onClick={this.onClickProgress}>
+                  50 %
+                </ToggleButton>
+                <ToggleButton value={6} onClick={this.onClickProgress}>
+                  60 %
+                </ToggleButton>
+                <ToggleButton value={7} onClick={this.onClickProgress}>
+                  70 %
+                </ToggleButton>
+                <ToggleButton value={8} onClick={this.onClickProgress}>
+                  80 %
+                </ToggleButton>
+                <ToggleButton value={9} onClick={this.onClickProgress}>
+                  90 %
+                </ToggleButton>
+                <ToggleButton value={10} onClick={this.onClickProgress}>
+                  100 %
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </ButtonToolbar>
+          </Col>
+        </Row>
+
+        <Link
+          to={`/project/${this.props.location.pathname.substr(
+            this.props.location.pathname.length - 24
+          )}`}
+        >
+          <Button bsStyle="primary" onClick={this.onSubmit}>
+            Save changes
+          </Button>
+        </Link>
 
         <Link
           to={`/project/${this.props.location.pathname.substr(

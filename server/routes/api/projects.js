@@ -214,9 +214,9 @@ router.post(
     }*/
 
     // Get fields
+
     const projectFields = {};
 
-    projectFields.id = req.body.id;
     if (req.body.name) projectFields.name = req.body.name;
     if (req.body.finished) projectFields.finished = req.body.finished;
     if (req.body.description) projectFields.description = req.body.description;
@@ -227,13 +227,32 @@ router.post(
     if (req.body.assignedDevelopers)
       projectFields.assignedDevelopers = req.body.assignedDevelopers;
 
+    Project.findOne({ project: req.project._id }).then(project => {
+      if (project) {
+        Project.findOneAndUpdate(
+          {
+            project: req.project._id
+          },
+          {
+            $set: projectFields
+          },
+          {
+            new: true
+          }
+        ).then(project => res.json(project));
+      }
+    });
+
+    /*
+
+
     Project.findOneAndUpdate(
       { _id: req.body.id },
       { $set: projectFields },
       { new: true }
     ).then(project => {
       res.json(req.params.id);
-    });
+    })*/
   }
 );
 
@@ -342,46 +361,36 @@ router.get("/project/:id", (req, res) => {
 // @desc    Edit project by ID
 // @access  Public
 
-router.post("/project/edit/:id", (req, res) => {
+router.post("/project/edit", (req, res) => {
   const errors = {};
 
-  Project.findbyIdAndUpdate(
-    req.params.id,
+  const projectFields = {};
+
+  if (req.body.name) projectFields.name = req.body.name;
+  if (req.body.finished) projectFields.finished = req.body.finished;
+  if (req.body.progress) projectFields.progress = req.body.progress;
+  if (req.body.description) projectFields.description = req.body.description;
+  if (req.body.assignedStrategies)
+    projectFields.assignedStrategies = req.body.assignedStrategies;
+  if (req.body.assignedTactics)
+    projectFields.assignedTactics = req.body.assignedTactics;
+  if (req.body.assignedDevelopers)
+    projectFields.assignedDevelopers = req.body.assignedDevelopers;
+
+  //console.log(projectFields);
+
+  console.log(req.body.id);
+
+  Project.findOneAndUpdate(
+    { _id: req.body.id },
     {
-      $set: {
-        name: req.body.name,
-        description: req.body.description,
-        finished: req.body.finshed,
-        assignedTactics: req.body.assignedTactics,
-        assignedStrategies: req.body.assignedStrategies,
-        assignedDevelopers: req.body.assignedDevelopers
-      }
+      $set: projectFields
     },
-    { new: true }
+    {
+      new: true
+    }
   )
-    .then(project => {
-      res.json(true);
-    })
-    .catch(err => res.status(404).json({ project: "There is no project" }));
-});
-
-// @route   GET api/projects/project/edit/:project_id
-// @desc    Get matching names of developer
-// @access  Public
-
-router.get("/developer/match/:id", (req, res) => {
-  const errors = {};
-  var arr = [];
-
-  Project.findById(req.params.id)
-    .then(project => {
-      for (var i = 0; i < project.assignedDevelopers.length; i++) {
-        User.findById(project.assignedDevelopers[i]).then(user => {
-          arr.push(user.name), console.log(user.name);
-        });
-      }
-      res.json(arr);
-    })
+    .then(project => res.json(project))
     .catch(err => res.status(404).json({ project: "There is no project" }));
 });
 

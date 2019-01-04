@@ -105,19 +105,20 @@ export const deleteProject = id => dispatch => {
 };
 
 // Edit Project
-export const editProject = id => dispatch => {
+export const editProject = (projectData, history) => dispatch => {
   axios
-
-    .post(`/api/projects/project/edit/${id}`)
-    .then(res =>
-      dispatch({
-        type: GET_PROJECTS,
-        payload: res.data
-      })
+    .post(`/api/projects/project/edit`, projectData)
+    .then(
+      res =>
+        dispatch({
+          type: GET_PROJECT,
+          payload: res.data
+        }),
+      history.push(`/project/${projectData.id}`)
     )
     .catch(err =>
       dispatch({
-        type: GET_PROJECTS,
+        type: GET_PROJECT,
         payload: null
       })
     );

@@ -12,6 +12,10 @@ const ProjectSchema = new Schema({
     type: Boolean,
     default: false
   },
+  progress: {
+    type: Number,
+    default: 0
+  },
   description: {
     type: String,
     required: true

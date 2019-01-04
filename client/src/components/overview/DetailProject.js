@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Panel, Row, Col, Button } from "react-bootstrap";
+import { Panel, Row, Col, Button, ProgressBar } from "react-bootstrap";
 import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProject } from "../../actions/projectActions";
@@ -8,8 +8,6 @@ import DevListGroupField from "../common/DevListGroupField";
 import StrListGroupField from "../common/StrListGroupField";
 import TacListGroupField from "../common/TacListGroupField";
 import PropTypes from "prop-types";
-
-import { matchDev } from "../../actions/projectActions";
 
 import Spinner from "../common/Spinner";
 
@@ -30,29 +28,6 @@ class DetailProject extends Component {
     this.props.getProject(this.props.match.params.id);
   }
 
-  /*   matchItemTry(id) {
-    const temp = axios.get(`/api/users/user/${id}`).then(res => {
-      return res.data.name;
-    });
-    return temp;
-  }
-
-  matchItem(id) {
-    const temp = axios.get(`/api/users/user/${id}`).then(res => {
-      return res.data.name;
-    });
-    return temp;
-  }
-
-  createNewArray() {
-    var arr = [];
-    if (this.props.project.assignedDevelopers != undefined)
-      for (var i = 0; i < this.props.project.assignedDevelopers.length; i++) {
-        arr.push(this.props.project.assignedDevelopers[i]);
-      }
-    return arr;
-  }
- */
   render() {
     var tactics = this.props.project.assignedStrategiesWithAllTactics;
 
@@ -151,11 +126,60 @@ class DetailProject extends Component {
           <Link to="/PMoverview">
             <Button>Back to Overview</Button>
           </Link>
-
           <Link to={`/project/edit-project/${this.props.project._id}`}>
             <Button>Edit Project</Button>
           </Link>
         </Panel>
+
+        {this.props.project.progress < 75 ? (
+          <Panel>
+            <Panel.Heading>
+              <Panel.Title componentClass="h4">
+                {this.props.project.progress === 0
+                  ? "Project haven't started yet"
+                  : "Project ongoing"}
+              </Panel.Title>
+            </Panel.Heading>
+            <Panel.Body>
+              <ProgressBar
+                striped
+                bsStyle="danger"
+                label={`${this.props.project.progress}%`}
+                now={this.props.project.progress}
+              />
+            </Panel.Body>
+          </Panel>
+        ) : this.props.project.progress < 100 ? (
+          <Panel>
+            <Panel.Heading>
+              <Panel.Title componentClass="h4">Project is ongoing</Panel.Title>
+            </Panel.Heading>
+            <Panel.Body>
+              <ProgressBar
+                striped
+                bsStyle="warning"
+                label={`${this.props.project.progress}%`}
+                now={this.props.project.progress}
+              />
+            </Panel.Body>
+          </Panel>
+        ) : (
+          <Panel>
+            <Panel.Heading>
+              <Panel.Title componentClass="h4">
+                Project is completed
+              </Panel.Title>
+            </Panel.Heading>
+            <Panel.Body>
+              <ProgressBar
+                striped
+                bsStyle="success"
+                label={`${this.props.project.progress}%`}
+                now={this.props.project.progress}
+              />
+            </Panel.Body>
+          </Panel>
+        )}
       </div>
     );
   }
@@ -164,8 +188,7 @@ class DetailProject extends Component {
 DetailProject.propTypes = {
   getProject: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-  matchDev: PropTypes.func.isRequired
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -177,7 +200,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    getProject,
-    matchDev
+    getProject
   }
 )(withRouter(DetailProject));

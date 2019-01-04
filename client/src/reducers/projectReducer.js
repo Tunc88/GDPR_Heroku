@@ -39,14 +39,36 @@ export default function(state = initialState, action) {
         loading: false
       };
     case SWITCH_ATTR_FOR_EDIT_PROJECT:
-      console.log(state.project.assignedStrategies);
-      console.log(state.project.assignedTactics);
-      console.log(state.project.assignedDevelopers);
+      //console.log(state.project.assignedStrategies);
+      //console.log(state.project.assignedTactics);
+      //console.log(state.project.assignedDevelopers);
+
+      var tempArr = [];
+
+      for (
+        var i = 0;
+        i < state.project.assignedStrategiesWithAllTactics.length;
+        i++
+      ) {
+        for (
+          var j = 0;
+          j <
+          state.project.assignedStrategiesWithAllTactics[i].assignedTactics
+            .length;
+          j++
+        ) {
+          tempArr.push(
+            state.project.assignedStrategiesWithAllTactics[i].assignedTactics[j]
+          );
+        }
+      }
+
+      //console.log(tempArr);
 
       return {
         ...state,
         assignedStrategies: state.project.assignedStrategies,
-        assignedTactics: state.project.assignedTactics,
+        assignedTactics: tempArr,
         assignedDevelopers: state.project.assignedDevelopers,
         loading: false
       };
@@ -68,8 +90,16 @@ export default function(state = initialState, action) {
 
       const remDeveloper = dev => {
         var arr = state.assignedDevelopers;
-        var index = arr.indexOf(dev);
-        console.log(index);
+        var tempArr = [];
+
+        for (var i = 0; i < arr.length; i++) {
+          tempArr.push(arr[i]._id);
+        }
+
+        //console.log(tempArr);
+
+        var index = tempArr.indexOf(dev._id);
+        //console.log(index);
         //console.log(dev);
 
         if (index !== -1) {
@@ -81,8 +111,13 @@ export default function(state = initialState, action) {
 
       //console.log(state.assignedDevelopers);
 
-      //console.log(action.payload);
-      if (state.assignedDevelopers.indexOf(action.payload) === -1) {
+      var tempArr = [];
+
+      for (var i = 0; i < state.assignedDevelopers.length; i++) {
+        tempArr.push(state.assignedDevelopers[i]._id);
+      }
+
+      if (tempArr.indexOf(action.payload._id) === -1) {
         var newArray = addDeveloper(action.payload);
       } else {
         var newArray = remDeveloper(action.payload);
@@ -103,7 +138,13 @@ export default function(state = initialState, action) {
 
       const remTactic = tac => {
         var arr = state.assignedTactics;
-        var index = arr.indexOf(tac);
+        var tempArr = [];
+
+        for (var i = 0; i < arr.length; i++) {
+          tempArr.push(arr[i]._id);
+        }
+
+        var index = tempArr.indexOf(tac._id);
         //console.log(index);
         //console.log(tac);
 
@@ -114,7 +155,14 @@ export default function(state = initialState, action) {
       };
 
       //console.log(action.payload);
-      if (state.assignedTactics.indexOf(action.payload) === -1) {
+
+      var tempArr = [];
+
+      for (var i = 0; i < state.assignedTactics.length; i++) {
+        tempArr.push(state.assignedTactics[i]._id);
+      }
+
+      if (tempArr.indexOf(action.payload._id) === -1) {
         var newArray = addTactic(action.payload);
       } else {
         var newArray = remTactic(action.payload);
@@ -158,7 +206,14 @@ export default function(state = initialState, action) {
 
       const remStrategy = str => {
         var arr = state.assignedStrategies;
-        var index = arr.indexOf(str);
+
+        var tempArr = [];
+
+        for (var i = 0; i < arr.length; i++) {
+          tempArr.push(arr[i]._id);
+        }
+
+        var index = tempArr.indexOf(str._id);
         //console.log(index);
         //console.log(str);
 
@@ -172,7 +227,13 @@ export default function(state = initialState, action) {
       //console.log(state.assignedDevelopers);
 
       //console.log(action.payload);
-      if (state.assignedStrategies.indexOf(action.payload) === -1) {
+      var tempArr = [];
+
+      for (var i = 0; i < state.assignedStrategies.length; i++) {
+        tempArr.push(state.assignedStrategies[i]._id);
+      }
+
+      if (tempArr.indexOf(action.payload._id) === -1) {
         var newArray = addStrategy(action.payload);
         var remTactic = undefined;
       } else {

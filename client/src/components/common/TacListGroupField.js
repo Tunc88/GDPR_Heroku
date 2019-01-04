@@ -14,11 +14,13 @@ class TacListGroupField extends Component {
     function concatTactics() {
       var tempArray = [];
 
-      tactics.map(strategy =>
-        strategy.assignedTactics.map(
-          tactic => (tempArray = tempArray.concat([tactic]))
-        )
-      );
+      if (tactics) {
+        tactics.map(strategy =>
+          strategy.assignedTactics.map(
+            tactic => (tempArray = tempArray.concat([tactic]))
+          )
+        );
+      }
 
       return tempArray;
     }
