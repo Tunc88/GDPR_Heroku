@@ -68,16 +68,15 @@ router.get("/", (req, res) =>
             tacticIndex
           ) {
             if (project.assignedTactics.includes(tactic._id.toString())) {
-              console.log("true");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              //console.log("true");
+              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
               NewAssignedTactics.push(
                 assignedStrategy.assignedTactics[tacticIndex]
               );
             } else {
-              console.log("false");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-
-              console.log(NewAssignedTactics);
+              //console.log("false");
+              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              //console.log(NewAssignedTactics);
             }
 
             // }
@@ -85,7 +84,7 @@ router.get("/", (req, res) =>
           assignedStrategy.assignedTactics = NewAssignedTactics;
           //console.log(assignedStrategy);
 
-          console.log(assignedStrategy);
+          //console.log(assignedStrategy);
         });
       });
 
@@ -332,16 +331,15 @@ router.get("/project/:id", (req, res) => {
             tacticIndex
           ) {
             if (project.assignedTactics.includes(tactic._id.toString())) {
-              console.log("true");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              // console.log("true");
+              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
               NewAssignedTactics.push(
                 assignedStrategy.assignedTactics[tacticIndex]
               );
             } else {
-              console.log("false");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-
-              console.log(NewAssignedTactics);
+              // console.log("false");
+              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              //console.log(NewAssignedTactics);
             }
 
             // }
@@ -349,7 +347,7 @@ router.get("/project/:id", (req, res) => {
           assignedStrategy.assignedTactics = NewAssignedTactics;
           //console.log(assignedStrategy);
 
-          console.log(assignedStrategy);
+          //console.log(assignedStrategy);
         });
       });
       res.json(projects[0]);
@@ -365,6 +363,7 @@ router.post("/project/edit", (req, res) => {
   const errors = {};
 
   const projectFields = {};
+  const userFields = {};
 
   if (req.body.name) projectFields.name = req.body.name;
   if (req.body.finished) projectFields.finished = req.body.finished;
@@ -377,9 +376,23 @@ router.post("/project/edit", (req, res) => {
   if (req.body.assignedDevelopers)
     projectFields.assignedDevelopers = req.body.assignedDevelopers;
 
+  if (req.body.assignedDevelopers) userFields.assignedProjects = req.body.id;
+
   //console.log(projectFields);
 
-  console.log(req.body.id);
+  console.log("123123" + req.body.id);
+  for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+    for (
+      var j = 0;
+      j < req.body.assignedDevelopers[i].assignedProjects.length;
+      j++
+    ) {
+      console.log(
+        "123123" + req.body.assignedDevelopers[i].assignedProjects[j]
+      );
+    }
+    console.log("123123" + req.body.assignedDevelopers[i]);
+  }
 
   Project.findOneAndUpdate(
     { _id: req.body.id },
@@ -392,6 +405,49 @@ router.post("/project/edit", (req, res) => {
   )
     .then(project => res.json(project))
     .catch(err => res.status(404).json({ project: "There is no project" }));
+  /*
+  for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+    if (
+      req.body.assignedDevelopers[i].assignedProjects.indexOf(req.body.id) ===
+      -1
+    ) {
+      Console.log("Project wird hinzugefügt");
+      User.findOneAndUpdate(
+        { _id: req.body.assignedDevelopers[i]._id },
+        {
+          $push: userFields
+        },
+        {
+          new: true
+        }
+      )
+        .then(project => res.json(project))
+        .catch(err => res.status(404).json({ project: "There is no user" }));
+    } else {
+      for (var i = 0; i < req.body.allDevelopers.length; i++) {
+        if (
+          req.body.allDevelopers[i].assignedProjects.indexOf(req.body.id) === -1
+        ) {
+          Console.log("Project bleibt");
+        } else {
+          Console.log("Project wird entfernt");
+          /*User.findOneAndUpdate(
+            { _id: req.body.allDevelopers[i]._id },
+            {
+              $pull: userFields
+            },
+            {
+              new: true
+            }
+          )
+            .then(project => res.json(project))
+            .catch(err =>
+              res.status(404).json({ project: "There is no user" })
+            );
+        }
+      }
+    }
+  }*/
 });
 
 module.exports = router;

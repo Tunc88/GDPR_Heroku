@@ -76,7 +76,17 @@ class Navigationbar extends Component {
               title={isAuthenticated ? username : "Profile"}
               id="basic-nav-dropdown"
             >
-              <MenuItem eventKey={3.1}>View</MenuItem>
+              <MenuItem eventKey={3.1}>
+                <Link
+                  to={
+                    this.props.auth.user.role === "Project Manager"
+                      ? "/pmOverview"
+                      : "/Overview"
+                  }
+                >
+                  View
+                </Link>
+              </MenuItem>
               <MenuItem eventKey={3.2}>Edit</MenuItem>
               <MenuItem divider />
               <MenuItem eventKey={3.3}>Change Role</MenuItem>

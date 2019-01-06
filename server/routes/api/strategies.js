@@ -74,7 +74,7 @@ router.post(
   "/editstrategy",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     // const { errors, isValid } = validateTacticInput(req.body);
 
     // Check Validation
@@ -92,7 +92,7 @@ router.post(
     if (req.body.name) strategyFields.name = req.body.name;
     //console.log(strategyFields);
     if (req.body.description) strategyFields.description = req.body.description;
-    console.log(strategyFields);
+    //console.log(strategyFields);
     if (req.body.assignedTactics)
       strategyFields.assignedTactics = req.body.assignedTactics;
     /* strategyFields.assignedTactics.forEach(tactic => {
@@ -103,8 +103,8 @@ router.post(
         tactic.id = ObjectId();
       }
     });*/
-    console.log("fields:");
-    console.log(strategyFields);
+    //console.log("fields:");
+    //console.log(strategyFields);
 
     Strategy.findOneAndUpdate(
       { _id: req.body.id },

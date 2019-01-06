@@ -84,7 +84,8 @@ class EditProject extends Component {
       assignedDevelopers: store.getState().project.assignedDevelopers,
       //nameDeveloper: store.getState().project.nameDeveloper,
       finished: this.state.finished,
-      progress: this.state.progress
+      progress: this.state.progress,
+      allDevelopers: store.getState().user.developers
     };
 
     //console.log(editedProject);

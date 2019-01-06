@@ -54,16 +54,15 @@ router.get("/", (req, res) =>
             tacticIndex
           ) {
             if (pattern.assignedTactics.includes(tactic._id.toString())) {
-              console.log("true");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              //console.log("true");
+              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
               NewAssignedTactics.push(
                 assignedStrategy.assignedTactics[tacticIndex]
               );
             } else {
-              console.log("false");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-
-              console.log(NewAssignedTactics);
+              //console.log("false");
+              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              //console.log(NewAssignedTactics);
             }
 
             // }
@@ -71,7 +70,7 @@ router.get("/", (req, res) =>
           assignedStrategy.assignedTactics = NewAssignedTactics;
           //console.log(assignedStrategy);
 
-          console.log(assignedStrategy);
+          //console.log(assignedStrategy);
         });
       });
 
@@ -261,20 +260,19 @@ router.get("/testing", (req, res) =>
 
             //  console.log(typeof pattern.assignedTactics[0]);
             if (pattern.assignedTactics.includes(tactic._id.toString())) {
-              console.log("true");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              //console.log("true");
+              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
               NewAssignedTactics.push(
                 assignedStrategy.assignedTactics[tacticIndex]
               );
             } else {
-              console.log("false");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-
+              //console.log("false");
+              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
               // assignedStrategy.assignedTactics.splice(tacticIndex, 1);
               // NewAssignedTactics.push(
               // assignedStrategy.assignedTactics[tacticIndex]
               //);
-              console.log(NewAssignedTactics);
+              //console.log(NewAssignedTactics);
             }
 
             // }
@@ -282,7 +280,7 @@ router.get("/testing", (req, res) =>
           assignedStrategy.assignedTactics = NewAssignedTactics;
           //console.log(assignedStrategy);
 
-          console.log(assignedStrategy);
+          //console.log(assignedStrategy);
         });
       });
 
