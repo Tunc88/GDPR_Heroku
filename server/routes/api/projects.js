@@ -377,21 +377,108 @@ router.post("/project/edit", (req, res) => {
     projectFields.assignedDevelopers = req.body.assignedDevelopers;
 
   if (req.body.assignedDevelopers) userFields.assignedProjects = req.body.id;
-
   //console.log(projectFields);
 
-  console.log("123123" + req.body.id);
-  for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+  //console.log("123123" + req.body.id);
+  /*for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
     for (
       var j = 0;
       j < req.body.assignedDevelopers[i].assignedProjects.length;
       j++
     ) {
       console.log(
-        "123123" + req.body.assignedDevelopers[i].assignedProjects[j]
+        "assignedProjects: " +
+          req.body.assignedDevelopers[i].assignedProjects[j]
       );
     }
-    console.log("123123" + req.body.assignedDevelopers[i]);
+    console.log("assignedDevelopers: " + req.body.assignedDevelopers[i]);
+  }*/
+
+  var idArrAssDev = [];
+
+  for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+    idArrAssDev.push(req.body.assignedDevelopers[i]._id);
+  }
+
+  //console.log(idArrAssDev);
+
+  for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+    if (
+      req.body.assignedDevelopers[i].assignedProjects.indexOf(req.body.id) ===
+      -1
+    ) {
+      console.log("Project wird hinzugefügt");
+      User.findOneAndUpdate(
+        { _id: req.body.assignedDevelopers[i]._id },
+        {
+          $push: userFields
+        },
+        {
+          new: true
+        }
+      )
+        .then(project => res.json(project))
+        .catch(err => res.status(404).json({ project: "There is no user" }));
+    } else {
+      //console.log("entfernen prüfen");
+
+      for (var j = 0; j < req.body.allDevelopers.length; j++) {
+        if (
+          req.body.allDevelopers[j].assignedProjects.indexOf(req.body.id) !==
+            -1 &&
+          idArrAssDev.indexOf(req.body.allDevelopers[j]._id) === -1
+        ) {
+          //console.log("Entfernen");
+          User.findOneAndUpdate(
+            { _id: req.body.allDevelopers[j]._id },
+            {
+              $pull: userFields
+            },
+            {
+              new: true
+            }
+          )
+            .then(project => res.json(project))
+            .catch(err =>
+              res.status(404).json({ project: "There is no user" })
+            );
+        } else {
+          //console.log("Bleibt");
+        }
+      }
+
+      /*
+      for (var i = 0; i < req.body.allDevelopers.length; i++) {
+        for (var j = 0; j < req.body.assignedDevelopers.length; j++) {
+          console.log(req.body.allDevelopers[i].assignedProjects);
+          console.log(req.body.assignedDevelopers[j].assignedProjects);
+          if (
+            req.body.allDevelopers[i].assignedProjects.indexOf(req.body.id) !==
+              -1 &&
+            req.body.allDevelopers[i].assignedProjects ===
+              req.body.assignedDevelopers[j].assignedProjects
+          ) {
+            console.log("Project wird entfernt");
+            User.findOneAndUpdate(
+              { _id: req.body.allDevelopers[i]._id },
+              {
+                $pull: userFields
+              },
+              {
+                new: true
+              }
+            )
+              .then(project => res.json(project))
+              .catch(err =>
+                res.status(404).json({ project: "There is no user" })
+              );
+          } else {
+            console.log("Project bleibt");
+          }
+        }
+      }
+    */
+    }
   }
 
   Project.findOneAndUpdate(
@@ -405,49 +492,6 @@ router.post("/project/edit", (req, res) => {
   )
     .then(project => res.json(project))
     .catch(err => res.status(404).json({ project: "There is no project" }));
-  /*
-  for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
-    if (
-      req.body.assignedDevelopers[i].assignedProjects.indexOf(req.body.id) ===
-      -1
-    ) {
-      Console.log("Project wird hinzugefügt");
-      User.findOneAndUpdate(
-        { _id: req.body.assignedDevelopers[i]._id },
-        {
-          $push: userFields
-        },
-        {
-          new: true
-        }
-      )
-        .then(project => res.json(project))
-        .catch(err => res.status(404).json({ project: "There is no user" }));
-    } else {
-      for (var i = 0; i < req.body.allDevelopers.length; i++) {
-        if (
-          req.body.allDevelopers[i].assignedProjects.indexOf(req.body.id) === -1
-        ) {
-          Console.log("Project bleibt");
-        } else {
-          Console.log("Project wird entfernt");
-          /*User.findOneAndUpdate(
-            { _id: req.body.allDevelopers[i]._id },
-            {
-              $pull: userFields
-            },
-            {
-              new: true
-            }
-          )
-            .then(project => res.json(project))
-            .catch(err =>
-              res.status(404).json({ project: "There is no user" })
-            );
-        }
-      }
-    }
-  }*/
 });
 
 module.exports = router;

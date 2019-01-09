@@ -4,6 +4,7 @@ import { Panel, Row, Col, Button, ProgressBar } from "react-bootstrap";
 import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProject } from "../../actions/projectActions";
+import { getDevelopers } from "../../actions/userActions";
 import DevListGroupField from "../common/DevListGroupField";
 import StrListGroupField from "../common/StrListGroupField";
 import TacListGroupField from "../common/TacListGroupField";
@@ -26,6 +27,7 @@ class DetailProject extends Component {
 
   componentDidMount() {
     this.props.getProject(this.props.match.params.id);
+    this.props.getDevelopers();
   }
 
   render() {
@@ -188,6 +190,7 @@ class DetailProject extends Component {
 DetailProject.propTypes = {
   getProject: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  getDevelopers: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired
 };
 
@@ -200,6 +203,7 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    getProject
+    getProject,
+    getDevelopers
   }
 )(withRouter(DetailProject));
