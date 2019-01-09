@@ -394,6 +394,7 @@ router.post("/project/edit", (req, res) => {
     console.log("assignedDevelopers: " + req.body.assignedDevelopers[i]);
   }*/
 
+  let promiseArr = [];
   var idArrAssDev = [];
 
   for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
@@ -408,17 +409,22 @@ router.post("/project/edit", (req, res) => {
       -1
     ) {
       console.log("Project wird hinzugefügt");
-      User.findOneAndUpdate(
-        { _id: req.body.assignedDevelopers[i]._id },
-        {
-          $push: userFields
-        },
-        {
-          new: true
-        }
-      )
-        .then(project => res.json(project))
-        .catch(err => res.status(404).json({ project: "There is no user" }));
+
+      var prom = new Promise(function(resolve, reject) {
+        User.findOneAndUpdate(
+          { _id: req.body.assignedDevelopers[i]._id },
+          {
+            $push: userFields
+          },
+          {
+            new: true
+          }
+        )
+          .then(project => resolve())
+          .catch(err => reject(err));
+      });
+
+      promiseArr.push(prom);
     } else {
       //console.log("entfernen prüfen");
 
@@ -429,19 +435,22 @@ router.post("/project/edit", (req, res) => {
           idArrAssDev.indexOf(req.body.allDevelopers[j]._id) === -1
         ) {
           //console.log("Entfernen");
-          User.findOneAndUpdate(
-            { _id: req.body.allDevelopers[j]._id },
-            {
-              $pull: userFields
-            },
-            {
-              new: true
-            }
-          )
-            .then(project => res.json(project))
-            .catch(err =>
-              res.status(404).json({ project: "There is no user" })
-            );
+
+          var prom = new Promise(function(resolve, reject) {
+            User.findOneAndUpdate(
+              { _id: req.body.allDevelopers[j]._id },
+              {
+                $pull: userFields
+              },
+              {
+                new: true
+              }
+            )
+              .then(project => resolve())
+              .catch(err => reject(err));
+          });
+
+          promiseArr.push(prom);
         } else {
           //console.log("Bleibt");
         }
@@ -481,15 +490,25 @@ router.post("/project/edit", (req, res) => {
     }
   }
 
-  Project.findOneAndUpdate(
-    { _id: req.body.id },
-    {
-      $set: projectFields
-    },
-    {
-      new: true
-    }
-  )
+  var prom = new Promise(function(resolve, reject) {
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $set: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(project => resolve())
+      .catch(err => reject(err));
+  });
+
+  promiseArr.push(prom);
+
+  //console.log(promiseArr);
+
+  Promise.all(promiseArr)
     .then(project => res.json(project))
     .catch(err => res.status(404).json({ project: "There is no project" }));
 });
