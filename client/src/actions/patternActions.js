@@ -8,7 +8,8 @@ import {
   GET_PATTERN,
   CLEAR_ERRORS,
   SET_ASSIGNED_TACTICS,
-  SET_ASSIGNED_STRATEGIES
+  SET_ASSIGNED_STRATEGIES,
+  SET_FILTER_FOR_PATTERNS
 } from "./types";
 
 // create Pattern
@@ -133,4 +134,12 @@ export const setAssignedStrategies = strategy => {
     type: SET_ASSIGNED_STRATEGIES,
     payload: strategy
   };
+};
+
+// Set Filter for Patterns
+export const setFilterForPatterns = filter => dispatch => {
+  dispatch({
+    type: SET_FILTER_FOR_PATTERNS,
+    payload: filter
+  });
 };

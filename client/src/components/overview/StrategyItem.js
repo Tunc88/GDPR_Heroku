@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Panel, Col, Tabs, Tab, Button, Collapse } from "react-bootstrap";
 import EditToolbarStrategy from "../common/editToolbarStrategy";
+import { setFilterForPatterns } from "../../actions/patternActions";
 
 class StrategyItem extends Component {
   constructor(props, context) {
@@ -26,7 +27,9 @@ class StrategyItem extends Component {
             <Panel.Body>
               {strategy.assignedTactics.map(tactic => (
                 <span>
-                  <div>{tactic.name}</div>
+                  <div onClick={setFilterForPatterns(tactic.name)}>
+                    {tactic.name}
+                  </div>
                   <div>{tactic.description}</div>
                 </span>
               ))}
@@ -45,9 +48,10 @@ StrategyItem.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth
+  // strategy: state.strategy
 });
 
 export default connect(
   mapStateToProps,
-  {}
+  { setFilterForPatterns }
 )(StrategyItem);

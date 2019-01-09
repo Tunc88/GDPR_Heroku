@@ -105,9 +105,24 @@ class Overview extends Component {
     }
   };
 
+  getVisiblePatterns = (patterns, filter) => {
+    alert(filter);
+    //alert(patterns);
+    var visiblePatterns = [];
+    var patternz = [
+      { name: "dies", assignedTactics: ["5c1a5939e1899123381ccfed"] }
+    ];
+    visiblePatterns = patternz.filter(function(pattern) {
+      return pattern.assignedTactics.includes(filter);
+    });
+    return visiblePatterns;
+  };
   render() {
     const { patterns, loading } = this.props.pattern;
-
+    const visiblePatterns = this.getVisiblePatterns(
+      this.props.pattern,
+      "5c1a5939e1899123381ccfed"
+    );
     let patternContent;
 
     if (patterns === null || loading) {
@@ -178,6 +193,8 @@ class Overview extends Component {
                 Manage Strategies and Tactics...
               </Link>
             </Col>
+            {this.props.visibilityFilter}
+            {visiblePatterns[0].name}
             <br />
             <br />
             <br />

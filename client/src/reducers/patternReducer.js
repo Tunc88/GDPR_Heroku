@@ -4,7 +4,8 @@ import {
   GET_PATTERN,
   DELETE_PATTERN,
   SET_ASSIGNED_TACTICS,
-  SET_ASSIGNED_STRATEGIES
+  SET_ASSIGNED_STRATEGIES,
+  SET_FILTER_FOR_PATTERNS
 } from "../actions/types";
 
 const initialState = {
@@ -12,7 +13,8 @@ const initialState = {
   pattern: {},
   assignedStrategies: [],
   assignedTactics: [],
-  loading: false
+  loading: false,
+  visibilityFilter: "SHOW_ALL"
 };
 
 export default function(state = initialState, action) {
@@ -40,6 +42,11 @@ export default function(state = initialState, action) {
         patterns: state.patterns.filter(
           pattern => pattern._id !== action.payload
         )
+      };
+    case SET_FILTER_FOR_PATTERNS:
+      return {
+        ...state,
+        visibilityFilter: action.payload
       };
     case SET_ASSIGNED_STRATEGIES:
       const addStrategy = str => {
