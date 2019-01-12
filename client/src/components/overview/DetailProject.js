@@ -11,6 +11,7 @@ import TacListGroupField from "../common/TacListGroupField";
 import PropTypes from "prop-types";
 
 import Spinner from "../common/Spinner";
+import CommentBox from "../common/CommentBox";
 
 class DetailProject extends Component {
   constructor() {
@@ -182,6 +183,8 @@ class DetailProject extends Component {
             </Panel.Body>
           </Panel>
         )}
+
+        <CommentBox />
       </div>
     );
   }

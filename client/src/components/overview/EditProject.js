@@ -5,6 +5,7 @@ import classnames from "classnames";
 import { connect } from "react-redux";
 
 import Spinner from "../common/Spinner";
+import CommentBox from "../common/CommentBox";
 import {
   editProject,
   setAssignedDevelopers,
@@ -56,10 +57,10 @@ class EditProject extends Component {
   }
 
   componentDidMount() {
+    this.props.switchAttrForEditProject();
     this.props.getDevelopers();
     this.props.getStrategies();
     this.props.match.params.id;
-    this.props.switchAttrForEditProject();
   }
 
   onChange(e) {
@@ -128,6 +129,7 @@ class EditProject extends Component {
     } else {
       strategyContent = (
         <StrListGroupField
+          onClick={this.componentWillUpdate}
           strategies={this.props.strategies}
           location={this.props.location}
         />

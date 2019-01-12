@@ -185,7 +185,8 @@ router.post(
           finished: req.body.finished,
           description: req.body.description,
           assignedDevelopers: req.body.assignedDevelopers,
-          creator: req.user.id
+          creator: req.user.id,
+          comment: req.body.comment
         });
         newProject
           .save()
@@ -193,65 +194,6 @@ router.post(
           .catch(err => console.log(err));
       }
     });
-  }
-);
-
-// @route   POST api/projects
-// @desc    Edit project
-// @access  Private
-router.post(
-  "/editproject",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const { errors, isValid } = validateProjectInput(req.body);
-
-    // Check Validation
-    /*
-    if (!isValid) {
-      // Return any errors with 400 status
-      return res.status(400).json(errors);
-    }*/
-
-    // Get fields
-
-    const projectFields = {};
-
-    if (req.body.name) projectFields.name = req.body.name;
-    if (req.body.finished) projectFields.finished = req.body.finished;
-    if (req.body.description) projectFields.description = req.body.description;
-    if (req.body.assignedStrategies)
-      projectFields.assignedStrategies = req.body.assignedStrategies;
-    if (req.body.assignedTactics)
-      projectFields.assignedTactics = req.body.assignedTactics;
-    if (req.body.assignedDevelopers)
-      projectFields.assignedDevelopers = req.body.assignedDevelopers;
-
-    Project.findOne({ project: req.project._id }).then(project => {
-      if (project) {
-        Project.findOneAndUpdate(
-          {
-            project: req.project._id
-          },
-          {
-            $set: projectFields
-          },
-          {
-            new: true
-          }
-        ).then(project => res.json(project));
-      }
-    });
-
-    /*
-
-
-    Project.findOneAndUpdate(
-      { _id: req.body.id },
-      { $set: projectFields },
-      { new: true }
-    ).then(project => {
-      res.json(req.params.id);
-    })*/
   }
 );
 
@@ -377,7 +319,9 @@ router.post("/project/edit", (req, res) => {
     projectFields.assignedDevelopers = req.body.assignedDevelopers;
 
   if (req.body.assignedDevelopers) userFields.assignedProjects = req.body.id;
-  //console.log(projectFields);
+
+  console.log(projectFields);
+  console.log(req.body.comment);
 
   //console.log("123123" + req.body.id);
   /*for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
@@ -396,67 +340,67 @@ router.post("/project/edit", (req, res) => {
 
   let promiseArr = [];
   var idArrAssDev = [];
+  if (req.body.assignedDevelopers) {
+    for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+      idArrAssDev.push(req.body.assignedDevelopers[i]._id);
+    }
 
-  for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
-    idArrAssDev.push(req.body.assignedDevelopers[i]._id);
-  }
+    //console.log(idArrAssDev);
 
-  //console.log(idArrAssDev);
+    for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+      if (
+        req.body.assignedDevelopers[i].assignedProjects.indexOf(req.body.id) ===
+        -1
+      ) {
+        console.log("Project wird hinzugefügt");
 
-  for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
-    if (
-      req.body.assignedDevelopers[i].assignedProjects.indexOf(req.body.id) ===
-      -1
-    ) {
-      console.log("Project wird hinzugefügt");
+        var prom = new Promise(function(resolve, reject) {
+          User.findOneAndUpdate(
+            { _id: req.body.assignedDevelopers[i]._id },
+            {
+              $push: userFields
+            },
+            {
+              new: true
+            }
+          )
+            .then(project => resolve())
+            .catch(err => reject(err));
+        });
 
-      var prom = new Promise(function(resolve, reject) {
-        User.findOneAndUpdate(
-          { _id: req.body.assignedDevelopers[i]._id },
-          {
-            $push: userFields
-          },
-          {
-            new: true
+        promiseArr.push(prom);
+      } else {
+        //console.log("entfernen prüfen");
+
+        for (var j = 0; j < req.body.allDevelopers.length; j++) {
+          if (
+            req.body.allDevelopers[j].assignedProjects.indexOf(req.body.id) !==
+              -1 &&
+            idArrAssDev.indexOf(req.body.allDevelopers[j]._id) === -1
+          ) {
+            //console.log("Entfernen");
+
+            var prom = new Promise(function(resolve, reject) {
+              User.findOneAndUpdate(
+                { _id: req.body.allDevelopers[j]._id },
+                {
+                  $pull: userFields
+                },
+                {
+                  new: true
+                }
+              )
+                .then(project => resolve())
+                .catch(err => reject(err));
+            });
+
+            promiseArr.push(prom);
+          } else {
+            //console.log("Bleibt");
           }
-        )
-          .then(project => resolve())
-          .catch(err => reject(err));
-      });
-
-      promiseArr.push(prom);
-    } else {
-      //console.log("entfernen prüfen");
-
-      for (var j = 0; j < req.body.allDevelopers.length; j++) {
-        if (
-          req.body.allDevelopers[j].assignedProjects.indexOf(req.body.id) !==
-            -1 &&
-          idArrAssDev.indexOf(req.body.allDevelopers[j]._id) === -1
-        ) {
-          //console.log("Entfernen");
-
-          var prom = new Promise(function(resolve, reject) {
-            User.findOneAndUpdate(
-              { _id: req.body.allDevelopers[j]._id },
-              {
-                $pull: userFields
-              },
-              {
-                new: true
-              }
-            )
-              .then(project => resolve())
-              .catch(err => reject(err));
-          });
-
-          promiseArr.push(prom);
-        } else {
-          //console.log("Bleibt");
         }
-      }
 
-      /*
+        /*
       for (var i = 0; i < req.body.allDevelopers.length; i++) {
         for (var j = 0; j < req.body.assignedDevelopers.length; j++) {
           console.log(req.body.allDevelopers[i].assignedProjects);
@@ -487,9 +431,9 @@ router.post("/project/edit", (req, res) => {
         }
       }
     */
+      }
     }
   }
-
   var prom = new Promise(function(resolve, reject) {
     Project.findOneAndUpdate(
       { _id: req.body.id },

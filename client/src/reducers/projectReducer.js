@@ -16,6 +16,7 @@ const initialState = {
   assignedDevelopers: [],
   assignedStrategies: [],
   assignedTactics: [],
+  comment: [],
   loading: false
 };
 
@@ -241,9 +242,15 @@ export default function(state = initialState, action) {
         //console.log(action.payload.assignedTactics);
 
         var arr2 = state.assignedTactics;
+        var tempArr2 = [];
+        //console.log(arr2);
+
+        for (var i = 0; i < arr2.length; i++) {
+          tempArr2.push(arr2[i]._id);
+        }
 
         for (var i = 0; i < action.payload.assignedTactics.length; i++) {
-          var index2 = arr2.indexOf(action.payload.assignedTactics[i]);
+          var index2 = tempArr2.indexOf(action.payload.assignedTactics[i]._id);
           //console.log(arr2);
           //console.log(action.payload.assignedTactics[i]);
 

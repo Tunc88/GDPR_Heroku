@@ -1,6 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
+import {
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  InputGroup,
+  Button
+} from "react-bootstrap";
 
 const TextAreaField = ({
   label,
@@ -9,23 +15,51 @@ const TextAreaField = ({
   value,
   error,
   info,
-  onChange
+  onChange,
+  onSubmit
 }) => {
-  return (
-    <FormGroup controlId="formControlsTextarea">
-      <ControlLabel>{label}</ControlLabel>
-      <FormControl
-        componentClass="textarea"
-        label={label}
-        name={name}
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-      />
-      {info && <small className="form-text text-muted">{info}</small>}
-      {error && <div className="invalid-feedback">{error}</div>}
-    </FormGroup>
-  );
+  function addonChoice() {
+    {
+      return !label ? (
+        <FormGroup controlId="formControlsTextarea">
+          <InputGroup>
+            <InputGroup.Addon className="addon">
+              <Button onClick={onSubmit} bsSize="small">
+                <i class="far fa-comment-alt" />
+              </Button>
+            </InputGroup.Addon>
+
+            <FormControl
+              componentClass="textarea"
+              label={label}
+              name={name}
+              value={value}
+              placeholder={placeholder}
+              onChange={onChange}
+            />
+            {info && <small className="form-text text-muted">{info}</small>}
+            {error && <div className="invalid-feedback">{error}</div>}
+          </InputGroup>
+        </FormGroup>
+      ) : (
+        <FormGroup controlId="formControlsTextarea">
+          <ControlLabel>{label}</ControlLabel>
+          <FormControl
+            componentClass="textarea"
+            label={label}
+            name={name}
+            value={value}
+            placeholder={placeholder}
+            onChange={onChange}
+          />
+          {info && <small className="form-text text-muted">{info}</small>}
+          {error && <div className="invalid-feedback">{error}</div>}
+        </FormGroup>
+      );
+    }
+  }
+
+  return addonChoice();
 };
 
 TextAreaField.propTypes = {

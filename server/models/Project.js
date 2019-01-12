@@ -47,6 +47,21 @@ const ProjectSchema = new Schema({
     ref: "users"
   },
 
+  comment: [
+    {
+      author: {
+        type: Schema.Types.ObjectId
+      },
+      content: {
+        type: String
+      },
+      time: {
+        type: Date,
+        default: Date.now
+      }
+    }
+  ],
+
   date: {
     type: Date,
     default: Date.now

@@ -114,7 +114,7 @@ export const editProject = (projectData, history) => dispatch => {
           type: GET_PROJECT,
           payload: res.data
         }),
-      history.push(`/project/${projectData.id}`)
+      history ? history.push(`/project/${projectData.id}`) : ""
     )
     .catch(err =>
       dispatch({

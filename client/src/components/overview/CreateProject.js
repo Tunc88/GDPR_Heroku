@@ -34,6 +34,7 @@ class CreateProject extends Component {
       finished: false,
       assignedDevelopers: [],
       developers: [],
+      comment: {},
 
       errors: {}
     };
