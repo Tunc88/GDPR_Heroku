@@ -8,7 +8,8 @@ import {
   RESET_ASSIGNED_STRATEGIES,
   SET_ASSIGNED_STRATEGIES,
   SWITCH_ATTR_FOR_EDIT_PROJECT,
-  SET_COMMENT
+  SET_COMMENT,
+  SET_FINISHED_TACTIC
 } from "../actions/types";
 
 const initialState = {
@@ -18,7 +19,8 @@ const initialState = {
   assignedStrategies: [],
   assignedTactics: [],
   comment: [],
-  loading: false
+  loading: false,
+  finishedTactic: []
 };
 
 export default function(state = initialState, action) {
@@ -47,6 +49,37 @@ export default function(state = initialState, action) {
         comment: action.payload,
         loading: false
       };
+    case SET_FINISHED_TACTIC:
+      console.log(action.payload);
+      const addfinishedTactic = tac => {
+        if (tac !== undefined) {
+          return state.finishedTactic.concat(tac);
+        } else {
+          return state.finishedTactic;
+        }
+      };
+
+      const remfinishedTactic = tac => {
+        var arr = state.finishedTactic;
+
+        var index = arr.indexOf(tac);
+        if (index !== -1) {
+          arr.splice(index, 1);
+        }
+        return arr;
+      };
+
+      if (state.finishedTactic.indexOf(action.payload) === -1) {
+        var newArray = addfinishedTactic(action.payload);
+      } else {
+        var newArray = remfinishedTactic(action.payload);
+      }
+      return {
+        ...state,
+        finishedTactic: newArray,
+        loading: false
+      };
+
     case SWITCH_ATTR_FOR_EDIT_PROJECT:
       //console.log(state.project.assignedStrategies);
       //console.log(state.project.assignedTactics);

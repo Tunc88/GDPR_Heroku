@@ -48,7 +48,7 @@ class Navigationbar extends Component {
       <Navbar inverse collapseOnSelect fixedTop>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="/overview">GDPR</a>
+            <Link to="/overview">GDPR</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
@@ -76,7 +76,7 @@ class Navigationbar extends Component {
               title={isAuthenticated ? username : "Profile"}
               id="basic-nav-dropdown"
             >
-              <MenuItem eventKey={3.1}>
+              <MenuItem eventKey={3.1} componentClass="span">
                 <Link
                   to={
                     this.props.auth.user.role === "Project Manager"

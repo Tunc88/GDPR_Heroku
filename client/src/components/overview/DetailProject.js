@@ -147,8 +147,12 @@ class DetailProject extends Component {
               <ProgressBar
                 striped
                 bsStyle="danger"
-                label={`${this.props.project.progress}%`}
-                now={this.props.project.progress}
+                label={`${(100 / this.props.project.assignedTactics.length) *
+                  this.props.project.finishedTactic.length}%`}
+                now={
+                  (100 / this.props.project.assignedTactics.length) *
+                  this.props.project.finishedTactic.length
+                }
               />
             </Panel.Body>
           </Panel>

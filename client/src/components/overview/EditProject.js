@@ -5,8 +5,9 @@ import classnames from "classnames";
 import { connect } from "react-redux";
 
 import Spinner from "../common/Spinner";
-import CommentBox from "../common/CommentBox";
+import ToDoProgress from "../common/ToDoProgress";
 import {
+  setFinishedTactic,
   editProject,
   setAssignedDevelopers,
   setAssignedTactics,
@@ -21,6 +22,7 @@ import TacListGroupField from "../common/TacListGroupField";
 import StrListGroupField from "../common/StrListGroupField";
 import {
   Button,
+  ButtonGroup,
   ListGroup,
   ListGroupItem,
   Row,
@@ -45,7 +47,7 @@ class EditProject extends Component {
       finished: false,
       progress: 0,
       assignedDevelopers: [],
-      //nameDeveloper: "",
+      finishedTactic: store.getState().project.project.finishedTactic,
       developers: [],
 
       errors: {}
@@ -54,6 +56,7 @@ class EditProject extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onClickProgress = this.onClickProgress.bind(this);
+    this.onClickFinishedTactic = this.onClickFinishedTactic.bind(this);
   }
 
   componentDidMount() {
@@ -71,6 +74,32 @@ class EditProject extends Component {
     this.setState({ progress: e.target.value * 10 });
   }
 
+  onClickFinishedTactic(e) {
+    var tempArr = this.state.finishedTactic;
+
+    const addfinishedTactic = tac => {
+      if (tac !== undefined) {
+        return tempArr.concat(tac);
+      } else {
+        return tempArr;
+      }
+    };
+
+    const remfinishedTactic = tac => {
+      var index = tempArr.indexOf(tac);
+      if (index !== -1) {
+        tempArr.splice(index, 1);
+      }
+      return tempArr;
+    };
+    this.setState({
+      finishedTactic:
+        this.state.finishedTactic.indexOf(e.target.value) === -1
+          ? addfinishedTactic(e.target.value)
+          : remfinishedTactic(e.target.value)
+    });
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
@@ -86,7 +115,8 @@ class EditProject extends Component {
       //nameDeveloper: store.getState().project.nameDeveloper,
       finished: this.state.finished,
       progress: this.state.progress,
-      allDevelopers: store.getState().user.developers
+      allDevelopers: store.getState().user.developers,
+      finishedTactic: this.state.finishedTactic
     };
 
     //console.log(editedProject);
@@ -174,46 +204,23 @@ class EditProject extends Component {
 
         <Row className="show-grid">
           <Col md={12}>
-            <h4>Current state of the Project</h4>
+            <h4>Todo list</h4>
             <ButtonToolbar>
               <ToggleButtonGroup
-                type="radio"
-                name="options"
-                defaultValue={store.getState().project.project.progress / 10}
+                vertical
+                block
+                type="checkbox"
+                defaultValue={this.state.finishedTactic}
               >
-                <ToggleButton value={0} onClick={this.onClickProgress}>
-                  0 %
-                </ToggleButton>
-                <ToggleButton value={1} onClick={this.onClickProgress}>
-                  10 %
-                </ToggleButton>
-                <ToggleButton value={2} onClick={this.onClickProgress}>
-                  20 %
-                </ToggleButton>
-                <ToggleButton value={3} onClick={this.onClickProgress}>
-                  30 %
-                </ToggleButton>
-                <ToggleButton value={4} onClick={this.onClickProgress}>
-                  40 %
-                </ToggleButton>
-                <ToggleButton value={5} onClick={this.onClickProgress}>
-                  50 %
-                </ToggleButton>
-                <ToggleButton value={6} onClick={this.onClickProgress}>
-                  60 %
-                </ToggleButton>
-                <ToggleButton value={7} onClick={this.onClickProgress}>
-                  70 %
-                </ToggleButton>
-                <ToggleButton value={8} onClick={this.onClickProgress}>
-                  80 %
-                </ToggleButton>
-                <ToggleButton value={9} onClick={this.onClickProgress}>
-                  90 %
-                </ToggleButton>
-                <ToggleButton value={10} onClick={this.onClickProgress}>
-                  100 %
-                </ToggleButton>
+                {this.props.assignedTactics.map(tactic => (
+                  <ToggleButton
+                    onClick={this.onClickFinishedTactic}
+                    key={tactic._id}
+                    value={tactic.name}
+                  >
+                    {tactic.name}
+                  </ToggleButton>
+                ))}
               </ToggleButtonGroup>
             </ButtonToolbar>
           </Col>
@@ -252,7 +259,8 @@ EditProject.propTypes = {
   setAssignedTactics: PropTypes.func.isRequired,
   setAssignedStrategies: PropTypes.func.isRequired,
   resetAssignedStrategies: PropTypes.func.isRequired,
-  switchAttrForEditProject: PropTypes.func.isRequired
+  switchAttrForEditProject: PropTypes.func.isRequired,
+  setFinishedTactic: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -277,6 +285,7 @@ export default connect(
     setAssignedTactics,
     setAssignedStrategies,
     resetAssignedStrategies,
-    switchAttrForEditProject
+    switchAttrForEditProject,
+    setFinishedTactic
   }
 )(withRouter(EditProject));

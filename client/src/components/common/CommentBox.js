@@ -28,9 +28,22 @@ class CommentBox extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onClickComment = this.onClickComment.bind(this);
+    this.correctName = this.correctName.bind(this);
   }
 
   componentDidMount() {}
+
+  correctName(id) {
+    var index;
+    var tempArr = [];
+
+    for (var i = 0; i < this.props.project.commentAttendees.length; i++) {
+      tempArr.push(this.props.project.commentAttendees[i]._id);
+    }
+
+    index = tempArr.indexOf(id);
+    return this.props.project.commentAttendees[index].name;
+  }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -71,11 +84,11 @@ class CommentBox extends Component {
           <Panel.Heading>
             <Panel.Title componentClass="h3">Comment Box</Panel.Title>
           </Panel.Heading>
-          <Panel.Body>
+          <Panel.Body id="commentBox">
             {this.props.project.comment
               ? this.props.project.comment.map(comment => (
                   <div>
-                    {comment.date}, {comment.author}
+                    {comment.date}, {this.correctName(comment.author)}
                     <Panel>
                       <Panel.Body key={comment._id}>
                         {comment.content}

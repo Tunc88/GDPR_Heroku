@@ -13,7 +13,8 @@ import {
   SET_ASSIGNED_STRATEGIES,
   MATCH_USER,
   SWITCH_ATTR_FOR_EDIT_PROJECT,
-  SET_COMMENT
+  SET_COMMENT,
+  SET_FINISHED_TACTIC
 } from "./types";
 
 // create Project
@@ -182,10 +183,10 @@ export const setComment = (commentData, history) => dispatch => {
     );
 };
 
-export const setffComment = comment => {
+export const setFinishedTactic = tactic => {
   return {
-    type: SET_COMMENT,
-    payload: comment
+    type: SET_FINISHED_TACTIC,
+    payload: tactic
   };
 };
 

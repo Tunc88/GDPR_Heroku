@@ -238,6 +238,14 @@ router.get("/project/:id", (req, res) => {
     },
     {
       $lookup: {
+        from: "users",
+        localField: "comment.author",
+        foreignField: "_id",
+        as: "commentAttendees"
+      }
+    },
+    {
+      $lookup: {
         from: "strategies",
         localField: "assignedTactics",
         foreignField: "assignedTactics._id",
@@ -317,6 +325,8 @@ router.post("/project/edit", (req, res) => {
     projectFields.assignedTactics = req.body.assignedTactics;
   if (req.body.assignedDevelopers)
     projectFields.assignedDevelopers = req.body.assignedDevelopers;
+  if (req.body.finishedTactic)
+    projectFields.finishedTactic = req.body.finishedTactic;
 
   if (req.body.assignedDevelopers) userFields.assignedProjects = req.body.id;
 

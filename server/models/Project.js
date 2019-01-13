@@ -61,6 +61,7 @@ const ProjectSchema = new Schema({
       }
     }
   ],
+  finishedTactic: [{ type: String, default: [] }],
 
   date: {
     type: Date,
