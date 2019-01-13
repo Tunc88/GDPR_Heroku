@@ -321,7 +321,7 @@ router.post("/project/edit", (req, res) => {
   if (req.body.assignedDevelopers) userFields.assignedProjects = req.body.id;
 
   console.log(projectFields);
-  console.log(req.body.comment);
+  //console.log(req.body.comment);
 
   //console.log("123123" + req.body.id);
   /*for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
@@ -455,6 +455,41 @@ router.post("/project/edit", (req, res) => {
   Promise.all(promiseArr)
     .then(project => res.json(project))
     .catch(err => res.status(404).json({ project: "There is no project" }));
+});
+
+router.post("/project/setComment", (req, res) => {
+  const errors = {};
+
+  const projectFields = {};
+
+  projectFields.comment = req.body.comment;
+
+  //console.log(projectFields);
+  //console.log(req.body.id);
+
+  let promiseArr = [];
+
+  var prom = new Promise(function(resolve, reject) {
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $push: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(comment => console.log(comment))
+      .catch(err => reject(err));
+  });
+
+  promiseArr.push(prom);
+
+  //console.log(promiseArr);
+
+  Promise.all(promiseArr)
+    .then(comment => res.json(comment))
+    .catch(err => console.log(err));
 });
 
 module.exports = router;

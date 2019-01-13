@@ -184,7 +184,7 @@ class DetailProject extends Component {
           </Panel>
         )}
 
-        <CommentBox />
+        <CommentBox project={this.props.project} />
       </div>
     );
   }

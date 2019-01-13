@@ -12,7 +12,8 @@ import {
   RESET_ASSIGNED_STRATEGIES,
   SET_ASSIGNED_STRATEGIES,
   MATCH_USER,
-  SWITCH_ATTR_FOR_EDIT_PROJECT
+  SWITCH_ATTR_FOR_EDIT_PROJECT,
+  SET_COMMENT
 } from "./types";
 
 // create Project
@@ -114,7 +115,7 @@ export const editProject = (projectData, history) => dispatch => {
           type: GET_PROJECT,
           payload: res.data
         }),
-      history ? history.push(`/project/${projectData.id}`) : ""
+      history.push(`/project/${projectData.id}`)
     )
     .catch(err =>
       dispatch({
@@ -159,6 +160,32 @@ export const setAssignedStrategies = strategy => {
   return {
     type: SET_ASSIGNED_STRATEGIES,
     payload: strategy
+  };
+};
+
+export const setComment = (commentData, history) => dispatch => {
+  axios
+    .post("/api/projects/project/setComment", commentData)
+    .then(
+      res =>
+        dispatch({
+          type: SET_COMMENT,
+          payload: res.data
+        }),
+      history.push(`/project/${commentData.id}`)
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const setffComment = comment => {
+  return {
+    type: SET_COMMENT,
+    payload: comment
   };
 };
 

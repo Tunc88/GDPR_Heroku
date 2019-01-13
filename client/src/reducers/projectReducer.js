@@ -7,7 +7,8 @@ import {
   SET_ASSIGNED_TACTICS,
   RESET_ASSIGNED_STRATEGIES,
   SET_ASSIGNED_STRATEGIES,
-  SWITCH_ATTR_FOR_EDIT_PROJECT
+  SWITCH_ATTR_FOR_EDIT_PROJECT,
+  SET_COMMENT
 } from "../actions/types";
 
 const initialState = {
@@ -37,6 +38,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         project: action.payload,
+        loading: false
+      };
+    case SET_COMMENT:
+      console.log(...state);
+      return {
+        ...state,
+        comment: action.payload,
         loading: false
       };
     case SWITCH_ATTR_FOR_EDIT_PROJECT:

@@ -55,7 +55,7 @@ const ProjectSchema = new Schema({
       content: {
         type: String
       },
-      time: {
+      date: {
         type: Date,
         default: Date.now
       }

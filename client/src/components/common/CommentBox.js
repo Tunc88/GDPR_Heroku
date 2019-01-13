@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
-import { editProject } from "../../actions/projectActions";
+import { setComment } from "../../actions/projectActions";
 import {
   Panel,
   Button,
@@ -38,13 +38,12 @@ class CommentBox extends Component {
   }
 
   onClickComment(e) {
-    this.setState(prevState => ({
+    this.setState({
       comment: {
-        ...prevState.comment,
-        author: this.props.auth.user,
+        author: this.props.auth.user.id,
         content: this.state.content
       }
-    }));
+    });
   }
 
   onSubmit(e) {
@@ -56,8 +55,9 @@ class CommentBox extends Component {
     };
 
     console.log(commentData);
-    this.onClickComment(e);
+
     //console.log(editedProject);
+    this.props.setComment(commentData, this.props.history);
     //this.props.editProject(commentData);
   }
 
@@ -72,9 +72,18 @@ class CommentBox extends Component {
             <Panel.Title componentClass="h3">Comment Box</Panel.Title>
           </Panel.Heading>
           <Panel.Body>
-            <Panel>
-              <Panel.Body>Comment</Panel.Body>
-            </Panel>
+            {this.props.project.comment
+              ? this.props.project.comment.map(comment => (
+                  <div>
+                    {comment.date}, {comment.author}
+                    <Panel>
+                      <Panel.Body key={comment._id}>
+                        {comment.content}
+                      </Panel.Body>
+                    </Panel>
+                  </div>
+                ))
+              : ""}
 
             <TextAreaField
               name="content"
@@ -106,6 +115,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    editProject
+    setComment
   }
 )(withRouter(CommentBox));
