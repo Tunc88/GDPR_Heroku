@@ -11,7 +11,6 @@ import {
   FormControl
 } from "react-bootstrap";
 
-import store from "../../store";
 import TextAreaField from "../common/TextAreaField";
 import "./CommentBox.css";
 
@@ -53,22 +52,13 @@ class CommentBox extends Component {
 
     const commentData = {
       id: this.props.match.params.id,
-      name: store.getState().project.project.name,
-      description: store.getState().project.project.description,
-      assignedTactics: store.getState().project.project.assignedTactics,
-      assignedStrategies: store.getState().project.project.assignedStrategies,
-      assignedDevelopers: store.getState().project.project.assignedDevelopers,
-      //nameDeveloper: store.getState().project.project.nameDeveloper,
-      finished: store.getState().project.project.finished,
-      progress: store.getState().project.project.progress,
-      allDevelopers: store.getState().user.developers,
-      comment: this.props.comment
+      comment: this.state.comment
     };
 
     console.log(commentData);
     this.onClickComment(e);
     //console.log(editedProject);
-    this.props.editProject(commentData);
+    //this.props.editProject(commentData);
   }
 
   render() {
