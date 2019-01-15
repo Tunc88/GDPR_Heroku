@@ -502,4 +502,43 @@ router.post("/project/setComment", (req, res) => {
     .catch(err => console.log(err));
 });
 
+router.post("/project/setFinishedTactic", (req, res) => {
+  const errors = {};
+
+  const projectFields = {};
+
+  projectFields.finishedTactics = req.body.finishedTactic;
+
+  //console.log(req.body);
+  //console.log(req.body.id);
+
+  if (req.body.finishedTactics.indexOf(req.body.finishedTactic) === -1) {
+    console.log(req.body.finishedTactic + "hinzugefügt");
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $push: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(finishedTactics => res.json(finishedTactics))
+      .catch(err => console.log(err));
+  } else {
+    console.log(req.body.finishedTactic + "entfernt");
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $pull: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(finishedTactics => res.json(finishedTactics))
+      .catch(err => console.log(err));
+  }
+});
+
 module.exports = router;

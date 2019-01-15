@@ -25,7 +25,7 @@ const TextAreaField = ({
           <InputGroup>
             <InputGroup.Addon className="addon">
               <Button onClick={onSubmit} bsSize="small">
-                <i class="far fa-comment-alt" />
+                <i className="far fa-comment-alt" />
               </Button>
             </InputGroup.Addon>
 
@@ -65,7 +65,6 @@ const TextAreaField = ({
 TextAreaField.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  value: PropTypes.string.isRequired,
   info: PropTypes.string,
   error: PropTypes.string,
   onChange: PropTypes.func.isRequired

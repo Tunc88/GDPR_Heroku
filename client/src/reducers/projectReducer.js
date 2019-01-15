@@ -20,7 +20,7 @@ const initialState = {
   assignedTactics: [],
   comment: [],
   loading: false,
-  finishedTactic: []
+  finishedTactics: []
 };
 
 export default function(state = initialState, action) {
@@ -43,13 +43,20 @@ export default function(state = initialState, action) {
         loading: false
       };
     case SET_COMMENT:
-      console.log(...state);
+      //console.log(...state);
       return {
         ...state,
         comment: action.payload,
         loading: false
       };
     case SET_FINISHED_TACTIC:
+      //console.log(...state);
+      return {
+        ...state,
+        finishedTactics: action.payload.finishedTactics,
+        loading: false
+      };
+    /*case SET_FINISHED_TACTIC:
       console.log(action.payload);
       const addfinishedTactic = tac => {
         if (tac !== undefined) {
@@ -78,7 +85,7 @@ export default function(state = initialState, action) {
         ...state,
         finishedTactic: newArray,
         loading: false
-      };
+      };*/
 
     case SWITCH_ATTR_FOR_EDIT_PROJECT:
       //console.log(state.project.assignedStrategies);
@@ -87,24 +94,27 @@ export default function(state = initialState, action) {
 
       var tempArr = [];
 
-      for (
-        var i = 0;
-        i < state.project.assignedStrategiesWithAllTactics.length;
-        i++
-      ) {
+      if (state.project.assignedStrategiesWithAllTactics) {
         for (
-          var j = 0;
-          j <
-          state.project.assignedStrategiesWithAllTactics[i].assignedTactics
-            .length;
-          j++
+          var i = 0;
+          i < state.project.assignedStrategiesWithAllTactics.length;
+          i++
         ) {
-          tempArr.push(
-            state.project.assignedStrategiesWithAllTactics[i].assignedTactics[j]
-          );
+          for (
+            var j = 0;
+            j <
+            state.project.assignedStrategiesWithAllTactics[i].assignedTactics
+              .length;
+            j++
+          ) {
+            tempArr.push(
+              state.project.assignedStrategiesWithAllTactics[i].assignedTactics[
+                j
+              ]
+            );
+          }
         }
       }
-
       //console.log(tempArr);
 
       return {
@@ -112,6 +122,7 @@ export default function(state = initialState, action) {
         assignedStrategies: state.project.assignedStrategies,
         assignedTactics: tempArr,
         assignedDevelopers: state.project.assignedDevelopers,
+        finishedTactics: state.project.finishedTactics,
         loading: false
       };
     case SET_ASSIGNED_DEVELOPER:
@@ -228,6 +239,7 @@ export default function(state = initialState, action) {
         assignedTactics: [],
         assignedStrategies: [],
         assignedDevelopers: [],
+        finishedTactics: [],
         loading: false
       };
     case SET_ASSIGNED_STRATEGIES:

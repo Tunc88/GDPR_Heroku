@@ -114,7 +114,9 @@ class EditProject extends Component {
       assignedDevelopers: store.getState().project.assignedDevelopers,
       //nameDeveloper: store.getState().project.nameDeveloper,
       finished: this.state.finished,
-      progress: this.state.progress,
+      progress:
+        (100 / this.props.assignedTactics.length) *
+        this.state.finishedTactic.length,
       allDevelopers: store.getState().user.developers,
       finishedTactic: this.state.finishedTactic
     };
@@ -169,62 +171,40 @@ class EditProject extends Component {
     const { errors } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
-        <TextField
-          label="Name of project"
-          name="name"
-          value={this.state.name}
-          placeholder={store.getState().project.project.name}
-          onChange={this.onChange}
-        />
+        <span>
+          <TextField
+            label="Name of project"
+            name="name"
+            value={this.state.name}
+            placeholder={store.getState().project.project.name}
+            onChange={this.onChange}
+          />
 
-        <TextAreaField
-          label="Description"
-          name="description"
-          value={this.state.description}
-          placeholder={store.getState().project.project.description}
-          onChange={this.onChange}
-        />
+          <TextAreaField
+            label="Description"
+            name="description"
+            value={this.state.description}
+            placeholder={store.getState().project.project.description}
+            onChange={this.onChange}
+          />
 
-        <Row className="show-grid">
-          <Col md={3}>
-            <h4>Choose your strategies</h4>
-            {strategyContent}
-          </Col>
-          <Col md={3}>
-            {" "}
-            <h4>and the according tactics</h4>
-            {tacticContent}
-          </Col>
+          <Row className="show-grid">
+            <Col md={3}>
+              <h4>Choose your strategies</h4>
+              {strategyContent}
+            </Col>
+            <Col md={3}>
+              {" "}
+              <h4>and the according tactics</h4>
+              {tacticContent}
+            </Col>
 
-          <Col md={6}>
-            <h4>Choose your developer</h4>
-            {developerContent}
-          </Col>
-        </Row>
-
-        <Row className="show-grid">
-          <Col md={12}>
-            <h4>Todo list</h4>
-            <ButtonToolbar>
-              <ToggleButtonGroup
-                vertical
-                block
-                type="checkbox"
-                defaultValue={this.state.finishedTactic}
-              >
-                {this.props.assignedTactics.map(tactic => (
-                  <ToggleButton
-                    onClick={this.onClickFinishedTactic}
-                    key={tactic._id}
-                    value={tactic.name}
-                  >
-                    {tactic.name}
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-            </ButtonToolbar>
-          </Col>
-        </Row>
+            <Col md={6}>
+              <h4>Choose your developer</h4>
+              {developerContent}
+            </Col>
+          </Row>
+        </span>
 
         <Link
           to={`/project/${this.props.location.pathname.substr(

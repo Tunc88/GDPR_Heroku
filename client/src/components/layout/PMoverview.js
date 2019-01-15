@@ -7,6 +7,7 @@ import Spinner from "../common/Spinner";
 import ProjectFeed from "../overview/ProjectFeed";
 import {
   getProjects,
+  getProject,
   resetAssignedStrategies
 } from "../../actions/projectActions";
 import { getDevelopers } from "../../actions/userActions";
@@ -27,6 +28,9 @@ class PMoverview extends Component {
     this.props.getProjects();
     this.props.getDevelopers();
     this.props.resetAssignedStrategies();
+    if (this.props.project.project) {
+      this.props.getProject(this.props.project.project._id);
+    }
   }
 
   render() {
@@ -69,5 +73,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getProjects, getDevelopers, resetAssignedStrategies }
+  { getProjects, getDevelopers, resetAssignedStrategies, getProject }
 )(PMoverview);

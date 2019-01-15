@@ -114,7 +114,6 @@ class CommentBox extends Component {
 }
 
 CommentBox.propTypes = {
-  editProject: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };

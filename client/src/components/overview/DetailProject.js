@@ -3,12 +3,17 @@ import React, { Component } from "react";
 import { Panel, Row, Col, Button, ProgressBar } from "react-bootstrap";
 import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getProject } from "../../actions/projectActions";
+import {
+  getProject,
+  setFinishedTactic,
+  switchAttrForEditProject
+} from "../../actions/projectActions";
 import { getDevelopers } from "../../actions/userActions";
 import DevListGroupField from "../common/DevListGroupField";
 import StrListGroupField from "../common/StrListGroupField";
 import TacListGroupField from "../common/TacListGroupField";
 import PropTypes from "prop-types";
+import store from "../../store";
 
 import Spinner from "../common/Spinner";
 import CommentBox from "../common/CommentBox";
@@ -19,16 +24,61 @@ class DetailProject extends Component {
     this.state = {
       project: {},
       assignedDevelopers: [],
+      finishedTactic: "",
+      done: false,
+      finishedTactics: [],
+      progress: "",
 
       errors: {}
     };
 
-    // this.matchItem = this.matchItem.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentDidMount() {
     this.props.getProject(this.props.match.params.id);
     this.props.getDevelopers();
+    setTimeout(() => {
+      this.props.switchAttrForEditProject();
+    }, 500);
+  }
+
+  handleInputChange(e) {
+    //e.preventDefault();
+    /*var tempArr = this.props.project.finishedTactic;
+
+    const addfinishedTactic = tac => {
+      if (tac !== undefined) {
+        return tempArr.concat(tac);
+      } else {
+        return tempArr;
+      }
+    };
+
+    const remfinishedTactic = tac => {
+      var index = tempArr.indexOf(tac);
+      if (index !== -1) {
+        tempArr.splice(index, 1);
+      }
+      return tempArr;
+    };
+    this.setState({
+      finishedTactic:
+        this.props.project.finishedTactic.indexOf(e.target.name) === -1
+         ? addfinishedTactic(e.target.name)
+         : remfinishedTactic(e.target.name)
+    });
+*/
+
+    // setTimeout(() => {
+    const finishedTacticData = {
+      id: this.props.match.params.id,
+      finishedTactic: e.target.name,
+      finishedTactics: store.getState().project.finishedTactics
+    };
+
+    this.props.setFinishedTactic(finishedTacticData);
+    //}, 500);
   }
 
   render() {
@@ -44,6 +94,33 @@ class DetailProject extends Component {
       }
 
       return arr;
+    }
+
+    var finishedTacticsArray = this.props.finishedTactics;
+
+    function doneTacticArray() {
+      var tempArr = [];
+
+      for (var i = 0; i < aggrTac().length; i++) {
+        tempArr.push(aggrTac()[i].name);
+      }
+
+      for (var i = 0; i < finishedTacticsArray.length; i++) {
+        var index = tempArr.indexOf(finishedTacticsArray[i]);
+
+        if (index !== -1) {
+          tempArr.splice(index, 1);
+        }
+      }
+
+      return tempArr;
+    }
+
+    var progress = 0;
+    var finTac = this.props.finishedTactics;
+    var allTac = this.props.project.assignedTactics;
+    if (this.props.finishedTactics && this.props.project.assignedTactics) {
+      progress = (finTac.length * 100) / allTac.length;
     }
 
     // console.log(aggrTac());
@@ -88,7 +165,7 @@ class DetailProject extends Component {
                   <Panel.Body>
                     {this.props.project.assignedDevelopers
                       ? this.props.project.assignedDevelopers.map(dev => (
-                          <div key={dev.id}>{dev.name}</div>
+                          <div key={dev._id}>{dev.name}</div>
                         ))
                       : ""}
                   </Panel.Body>
@@ -104,7 +181,7 @@ class DetailProject extends Component {
                   <Panel.Body>
                     {this.props.project.assignedStrategies
                       ? this.props.project.assignedStrategies.map(str => (
-                          <div key={str.id}>{str.name}</div>
+                          <div key={str._id}>{str.name}</div>
                         ))
                       : ""}
                   </Panel.Body>
@@ -119,7 +196,26 @@ class DetailProject extends Component {
                   </Panel.Heading>
                   <Panel.Body>
                     {aggrTac()
-                      ? aggrTac().map(tac => <div key={tac.id}>{tac.name}</div>)
+                      ? aggrTac().map(tac => (
+                          <div key={tac._id}>
+                            <form>
+                              <input
+                                name={tac.name}
+                                type="checkbox"
+                                defaultChecked={
+                                  this.props.project.finishedTactics.indexOf(
+                                    tac.name
+                                  ) === -1
+                                    ? false
+                                    : true
+                                }
+                                onClick={this.handleInputChange}
+                              />
+
+                              {tac.name}
+                            </form>
+                          </div>
+                        ))
                       : ""}
                   </Panel.Body>
                 </Panel>
@@ -134,11 +230,11 @@ class DetailProject extends Component {
           </Link>
         </Panel>
 
-        {this.props.project.progress < 75 ? (
+        {progress < 75 ? (
           <Panel>
             <Panel.Heading>
               <Panel.Title componentClass="h4">
-                {this.props.project.progress === 0
+                {progress === 0
                   ? "Project haven't started yet"
                   : "Project ongoing"}
               </Panel.Title>
@@ -147,16 +243,34 @@ class DetailProject extends Component {
               <ProgressBar
                 striped
                 bsStyle="danger"
-                label={`${(100 / this.props.project.assignedTactics.length) *
-                  this.props.project.finishedTactic.length}%`}
-                now={
-                  (100 / this.props.project.assignedTactics.length) *
-                  this.props.project.finishedTactic.length
-                }
+                label={`${progress.toFixed(2)}%`}
+                now={progress}
               />
+              <Row>
+                <Col md={6}>
+                  <h4>Done</h4>
+                  <div>
+                    <ul>
+                      {this.props.finishedTactics.map(tac => (
+                        <li key={tac}>{tac}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <h4>Open</h4>
+                  <div>
+                    <ul>
+                      {doneTacticArray().map(tac => (
+                        <li key={tac}>{tac}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Col>
+              </Row>
             </Panel.Body>
           </Panel>
-        ) : this.props.project.progress < 100 ? (
+        ) : progress < 100 ? (
           <Panel>
             <Panel.Heading>
               <Panel.Title componentClass="h4">Project is ongoing</Panel.Title>
@@ -165,9 +279,31 @@ class DetailProject extends Component {
               <ProgressBar
                 striped
                 bsStyle="warning"
-                label={`${this.props.project.progress}%`}
-                now={this.props.project.progress}
+                label={`${progress.toFixed(2)}%`}
+                now={progress}
               />
+              <Row>
+                <Col md={6}>
+                  <h4>Done</h4>
+                  <div>
+                    <ul>
+                      {this.props.finishedTactics.map(tac => (
+                        <li key={tac}>{tac}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <h4>Open</h4>
+                  <div>
+                    <ul>
+                      {doneTacticArray().map(tac => (
+                        <li key={tac}>{tac}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Col>
+              </Row>
             </Panel.Body>
           </Panel>
         ) : (
@@ -181,9 +317,31 @@ class DetailProject extends Component {
               <ProgressBar
                 striped
                 bsStyle="success"
-                label={`${this.props.project.progress}%`}
-                now={this.props.project.progress}
+                label={`${progress.toFixed(2)}%`}
+                now={progress}
               />
+              <Row>
+                <Col md={6}>
+                  <h4>Done</h4>
+                  <div>
+                    <ul>
+                      {this.props.finishedTactics.map(tac => (
+                        <li key={tac}>{tac}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <h4>Open</h4>
+                  <div>
+                    <ul>
+                      {doneTacticArray().map(tac => (
+                        <li key={tac}>{tac}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Col>
+              </Row>
             </Panel.Body>
           </Panel>
         )}
@@ -198,19 +356,23 @@ DetailProject.propTypes = {
   getProject: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   getDevelopers: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  setFinishedTactic: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  project: state.project.project
+  project: state.project.project,
+  finishedTactics: state.project.finishedTactics
 });
 
 export default connect(
   mapStateToProps,
   {
     getProject,
-    getDevelopers
+    getDevelopers,
+    setFinishedTactic,
+    switchAttrForEditProject
   }
 )(withRouter(DetailProject));

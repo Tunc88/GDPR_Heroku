@@ -183,12 +183,29 @@ export const setComment = (commentData, history) => dispatch => {
     );
 };
 
-export const setFinishedTactic = tactic => {
+export const setFinishedTactic = tacticData => dispatch => {
+  axios
+    .post("/api/projects/project/setFinishedTactic", tacticData)
+    .then(res =>
+      dispatch({
+        type: SET_FINISHED_TACTIC,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+/*export const setFinishedTactic = tactic => {
   return {
     type: SET_FINISHED_TACTIC,
     payload: tactic
   };
-};
+};*/
 
 // Reset assignedTactics
 export const resetAssignedStrategies = strategy => {
