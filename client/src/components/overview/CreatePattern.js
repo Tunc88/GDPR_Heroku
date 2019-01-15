@@ -5,10 +5,12 @@ import classnames from "classnames";
 import { connect } from "react-redux";
 
 import Spinner from "../common/Spinner";
-import { createPattern } from "../../actions/patternActions";
+//import { createPattern } from "../../actions/patternActions";
 import {
   setAssignedTactics,
-  setAssignedStrategies
+  setAssignedStrategies,
+  clearChosenTactics,
+  createPattern
 } from "../../actions/patternActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
@@ -17,6 +19,7 @@ import TacListGroupField from "../common/TacListGroupField";
 import { getStrategies } from "../../actions/strategyActions";
 import { Button, Row, Col } from "react-bootstrap";
 import store from "../../store";
+import StrategyFeed from "./StrategyFeed";
 
 class CreatePattern extends Component {
   constructor() {
@@ -48,6 +51,7 @@ class CreatePattern extends Component {
 
   componentDidMount() {
     this.props.getStrategies();
+    this.props.clearChosenTactics();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,19 +83,34 @@ class CreatePattern extends Component {
       examples: this.state.examples,
       relatedPatterns: this.state.relatedPatterns,
       sources: this.state.sources,
-      knownUses: this.state.knownUser,
-      assignedStrategies: store.getState().pattern.assignedStrategies,
-      assignedTactics: store.getState().pattern.assignedTactics.id //Fehlerquelle
+      knownUses: this.state.knownUses,
+      assignedTactics: this.props.pattern.chosenTactics
+      // assignedStrategies: store.getState().pattern.assignedStrategies,
+      // assignedTactics: store.getState().pattern.assignedTactics.id //Fehlerquelle
     };
-
-    this.props.createPattern(newPattern, this.props.history);
+    console.log(this.props.history);
+    //this.props.createPattern(newPattern, this.props.history);
   }
 
+  createPattern = () => {
+    const newPattern = {
+      name: this.state.name,
+      summary: this.state.summary,
+      context: this.state.context,
+      problem: this.state.problem,
+      solution: this.state.solution,
+      consequences: this.state.consequences,
+      examples: this.state.examples,
+      assignedTactics: this.props.pattern.chosenTactics
+    };
+    this.props.createPattern(newPattern, this.props.history);
+  };
+
   render() {
-    const { loading2, strategies } = this.props;
+    //const { loading2, strategies } = this.props;
     const { loading, tactics } = this.props;
 
-    let strategyContent;
+    //let strategyContent;
     let tacticContent;
 
     if (tactics === null || loading) {
@@ -100,11 +119,20 @@ class CreatePattern extends Component {
       tacticContent = <TacListGroupField tactics={this.props.strategies} />;
     }
 
-    if (strategies === null || loading2) {
+    /*if (strategies === null || loading2) {
       strategyContent = <Spinner />;
     } else {
       strategyContent = (
         <StrListGroupField strategies={this.props.strategies} />
+      );
+    }*/
+    const { strategies, loading3 } = this.props.strategy;
+    let strategyContent;
+    if (strategies === null || loading3) {
+      strategyContent = <Spinner />;
+    } else {
+      strategyContent = (
+        <StrategyFeed strategies={strategies} isFilter={false} />
       );
     }
 
@@ -118,9 +146,9 @@ class CreatePattern extends Component {
           placeholder="Enter the name of the pattern"
           onChange={this.onChange}
         />
-
+        {strategyContent}
         <TextAreaField
-          label="Description"
+          label="Summary"
           name="summary"
           value={this.state.summary} // must be changed to summary
           placeholder="Enter Summary"
@@ -167,7 +195,7 @@ class CreatePattern extends Component {
           onChange={this.onChange}
         />
 
-        <Row className="show-grid">
+        {/*<Row className="show-grid">
           <Col md={6}>
             <h4>Which Strategies will be covered</h4>
             {strategyContent}
@@ -176,8 +204,8 @@ class CreatePattern extends Component {
             <h4>Choose also the covered Tactic</h4>
             {tacticContent}
           </Col>
-        </Row>
-        <Button bsStyle="primary" onClick={this.onSubmit}>
+        </Row>*/}
+        <Button bsStyle="primary" onClick={this.createPattern}>
           Create Pattern
         </Button>
       </form>
@@ -201,10 +229,18 @@ const mapStateToProps = state => ({
   assignedTactics: state.pattern.assignedTactics,
   assignedStrategies: state.pattern.assignedStrategies,
   tactics: state.tactic.tactics,
-  strategies: state.strategy.strategies
+  strategies: state.strategy.strategies,
+  pattern: state.pattern,
+  strategy: state.strategy
 });
 
 export default connect(
   mapStateToProps,
-  { createPattern, getStrategies, setAssignedStrategies, setAssignedTactics }
+  {
+    createPattern,
+    getStrategies,
+    setAssignedStrategies,
+    setAssignedTactics,
+    clearChosenTactics
+  }
 )(withRouter(CreatePattern));

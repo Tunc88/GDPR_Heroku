@@ -19,6 +19,7 @@ class PatternItem extends Component {
 
   render() {
     const { pattern, auth } = this.props;
+    //alert(typeof pattern);
     const open = this.state.open;
     let more;
     let patternDescriptionFirstPart = pattern.summary;

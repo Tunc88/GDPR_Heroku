@@ -9,13 +9,24 @@ import isEmpty from "../../validation/is-empty";
 import {
   getPattern,
   editPattern,
-  createPattern
+  createPattern,
+  handleEditing
 } from "../../actions/patternActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
 import EditToolbar from "../common/EditToolbar";
+import Spinner from "../common/Spinner";
 import PatternDetail_StrategiesWithTactics from "../overview/PatternDetail_StrategiesWithTactics";
-import { Button, FormGroup, Checkbox, Col } from "react-bootstrap";
+import {
+  Button,
+  FormGroup,
+  Checkbox,
+  Col,
+  FormControl,
+  Input
+} from "react-bootstrap";
+import StrategyFeed from "./StrategyFeed";
+import { getStrategies } from "../../actions/strategyActions";
 
 /*GET_PATTERN ohne Funktion*/
 
@@ -24,8 +35,8 @@ class PatternDetail extends Component {
     super(props);
     //this.props.getPattern(this.props.match.params._id),
     this.state = {
-      pattern: this.props.pattern,
-      name: "",
+      pattern: {},
+      /*name: "",
       context: "",
       summary: "",
       problem: "",
@@ -37,116 +48,80 @@ class PatternDetail extends Component {
       liabilities: "",
       examples: "",
       relatedPatterns: "",
-      sources: "",
+       sources: "",
       knownUses: "",
-      assignedTactics: [],
+      assignedTactics: [],*/
       errors: {},
       editing: false,
       assignedStrategiesWithAllTactics: []
     };
 
     this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onChangePattern = this.onChangePattern.bind(this);
+    this.onAddElementToArray = this.onAddElementToArray.bind(this);
+    // this.onSubmit = this.onSubmit.bind(this);
+    //this.props.getPattern(this.props.match.params._id);
   }
 
   componentDidMount() {
-    console.log(this.props.location.state);
+    //console.log(this.props.location.state);
     //alert(this.props.match.params._id);
     // alert(this.props.getPattern(this.props.match.params._id));
-    this.props.getPattern(this.props.match.params._id),
-      this.setState({ pattern: this.props.pattern });
+    //alert(this.props.pattern.loading);
+    this.props.getPattern(this.props.match.params._id);
+    this.props.getStrategies();
+    //alert(this.props.pattern.pattern[0].name);
+    //this.setState({ pattern: this.props.pattern });
   }
 
-  componentWillReceiveProps(nextProps) {
-    //alert(nextProps);
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
-    }
-
-    if (nextProps.location.state.pattern) {
-      const pattern = nextProps.location.state.pattern;
-
-      // If pattern field doesnt exist, make empty string
-      pattern.name = !isEmpty(pattern.name) ? pattern.name : "";
-      pattern.context = !isEmpty(pattern.context) ? pattern.context : "";
-      pattern.summary = !isEmpty(pattern.summary) ? pattern.summary : "";
-      pattern.problem = !isEmpty(pattern.problem) ? pattern.problem : "";
-      pattern.forcesConcerns = !isEmpty(pattern.forcesConcerns)
-        ? pattern.forcesConcerns
-        : "";
-      pattern.solution = !isEmpty(pattern.solution) ? pattern.solution : "";
-      pattern.structure = !isEmpty(pattern.structure) ? pattern.structure : "";
-      pattern.implementation = !isEmpty(pattern.implementation)
-        ? pattern.implementation
-        : "";
-      pattern.consequences = !isEmpty(pattern.consequences)
-        ? pattern.consequences
-        : "";
-      //pattern.liabilities = !isEmpty(liabilities) ? pattern.liabilities : "";
-      pattern.examples = !isEmpty(pattern.examples) ? pattern.examples : "";
-      pattern.relatedPatterns = !isEmpty(pattern.relatedPatterns)
-        ? pattern.relatedPatterns
-        : "";
-      pattern.sources = !isEmpty(pattern.sources) ? pattern.sources : "";
-      pattern.knownUses = !isEmpty(pattern.knownUses) ? pattern.knownUses : "";
-      pattern.assignedTactics = !isEmpty(pattern.assignedTactics)
-        ? pattern.assignedTactics
-        : [];
-      pattern.assignedStrategiesWithAllTactics = !isEmpty(
-        pattern.assignedStrategiesWithAllTactics
-      )
-        ? pattern.assignedStrategiesWithAllTactics
-        : [];
-
-      // Set component fields state
-      this.setState({
-        id: this.props.match.params._id,
-        name: pattern.name,
-        context: pattern.context,
-        summary: pattern.summary,
-        problem: pattern.problem,
-        forcesConcerns: pattern.forcesConcerns,
-        solution: pattern.solution,
-        structure: pattern.structure,
-        implementation: pattern.implementation,
-        consequences: pattern.consequences,
-        // liabilities: pattern.liabilities,
-        examples: pattern.examples,
-        relatedPatterns: pattern.relatedPatterns,
-        sources: pattern.sources,
-        knownUses: pattern.knownUses,
-        assignedTactics: pattern.assignedTactics,
-        assignedStrategiesWithAllTactics:
-          pattern.assignedStrategiesWithAllTactics,
-
-        Editname: pattern.name,
-        Editcontext: pattern.context,
-        Editsummary: pattern.summary,
-        Editproblem: pattern.problem,
-        EditforcesConcerns: pattern.forcesConcerns,
-        Editsolution: pattern.solution,
-        Editstructure: pattern.structure,
-        Editimplementation: pattern.implementation,
-        Editconsequences: pattern.consequences,
-        // liabilities: pattern.liabilities,
-        Editexamples: pattern.examples,
-        EditrelatedPatterns: pattern.relatedPatterns,
-        Editsources: pattern.sources,
-        EditknownUses: pattern.knownUses,
-        EditassignedTactics: pattern.assignedTactics,
-        EditassignedStrategiesWithAllTactics:
-          pattern.EditassignedStrategiesWithAllTactics
-      });
-    }
-  }
-
-  onChange(e) {
-    //alert(e.target.name);
+  onChangePattern(e) {
+    //alert(e);
+    //console.log(e);
+    // alert(e.target.name);
     //alert(e.target.value);
+    //this.setState({ [pattern(e.target.name)]: e.target.value });
+    this.setState({
+      pattern: {
+        ...this.state.pattern,
+        [e.target.name]: e.target.value
+      }
+    });
+  }
+
+  onAddElementToArray(e) {
+    //alert(e);
+    //console.log(e);
+    // alert(e.target.name);
+    //alert(e.target.value);
+    //this.setState({ [pattern(e.target.name)]: e.target.value });
+    if (typeof e.target.value == "undefined") {
+      return false;
+    }
+
+    this.setState({
+      pattern: {
+        ...this.state.pattern,
+        [e.target.value]: ""
+      }
+    });
+    //alert(e.target.value);
+  }
+  removeElement = element => {
+    //alert(element);
+    this.setState({
+      pattern: {
+        ...this.state.pattern,
+        [element]: undefined
+      }
+    });
+  };
+  onChange(e) {
+    alert(e.target.name);
+    alert(e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSubmit(e) {
+  /*onSubmit(e) {
     e.preventDefault();
 
     const newPattern = {
@@ -168,48 +143,22 @@ class PatternDetail extends Component {
     };
 
     this.props.createPattern(newPattern, this.props.history);
-  }
+  }*/
 
   editPattern = () => {
-    const patternData = {
-      name: this.state.Editname,
-      sources: this.state.Editsources,
-      summary: this.state.Editsummary,
-      context: this.state.Editcontext,
-      problem: this.state.Editproblem,
-      forcesConcerns: this.state.EditforcesConcerns,
-      solution: this.state.Editsolution,
-      structure: this.state.Editstructure,
-      implementation: this.state.Editimplementation,
-      consequences: this.state.Editconsequences,
-      benefits: this.state.Editbenefits,
-      examples: this.state.Editexamples,
-      relatedPatterns: this.state.EditrelatedPatterns,
-      sources: this.state.Editsources,
-      knownUses: this.state.EditknownUser,
-      id: this.state.id
-    };
-    console.log(
-      "function editpattern called in EditToolbar:" +
-        patternData.name +
-        patternData.summary
-    );
-    this.props.editPattern(patternData);
-    this.setState({
-      editing: false
-    });
+    const editedPattern = this.state.pattern;
+    editedPattern.assignedTactics = this.props.pattern.chosenTactics;
+    console.log("editedPattern");
+    console.log(editedPattern);
+    this.props.editPattern(editedPattern);
+    this.handleEditing();
   };
 
-  enableEditing = () => {
+  handleEditing = () => {
     this.setState({
-      editing: true
+      pattern: this.props.pattern.pattern
     });
-  };
-
-  dismissChanges = () => {
-    this.setState({
-      editing: false
-    });
+    this.props.handleEditing();
   };
 
   isEmpty(patternProperty) {
@@ -242,14 +191,334 @@ class PatternDetail extends Component {
       alert("not included" + this.state.assignedTactics.length);
     }
   };
-
+  onDropdownSelected(e) {
+    console.log("THE VAL", e.target.value);
+    //here you will see the current selected value of the select input
+  }
   render() {
     const { errors } = this.state;
     const { isAuthenticated } = this.props.auth;
-    const { pattern } = this.props.pattern;
+    //const { editPattern } = this.props.patterneditPattern;
+    // const { pattern, loading } = this.props.pattern;
+    const { pattern, loading, editPattern } = this.props.pattern;
+    //const pattern2 = pattern.pattern;
+
+    //const pattern1 = pattern.pattern;
+    //const { loading } = this.props.pattern.loading;
+    //console.log(typeof pattern.pattern);
+    let patternContent;
+    //alert(loading);
+    //alert(pattern);
+    //alert(editPattern);
+    if (pattern === null || loading || Object.keys(pattern).length === 0) {
+      // alert("falsch");
+      console.log("falsch");
+      console.log(pattern);
+      console.log(loading);
+      console.log(typeof pattern);
+      patternContent = <Spinner />;
+    } else {
+      //alert("richtig");
+      console.log("richtig");
+      console.log(pattern);
+      console.log(loading);
+      console.log(typeof pattern);
+      //console.log(pattern.pattern.assignedTactics);
+      //alert(loading);
+      //alert(pattern);
+      //var pats = [pattern];
+      //console.log(pattern2.pattern);
+      //alert(Object.keys(pattern));
+      //pattern = Object.assign(pattern);
+      /*this.setState({
+        pattern: {
+          pattern
+        }
+      });*/
+
+      const detailPattern = pattern.pattern;
+      //patternContent = <h1>{detailPattern.name}</h1>;
+      const { strategies, loading3 } = this.props.strategy;
+      let strategyContent;
+
+      if (strategies === null || loading3) {
+        strategyContent = <Spinner />;
+      } else {
+        strategyContent = (
+          <StrategyFeed strategies={strategies} isFilter={false} />
+        );
+      }
+      /* let allOptionalPatternElements;
+      allOptionalPatternElements = {
+        alsoKnownAs: "",
+        sources: ""
+      };*/
+      var missingPatternElements = [];
+      /*Object.keys(pattern).forEach(patternElement => {
+        if (isEmpty(patternElement)) {
+          missingPatternElements.push(patternElement);
+        }
+      });*/
+      if (typeof this.state.pattern.consequences == "undefined") {
+        missingPatternElements.push("consequences");
+      }
+      let addConsequences;
+      //alert(this.state.pattern.sources);
+      if (typeof this.state.pattern.consequences !== "undefined") {
+        addConsequences = (
+          <div>
+            <TextAreaField
+              label="Consequences"
+              name="consequences"
+              value={this.state.pattern.consequences}
+              placeholder="Enter Consequences"
+              onChange={this.onChangePattern}
+            />
+            <span
+              className={"removeElementFromPattern"}
+              onClick={() => this.removeElement("consequences")}
+            >
+              Remove Consequences...
+            </span>
+          </div>
+        );
+      } else {
+        addConsequences = <span />;
+      }
+      if (typeof this.state.pattern.knownUses == "undefined") {
+        //alert("knownuses");
+        missingPatternElements.push("knownUses");
+      }
+
+      let addKnownUses;
+      //alert(this.state.pattern.sources);
+      if (typeof this.state.pattern.knownUses !== "undefined") {
+        addKnownUses = (
+          <div>
+            <TextAreaField
+              label="known Uses"
+              name="knownUses"
+              value={this.state.pattern.knownUses}
+              placeholder="Enter known Uses"
+              onChange={this.onChangePattern}
+            />
+            <span
+              className={"removeElementFromPattern"}
+              onClick={() => this.removeElement("knownUses")}
+            >
+              Remove known Uses...
+            </span>
+          </div>
+        );
+      } else {
+        addKnownUses = <span />;
+      }
+      if (typeof this.state.pattern.sources == "undefined") {
+        missingPatternElements.push("sources");
+      }
+      let addSources;
+      //alert(this.state.pattern.sources);
+      if (typeof this.state.pattern.sources !== "undefined") {
+        addSources = (
+          <div>
+            <TextAreaField
+              label="Sources"
+              name="sources"
+              value={this.state.pattern.sources}
+              placeholder="Enter Sources"
+              onChange={this.onChangePattern}
+            />
+            <span
+              className={"removeElementFromPattern"}
+              onClick={() => this.removeElement("sources")}
+            >
+              Remove Sources...
+            </span>
+          </div>
+        );
+      } else {
+        addSources = <span />;
+      }
+
+      console.log("missingpatternelements");
+      console.log(missingPatternElements);
+      patternContent = (
+        <div style={{ marginBottom: "70px" }}>
+          {!editPattern ? (
+            <div>
+              <Col xs={6}>
+                <h3>{pattern.name}</h3>
+              </Col>
+              <Col xs={6}>
+                {isAuthenticated ? (
+                  <EditToolbar
+                    name={pattern.name}
+                    _id={this.props.match.params._id}
+                    enableEditing={() => this.handleEditing()}
+                  />
+                ) : (
+                  <Col xs={6} />
+                )}
+              </Col>
+              <Col xs={12}>
+                {
+                  <PatternDetail_StrategiesWithTactics
+                    assignedStrategiesWithAllTactics={
+                      pattern.assignedStrategiesWithAllTactics
+                    }
+                  />
+                }
+                {isEmpty(pattern.alsoKnownAs) ? (
+                  <span />
+                ) : (
+                  <span>
+                    <h4>Also Known As</h4>
+                    <div>{pattern.alsoKnownAs}</div>
+                  </span>
+                )}
+                <h4>Summary</h4>
+                <div>{pattern.summary}</div>
+                <h4>Context</h4>
+                <div>{pattern.context}</div>
+                <h4>Problem</h4>
+                <div>{pattern.problem}</div>
+                <h4>Solution</h4>
+                <div>{pattern.solution}</div>
+                {isEmpty(pattern.consequences) ? (
+                  <span />
+                ) : (
+                  <span>
+                    <h4>Consequences</h4>
+                    <div>{pattern.consequences}</div>
+                  </span>
+                )}
+                {isEmpty(pattern.examples) ? (
+                  <span />
+                ) : (
+                  <span>
+                    <h4>Examples</h4>
+                    <div>{pattern.examples}</div>
+                  </span>
+                )}
+                {isEmpty(pattern.knownUses) ? (
+                  <span />
+                ) : (
+                  <span>
+                    <h4>Known Uses</h4>
+                    <div>{pattern.knownUses}</div>
+                  </span>
+                )}
+                {isEmpty(pattern.relatedPatterns) ? (
+                  <span />
+                ) : (
+                  <span>
+                    <h4>relatedPatterns</h4>
+                    <div>{pattern.relatedPatterns}</div>
+                  </span>
+                )}
+                {isEmpty(pattern.sources) ? (
+                  <span />
+                ) : (
+                  <span>
+                    <h4>Sources</h4>
+                    <div>{pattern.sources}</div>
+                  </span>
+                )}
+              </Col>
+            </div>
+          ) : (
+            <div>
+              <Col xs={6} xsOffset={6}>
+                <Button
+                  bsStyle="primary"
+                  style={{ marginBottom: "70px" }}
+                  onClick={this.editPattern}
+                >
+                  Save Changes
+                </Button>
+                <Button
+                  bsStyle="primary"
+                  style={{ marginBottom: "70px" }}
+                  onClick={this.handleEditing}
+                >
+                  Dismiss Changes
+                </Button>
+              </Col>
+              <TextField
+                label="Name of pattern"
+                name="name"
+                value={this.state.pattern.name}
+                placeholder="Enter the name of the pattern"
+                onChange={this.onChangePattern}
+              />
+              {strategyContent}
+              <TextAreaField
+                label="Summary"
+                name="summary"
+                value={this.state.pattern.summary}
+                placeholder="Enter Summary"
+                onChange={this.onChangePattern}
+              />
+              <TextAreaField
+                label="Context"
+                name="context"
+                value={this.state.pattern.context}
+                placeholder="Enter Context"
+                onChange={this.onChangePattern}
+              />
+              <TextAreaField
+                label="Problem"
+                name="problem"
+                value={this.state.pattern.problem}
+                placeholder="Enter Problem"
+                onChange={this.onChangePattern}
+              />
+              <TextAreaField
+                label="Solution"
+                name="solution"
+                value={this.state.pattern.solution}
+                placeholder="Enter Solution"
+                onChange={this.onChangePattern}
+              />
+
+              <TextAreaField
+                label="Examples"
+                name="examples"
+                value={this.state.pattern.examples}
+                placeholder="Enter Examples"
+                onChange={this.onChangePattern}
+              />
+              <div class="form-group">
+                <label for="exampleFormControlSelect">
+                  Add Element to Pattern
+                </label>
+                <select
+                  class="form-control"
+                  id="exampleFormControlSelect"
+                  onChange={this.onAddElementToArray}
+                  name="missingPatternElements"
+                >
+                  <option value={undefined}>Please select...</option>
+                  {missingPatternElements.map(missingElement => (
+                    <option value={missingElement}>{missingElement}</option>
+                  ))}
+                </select>
+                {addConsequences}
+                {addKnownUses}
+                {addSources}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
     return (
       <Col xs={12}>
-        {this.state.editing && isAuthenticated ? (
+        {patternContent}
+        {/*pats.map((pattern, index) => (
+          <h1>{pattern._id}</h1>
+        ))*/}
+        {/*{this.state.editing && isAuthenticated ? (
           <form onSubmit={this.onSubmit}>
             <TextField
               label="Name of pattern"
@@ -360,6 +629,7 @@ class PatternDetail extends Component {
                 </Checkbox>
               ))}
               </FormGroup>*/}
+        {/*
 
             <Button
               bsStyle="primary"
@@ -401,6 +671,9 @@ class PatternDetail extends Component {
             />
             <Col xs={12}>
               <Col xs={12}>
+                <h1>halllo</h1>
+                <h1>{patternContent}</h1>
+                <h1>hlo</h1>
                 <h5>Summary</h5>
                 <div>{this.state.summary}</div>
                 <h5>Context</h5>
@@ -471,7 +744,7 @@ class PatternDetail extends Component {
               </Col>
             </Col>
           </div>
-        )}
+        )}*/}
       </Col>
     );
   }
@@ -486,10 +759,18 @@ PatternDetail.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  pattern: state.pattern
+  pattern: state.pattern,
+  editPattern: state.editPattern,
+  strategy: state.strategy
 });
 
 export default connect(
   mapStateToProps,
-  { createPattern, getPattern, editPattern }
-)(withRouter(PatternDetail));
+  {
+    createPattern,
+    getPattern,
+    editPattern,
+    handleEditing,
+    getStrategies
+  }
+)(PatternDetail);

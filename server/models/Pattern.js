@@ -3,6 +3,9 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const PatternSchema = new Schema({
+  alsoKnownAs: {
+    type: String
+  },
   name: {
     type: String,
     required: true
@@ -32,8 +35,7 @@ const PatternSchema = new Schema({
     type: String
   },
   consequences: {
-    type: String,
-    required: true
+    type: String
   },
   liabilities: {
     type: String
@@ -51,18 +53,14 @@ const PatternSchema = new Schema({
   knownUses: {
     type: String
   },
-  assignedStrategies: [
+
+  assignedTactics: [
     {
-      type: Schema.Types.ObjectId,
-      //  ref: "strategies", //[mongoose.Schema.Types.ObjectId]
-      assignedTactics: [
-        {
-          type: Schema.Types.ObjectId
-          //     ref: "strategies.assignedTactics" //[mongoose.Schema.Types.ObjectId]
-        }
-      ]
+      type: Schema.Types.ObjectId
+      //     ref: "strategies.assignedTactics" //[mongoose.Schema.Types.ObjectId]
     }
   ]
+
   /*
   assignedTactics: [
     {

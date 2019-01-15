@@ -161,14 +161,15 @@ router.get("/old", (req, res) =>
     )
 );
 
-router.get("/", (req, res) => {
-  const { errors, isValid } = validatePatternInput(req.body);
+router.post("/createpattern", (req, res) => {
+  //const { errors, isValid } = validatePatternInput(req.body);
 
   // Check Validation
-  if (!isValid) {
+  /*if (!isValid) {
     return res.status(400).json(errors);
-  }
-
+  }*/
+  console.log("newpattern");
+  console.log(req.body);
   Pattern.findOne({ name: req.body.name }).then(pattern => {
     if (pattern) {
       errors.name = "Pattern already exists";
@@ -176,20 +177,12 @@ router.get("/", (req, res) => {
     } else {
       const newPattern = new Pattern({
         name: req.body.name,
-        assignedStrategies: req.body.assignedStrategies,
         assignedTactics: req.body.assignedTactics,
         context: req.body.context,
         summary: req.body.summary,
         problem: req.body.problem,
-        forcesTactics: req.body.forcesTactics,
         solution: req.body.solution,
-        structure: req.body.structure,
-        implementation: req.body.implementation,
         consequences: req.body.consequences,
-        liabilities: req.body.liabilities,
-        relatedPatterns: req.body.relatedPatterns,
-        sources: req.body.sources,
-        knownUser: req.body.knownUser,
         examples: req.body.examples
       });
       newPattern
@@ -313,18 +306,99 @@ router.get("/testing", (req, res) =>
 // @route   GET api/patterns/createpattern
 // @desc    Create Pattern
 // @access  Private
-router.get(
-  "/:id",
-  //passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Pattern.findById(req.params.id)
-      .then(pattern => {
-        res.json({ pattern });
+/*
+router.get("/:id", (req, res) => {
+  Pattern.findById(req.params.id)
+    .then(pattern => {
+      console.log("id");
+      res.json({ pattern });
+    })
+    .catch(err =>
+      res.status(404).json({ patternnotfound: "No pattern found" })
+    );
+});*/
+
+router.get("/:id", (req, res) =>
+  Pattern.aggregate([
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(req.params.id)
+      }
+    },
+    {
+      $lookup: {
+        from: "strategies",
+        localField: "assignedTactics",
+        foreignField: "assignedTactics._id",
+        as: "assignedStrategiesWithAllTactics"
+      }
+    }
+  ])
+
+    .exec()
+    .then(patterns => {
+      //maybe first forEach not necessary
+      patterns.forEach(function(pattern) {
+        pattern.assignedTactics.forEach(function(
+          assignedTactic,
+          assignedTacticIndex
+        ) {
+          pattern.assignedTactics[
+            assignedTacticIndex
+          ] = assignedTactic.toString();
+        });
+        pattern.assignedStrategiesWithAllTactics.forEach(function(
+          assignedStrategy
+        ) {
+          var NewAssignedTactics = [];
+          assignedStrategy.assignedTactics.forEach(function(
+            tactic,
+            tacticIndex
+          ) {
+            if (pattern.assignedTactics.includes(tactic._id.toString())) {
+              console.log("true");
+              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+              NewAssignedTactics.push(
+                assignedStrategy.assignedTactics[tacticIndex]
+              );
+            } else {
+              console.log("false");
+              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
+
+              console.log(NewAssignedTactics);
+            }
+
+            // }
+          });
+          assignedStrategy.assignedTactics = NewAssignedTactics;
+          //console.log(assignedStrategy);
+
+          console.log(assignedStrategy);
+        });
+      });
+
+      //console.log(patterns[].assignedStrategiesWithAllTactics[]._id);
+      //console.log(patterns[].assignedTactics[]._id);
+      //console.log(patterns[].assignedTactics[]._id);
+      // patterns.forEach(function(pattern) {
+      // pattern.assignedTactics.forEach(function(tactic) {
+      //console.log(tactic._id);
+      //  });
+      //console.log(pattern.assignedTactics);
+      //  });
+      if (!patterns)
+        return res.status(404).json({
+          error: "Not Found",
+          message: `Patterns not found`
+        });
+      res.status(200).json(patterns[0]);
+    })
+    .catch(error =>
+      res.status(500).json({
+        error: "Internal Server Error",
+        message: error.message
       })
-      .catch(err =>
-        res.status(404).json({ patternnotfound: "No pattern found" })
-      );
-  }
+    )
 );
 
 // @route   DELETE api/patterns/:id
@@ -352,7 +426,7 @@ router.post(
   "/editpattern",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { errors, isValid } = validatePatternInput(req.body);
+    //const { errors, isValid } = validatePatternInput(req.body);
 
     // Check Validation
     /*
@@ -363,19 +437,118 @@ router.post(
 
     // Get fields
     const patternFields = {};
-    patternFields.id = req.body.id;
+    //patternFields = req.body;
+    if (req.body.alsoKnownAs) patternFields.alsoKnownAs = req.body.alsoKnownAs;
     if (req.body.name) patternFields.name = req.body.name;
     if (req.body.summary) patternFields.summary = req.body.summary;
-
+    if (req.body.context) patternFields.context = req.body.context;
+    if (req.body.problem) patternFields.problem = req.body.problem;
+    if (req.body.solution) patternFields.solution = req.body.solution;
+    if (req.body.consequences)
+      patternFields.consequences = req.body.consequences;
+    if (req.body.examples) patternFields.examples = req.body.examples;
+    if (req.body.knownUses) patternFields.knownUses = req.body.knownUses;
+    if (req.body.relatedPatterns)
+      patternFields.relatedPatterns = req.body.relatedPatterns;
+    if (req.body.sources) patternFields.sources = req.body.sources;
+    if (req.body.assignedTactics)
+      patternFields.assignedTactics = req.body.assignedTactics;
+    //console.log("patternfields");
+    //console.log(patternFields);
     Pattern.findOneAndUpdate(
-      { _id: req.body.id },
+      { _id: req.body._id },
       { $set: patternFields },
       { new: true }
-    ).then(pattern => {
-      Pattern.find({}).then(patterns => {
-        res.json(patterns);
-      });
-    });
+    )
+      .then(pattern => {
+        Pattern.aggregate([
+          {
+            $match: {
+              _id: mongoose.Types.ObjectId(req.body._id)
+            }
+          },
+          {
+            $lookup: {
+              from: "strategies",
+              localField: "assignedTactics",
+              foreignField: "assignedTactics._id",
+              as: "assignedStrategiesWithAllTactics"
+            }
+          }
+        ])
+
+          .exec()
+          .then(patterns => {
+            //maybe first forEach not necessary
+            patterns.forEach(function(pattern) {
+              pattern.assignedTactics.forEach(function(
+                assignedTactic,
+                assignedTacticIndex
+              ) {
+                pattern.assignedTactics[
+                  assignedTacticIndex
+                ] = assignedTactic.toString();
+              });
+              pattern.assignedStrategiesWithAllTactics.forEach(function(
+                assignedStrategy
+              ) {
+                var NewAssignedTactics = [];
+                assignedStrategy.assignedTactics.forEach(function(
+                  tactic,
+                  tacticIndex
+                ) {
+                  if (pattern.assignedTactics.includes(tactic._id.toString())) {
+                    console.log("true");
+                    console.log(
+                      assignedStrategy.assignedTactics[tacticIndex].name
+                    );
+                    NewAssignedTactics.push(
+                      assignedStrategy.assignedTactics[tacticIndex]
+                    );
+                  } else {
+                    console.log("false");
+                    console.log(
+                      assignedStrategy.assignedTactics[tacticIndex].name
+                    );
+
+                    console.log(NewAssignedTactics);
+                  }
+
+                  // }
+                });
+                assignedStrategy.assignedTactics = NewAssignedTactics;
+                //console.log(assignedStrategy);
+
+                console.log(assignedStrategy);
+              });
+            });
+
+            //console.log(patterns[].assignedStrategiesWithAllTactics[]._id);
+            //console.log(patterns[].assignedTactics[]._id);
+            //console.log(patterns[].assignedTactics[]._id);
+            // patterns.forEach(function(pattern) {
+            // pattern.assignedTactics.forEach(function(tactic) {
+            //console.log(tactic._id);
+            //  });
+            //console.log(pattern.assignedTactics);
+            //  });
+            if (!patterns)
+              return res.status(404).json({
+                error: "Not Found",
+                message: `Patterns not found`
+              });
+            res.status(200).json(patterns[0]);
+          })
+          .catch(error =>
+            res.status(500).json({
+              error: "Internal Server Error",
+              message: error.message
+            })
+          );
+      })
+      .catch(err =>
+        res.status(404).json({ error: "Pattern could not be updated" })
+      );
   }
 );
 

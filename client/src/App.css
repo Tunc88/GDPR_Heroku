@@ -89,3 +89,124 @@ img {
   border-radius: 50%;
   display: inline-block;
 }
+.dotForActiveStrategyFilter {
+  height: 25px;
+  width: 25px;
+  background-color: #337ab7;
+  border-radius: 50%;
+  display: inline-block;
+  float: right;
+}
+
+.dotForStrategyFilter {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  float: right;
+}
+
+.dotForStrategyFilter:hover {
+  cursor: pointer;
+  background-color: #ccc;
+}
+.dotForActiveStrategyFilter:hover {
+  cursor: pointer;
+  background-color: #ccc;
+}
+.filter {
+  text-align: center;
+}
+.filter:hover {
+  background: #f5f5f5;
+  /*border-radius: 25px;*/
+}
+.activeFilter {
+  background: #337ab7;
+  color: white;
+  /*border-radius: 25px;*/
+}
+.activeFilter:hover {
+  background: #337ab7;
+  color: white;
+  /*border-radius: 25px;*/
+}
+
+.strategyFilter {
+  width: 30%;
+  background: #337ab7;
+}
+
+.inline {
+  display: inline !important;
+}
+.activeStrategyPanel {
+  border-color: #337ab7;
+  border-width: 2px;
+}
+
+.passiveStrategyPanel {
+  border-color: #ddd;
+  border-width: 1px;
+}
+.removeElementFromPattern {
+  color: #337ab7;
+  text-decoration: underline;
+}
+.removeElementFromPattern:hover {
+  cursor: pointer;
+}
+.qb-value {
+  display: none !important;
+}
+/*
+path:nth-child(1) {
+  display: none;
+}
+path:nth-child(2) {
+  display: none;
+}
+path:nth-child(3) {
+  display: none;
+}
+path:nth-child(4) {
+  display: none;
+}
+path:nth-child(5) {
+  display: none;
+}
+path:nth-child(6) {
+  display: none;
+}
+path:nth-child(7) {
+  display: none;
+}
+path:nth-child(8) {
+  display: none;
+}
+g g:first-of-type {
+  display: none;
+}
+*/
+.qb-link {
+  fill: #ddd;
+}
+.qb-node rect {
+  fill: #337ab7;
+}
+.qb-node {
+  fill: white;
+  font-weight: bold;
+}
+.crop {
+  /* width: 10000px;
+  height: 10000px;*/
+  overflow: hidden;
+}
+
+.crop svg {
+  /*width: 10000px;
+  height: 10000px;*/
+  margin: 0 0 0 -300px;
+}

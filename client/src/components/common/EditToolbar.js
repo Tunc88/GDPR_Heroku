@@ -13,7 +13,7 @@ import {
   HelpBlock,
   Checkbox
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { deletePattern, editPattern } from "../../actions/patternActions";
 
 class EditToolbar extends Component {
@@ -91,6 +91,7 @@ class EditToolbar extends Component {
 
   deletePattern = id => {
     console.log("function deletepattern called in EditToolbar" + id);
+    console.log(this.props.history);
     this.props.deletePattern(id, this.props.history);
   };
 
@@ -154,4 +155,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { deletePattern }
-)(EditToolbar);
+)(withRouter(EditToolbar));

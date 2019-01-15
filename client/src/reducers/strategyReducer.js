@@ -30,6 +30,7 @@ export default function(state = initialState, action) {
           strategy => strategy._id !== action.payload
         )
       };
+
     default:
       return state;
   }
