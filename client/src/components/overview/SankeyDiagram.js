@@ -1,7 +1,28 @@
 import React, { Component } from "react";
-import ReactSankey from "react-sankey";
+//import ReactSankey from "react-sankey";
 import { connect } from "react-redux";
 import Spinner from "../common/Spinner";
+import { Sankey } from "react-vis";
+import { withRouter } from "react-router-dom";
+
+const nodes3 = [
+  { name: "s1" },
+  { name: "s2" },
+  { name: "t1" },
+  { name: "t2" },
+  { name: "p1" },
+  { name: "p2" }
+];
+const links3 = [
+  { source: 2, target: 4, value: 10 },
+  { source: 3, target: 4, value: 10 },
+  { source: 1, target: 3, value: 10 },
+  // { source: 3, target: 5, value: 10 },
+  { source: 0, target: 2, value: 10 },
+  // { source: 2, target: 4, value: 20 },
+  { source: 0, target: 3, value: 10 }
+  //{ source: 1, target: 2, value: 20 }
+];
 
 /*const createCustomNode = (chartConfig, node) => {
   return (
@@ -131,62 +152,7 @@ const links2 = [
 ];
 
 class SankeyDiagram extends React.Component {
-  chartConfig = node => {
-    const chartConfig = {
-      padding: { top: 10, right: 0, bottom: 10, left: 0 },
-      node: {
-        width: 150,
-        maxHeight: 150,
-        minHeight: 55,
-        rectMinHeight: 5,
-        paddingBottom: 40
-      },
-      link: {
-        width: 100
-      }
-    };
-    return (
-      <g key={node.id} transform={`translate(${node.x},${node.y})`}>
-        <rect
-          height={node.height}
-          width={chartConfig.node.width}
-          style={{
-            stroke: "#ff5252",
-            fill: "url(#custom-linear-gradient)",
-            strokeWidth: "1px"
-          }}
-        />
-        <text
-          x={chartConfig.node.width / 2}
-          y={node.height / 2}
-          style={{
-            fontSize: "20px",
-            fill: "#b57272",
-            textAnchor: "middle",
-            alignmentBaseline: "central"
-          }}
-        >
-          {`${node.title}`}
-        </text>
-      </g>
-    );
-  };
   render() {
-    const chartConfig = {
-      padding: { top: 10, right: 0, bottom: 10, left: 0 },
-      //background: "blue",
-      node: {
-        width: 250,
-        maxHeight: 150,
-        minHeight: 55,
-        rectMinHeight: 10,
-        paddingBottom: 20
-      },
-      link: {
-        width: 100
-      }
-    };
-
     let SankeyDiagramContent;
     const { patterns, loading } = this.props.pattern;
     if (patterns === null || loading || patterns.length === 0) {
@@ -201,15 +167,17 @@ class SankeyDiagram extends React.Component {
       } else {
         // const strategies = this.props.strategy.strategies;
         //console.log("node1[0]");
-        //console.log(node1[0]);
-        var nodes = {
+        console.log(patterns);
+        /*var nodes = {
           0: {
             title: "Node 1",
             value: 20,
             id: "0"
           }
-        };
+        };*/
+        var nodes = [];
         var links = [
+          /*
           { sourceId: 0, targetId: 1 },
           { sourceId: 0, targetId: 2 },
           { sourceId: 0, targetId: 3 },
@@ -217,64 +185,140 @@ class SankeyDiagram extends React.Component {
           { sourceId: 0, targetId: 5 },
           { sourceId: 0, targetId: 6 },
           { sourceId: 0, targetId: 7 },
-          { sourceId: 0, targetId: 8 }
+          { sourceId: 0, targetId: 8 }*/
         ];
 
         var strategyCounter = 1;
         var tacticCounter = 9;
+        nodes[0] = { name: "", opacity: 0.0 };
+        patterns.forEach(pattern => {
+          nodes[tacticCounter] = {
+            name: pattern.name,
+            color: "#337ab7",
+            id: pattern._id,
+            key: pattern._id
+          };
+          tacticCounter++;
+        });
         strategies.forEach(strategy => {
-          if (strategyCounter == 1) {
-            nodes[strategyCounter] = {
+          /* nodes[strategyCounter] = {
               title: strategy.name,
               value: 10,
               id: strategyCounter.toString()
-            };
-          } else {
-            nodes[strategyCounter] = {
-              title: strategy.name,
-              value: 10,
-              id: strategyCounter.toString()
-            };
-          }
+            };*/
+          nodes[strategyCounter] = { name: strategy.name, color: "#337ab7" };
 
           strategy.assignedTactics.forEach(tactic => {
-            links.push({ sourceId: strategyCounter, targetId: tacticCounter });
-            nodes[tacticCounter] = {
+            links.push({
+              source: strategyCounter,
+              target: tacticCounter,
+              value: 10,
+              color: "#ddd"
+            });
+            /*nodes[tacticCounter] = {
               title: tactic.name,
               value: 5,
               id: tacticCounter.toString()
-            };
+            };*/
+            nodes[tacticCounter] = { name: tactic.name, color: "#337ab7" };
+            console.log(nodes);
+            var assignedPatterns = 0;
+            var linksToPatterns = [];
+            console.log("start suche tactic in pattern");
+            console.log(nodes[tacticCounter].name);
+            patterns.forEach(pattern => {
+              console.log(pattern.name);
+              //  nodes[tacticCounter + 1] = { name: pattern.name };
+              pattern.assignedStrategiesWithAllTactics.forEach(
+                strategyInPattern => {
+                  console.log(strategyInPattern.name);
+                  if (strategyInPattern.name == strategy.name) {
+                    console.log("Übereinstimmung der strategies");
+                    console.log(strategyInPattern.name);
+                    strategyInPattern.assignedTactics.forEach(
+                      tacticInPattern => {
+                        console.log(
+                          "durchsuchen aller tactics in der gefundenen strategie"
+                        );
+                        console.log(tacticInPattern.name);
+                        if (tacticInPattern.name == tactic.name) {
+                          console.log("Übereinstiimung der tactics");
+                          console.log(tacticInPattern.name);
+                          for (let index = 9; index < nodes.length; index++) {
+                            console.log("Länge");
+                            console.log(nodes.length);
+                            console.log(index);
+                            console.log(nodes[index].name);
+                            if (nodes[index].name == pattern.name) {
+                              console.log("gefunden in nodes");
+                              linksToPatterns.push({
+                                source: tacticCounter,
+                                target: index,
+                                color: "#ddd"
+                                // value: 10
+                              });
+                              index = nodes.length;
+                            }
+                            // const element = array[index];
+                          }
+                        }
+                      }
+                    );
+                  }
+                }
+              );
+            });
+            if (linksToPatterns.length !== 0) {
+              linksToPatterns.forEach(link => {
+                link.value = 10 / linksToPatterns.length;
+                links.push(link);
+              });
+            } else {
+              links.push({
+                source: tacticCounter,
+                target: 0,
+                value: 10,
+                opacity: 0.1,
+                color: "white"
+              });
+            }
 
             tacticCounter++;
           });
 
           strategyCounter++;
         });
+        /*links.push({
+          source: 37,
+          target: 15,
+          value: 10
+        });*/
         console.log(nodes);
         console.log(links);
-        var patternCounter = tacticCounter + 1;
-        patterns.forEach(pattern => {
+        // var patternCounter = tacticCounter + 1;
+        /*patterns.forEach(pattern => {
           nodes[patternCounter] = {
             title: pattern.name,
             value: 5,
             id: patternCounter.toString()
           };
+          nodes.push({name: pattern.name})
           pattern.assignedStrategiesWithAllTactics.forEach(strategy => {
             strategy.assignedTactics.forEach(tactic => {
-              for (let index = 0; index < Object.keys(nodes).length; index++) {
+              for (let index = 0; index < nodes.length; index++) {
                 //alert(nodes);
-                console.log(nodes[index].title);
+              //  console.log(nodes[index].title);
 
                 console.log(tactic.name);
-                console.log(typeof nodes[index].title);
+              //  console.log(typeof nodes[index].title);
                 console.log(typeof tactic.name);
-                if (nodes[index].title == tactic.name) {
+                if (nodes[index].name == tactic.name) {
                   console.log("Treffer");
-                  console.log(nodes[0].title);
+                 // console.log(nodes[0].title);
                   console.log(tactic.name);
                   links.push({
-                    sourceId: Number(nodes[index].id),
-                    targetId: patternCounter
+                    source: Number(nodes[index].id),
+                    target: patternCounter
                   });
                   index = Object.keys(nodes).length;
                 }
@@ -282,7 +326,7 @@ class SankeyDiagram extends React.Component {
             });
           });
           patternCounter++;
-        });
+        });*/
         /*  var nodes3 = nodes[0]; 
     var nodes4 = nodes[1];
     nodes = { nodes3, nodes4 };*/
@@ -303,30 +347,58 @@ class SankeyDiagram extends React.Component {
       12: nodes[12],
       13: nodes[13]
       };*/
+        // nodes.push({ name: "fake" });
+        //  links.push({ source: 30, target: 52, value: 10 });
         console.log("nodes");
         console.log(nodes);
 
         console.log("links");
         console.log(links);
-        console.log("nodes2");
-        console.log(nodes2);
+        console.log("nodes3");
+        console.log(nodes3);
 
-        console.log("links2");
-        console.log(links2);
-        console.log(nodes[0]);
+        console.log("links3");
+        console.log(links3);
+        // links = [...links, (links[38] = { source: 8, target: 35, value: 10 })];
+        //console.log(nodes[0]);
         SankeyDiagramContent = (
-          <ReactSankey
+          /*<ReactSankey
             rootID={"0"}
             nodes={nodes2}
             links={links2}
             chartConfig={chartConfig}
+          />*/ <Sankey
+            nodes={nodes}
+            links={links}
+            width={1100}
+            height={1500}
+            nodeWidth={20}
+            //  labelRotation={10}
+
+            onValueClick={(datapoint, event) => {
+              //console.log(datapoint);
+              //console.log(event);
+              // alert(datapoint);
+              // console.log(datapoint);
+              if (datapoint.id) {
+                this.props.history.push("/patterndetail/" + datapoint.id);
+              }
+              // does something on click
+              // you can access the value of the event
+            }}
+            onValueMouseOver={(datapoint, event) => {
+              // does something on click
+              // you can access the value of the event
+              // alert(datapoint);
+            }}
           />
         );
       }
     }
     //console.log(strategies);
 
-    return <div class="crop">{SankeyDiagramContent}</div>;
+    return <div>{SankeyDiagramContent}</div>;
+
     //return <div />;
   }
 }
@@ -339,4 +411,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {}
-)(SankeyDiagram);
+)(withRouter(SankeyDiagram));

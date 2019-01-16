@@ -208,5 +208,9 @@ g g:first-of-type {
 .crop svg {
   /*width: 10000px;
   height: 10000px;*/
-  margin: 0 0 0 -300px;
+  margin: 0 0 0 -0px;
+}
+rect:hover {
+  fill: #23527c !important
+  ;
 }
