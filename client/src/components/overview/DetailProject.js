@@ -40,37 +40,12 @@ class DetailProject extends Component {
     this.props.getDevelopers();
     setTimeout(() => {
       this.props.switchAttrForEditProject();
-    }, 500);
+    }, 175);
   }
 
   handleInputChange(e) {
     //e.preventDefault();
-    /*var tempArr = this.props.project.finishedTactic;
 
-    const addfinishedTactic = tac => {
-      if (tac !== undefined) {
-        return tempArr.concat(tac);
-      } else {
-        return tempArr;
-      }
-    };
-
-    const remfinishedTactic = tac => {
-      var index = tempArr.indexOf(tac);
-      if (index !== -1) {
-        tempArr.splice(index, 1);
-      }
-      return tempArr;
-    };
-    this.setState({
-      finishedTactic:
-        this.props.project.finishedTactic.indexOf(e.target.name) === -1
-         ? addfinishedTactic(e.target.name)
-         : remfinishedTactic(e.target.name)
-    });
-*/
-
-    // setTimeout(() => {
     const finishedTacticData = {
       id: this.props.match.params.id,
       finishedTactic: e.target.name,
@@ -78,7 +53,6 @@ class DetailProject extends Component {
     };
 
     this.props.setFinishedTactic(finishedTacticData);
-    //}, 500);
   }
 
   render() {

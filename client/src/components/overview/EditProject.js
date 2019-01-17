@@ -5,9 +5,7 @@ import classnames from "classnames";
 import { connect } from "react-redux";
 
 import Spinner from "../common/Spinner";
-import ToDoProgress from "../common/ToDoProgress";
 import {
-  setFinishedTactic,
   editProject,
   setAssignedDevelopers,
   setAssignedTactics,
@@ -45,7 +43,6 @@ class EditProject extends Component {
       assignedStrategies: [],
       assignedTactics: [],
       finished: false,
-      progress: 0,
       assignedDevelopers: [],
       finishedTactic: store.getState().project.project.finishedTactic,
       developers: [],
@@ -55,49 +52,17 @@ class EditProject extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.onClickProgress = this.onClickProgress.bind(this);
-    this.onClickFinishedTactic = this.onClickFinishedTactic.bind(this);
   }
 
   componentDidMount() {
-    this.props.switchAttrForEditProject();
     this.props.getDevelopers();
     this.props.getStrategies();
     this.props.match.params.id;
+    this.props.switchAttrForEditProject();
   }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
-  }
-
-  onClickProgress(e) {
-    this.setState({ progress: e.target.value * 10 });
-  }
-
-  onClickFinishedTactic(e) {
-    var tempArr = this.state.finishedTactic;
-
-    const addfinishedTactic = tac => {
-      if (tac !== undefined) {
-        return tempArr.concat(tac);
-      } else {
-        return tempArr;
-      }
-    };
-
-    const remfinishedTactic = tac => {
-      var index = tempArr.indexOf(tac);
-      if (index !== -1) {
-        tempArr.splice(index, 1);
-      }
-      return tempArr;
-    };
-    this.setState({
-      finishedTactic:
-        this.state.finishedTactic.indexOf(e.target.value) === -1
-          ? addfinishedTactic(e.target.value)
-          : remfinishedTactic(e.target.value)
-    });
   }
 
   onSubmit(e) {
@@ -114,9 +79,6 @@ class EditProject extends Component {
       assignedDevelopers: store.getState().project.assignedDevelopers,
       //nameDeveloper: store.getState().project.nameDeveloper,
       finished: this.state.finished,
-      progress:
-        (100 / this.props.assignedTactics.length) *
-        this.state.finishedTactic.length,
       allDevelopers: store.getState().user.developers,
       finishedTactic: this.state.finishedTactic
     };
@@ -161,7 +123,6 @@ class EditProject extends Component {
     } else {
       strategyContent = (
         <StrListGroupField
-          onClick={this.componentWillUpdate}
           strategies={this.props.strategies}
           location={this.props.location}
         />
@@ -239,8 +200,7 @@ EditProject.propTypes = {
   setAssignedTactics: PropTypes.func.isRequired,
   setAssignedStrategies: PropTypes.func.isRequired,
   resetAssignedStrategies: PropTypes.func.isRequired,
-  switchAttrForEditProject: PropTypes.func.isRequired,
-  setFinishedTactic: PropTypes.func.isRequired
+  switchAttrForEditProject: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -265,7 +225,6 @@ export default connect(
     setAssignedTactics,
     setAssignedStrategies,
     resetAssignedStrategies,
-    switchAttrForEditProject,
-    setFinishedTactic
+    switchAttrForEditProject
   }
 )(withRouter(EditProject));

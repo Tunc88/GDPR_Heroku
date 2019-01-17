@@ -513,7 +513,7 @@ router.post("/project/setFinishedTactic", (req, res) => {
   //console.log(req.body.id);
 
   if (req.body.finishedTactics.indexOf(req.body.finishedTactic) === -1) {
-    console.log(req.body.finishedTactic + "hinzugefügt");
+    //console.log(req.body.finishedTactic + "hinzugefügt");
     Project.findOneAndUpdate(
       { _id: req.body.id },
       {
@@ -526,7 +526,7 @@ router.post("/project/setFinishedTactic", (req, res) => {
       .then(finishedTactics => res.json(finishedTactics))
       .catch(err => console.log(err));
   } else {
-    console.log(req.body.finishedTactic + "entfernt");
+    //console.log(req.body.finishedTactic + "entfernt");
     Project.findOneAndUpdate(
       { _id: req.body.id },
       {

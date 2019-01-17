@@ -30,14 +30,14 @@ class TacListItem extends Component {
   }
 
   componentDidMount() {
-    var arr = this.state.assignedTacticsForProject;
+    var arr = this.props.assignedTactics;
 
     if (
       arr !== undefined &&
       this.props.location.pathname !== "/create-project"
     ) {
       arr.map(el =>
-        el === this.props.tactic._id
+        el._id === this.props.tactic._id
           ? this.setState(() => {
               return {
                 bsStyle: !this.state.bsStyle ? "success" : undefined
@@ -49,13 +49,17 @@ class TacListItem extends Component {
   }
 
   onClick(e) {
-    this.setState(() => {
-      this.props.setAssignedTactics(this.props.tactic);
-      return {
-        assignedTactics: this.props.tactic,
-        bsStyle: !this.state.bsStyle ? "success" : undefined
-      };
-    });
+    if (this.props.finishedTactics.indexOf(this.props.tactic.name) === -1) {
+      this.setState(() => {
+        this.props.setAssignedTactics(this.props.tactic);
+        return {
+          assignedTactics: this.props.tactic,
+          bsStyle: !this.state.bsStyle ? "success" : undefined
+        };
+      });
+    } else {
+      alert("Deselecting finished tactics are not possible!");
+    }
   }
 
   render() {
@@ -67,6 +71,12 @@ class TacListItem extends Component {
         name={tactic.name}
         bsStyle={this.state.bsStyle}
       >
+        {this.props.finishedTactics.indexOf(tactic.name) === -1 ? (
+          ""
+        ) : (
+          <i class="far fa-check-circle" />
+        )}
+        {"     "}
         {tactic.name}
       </ListGroupItem>
     );
@@ -81,7 +91,8 @@ TacListItem.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  assignedTactics: state.assignedTactics
+  assignedTactics: state.project.assignedTactics,
+  finishedTactics: state.project.project.finishedTactics
   //nameDeveloper: state.nameDeveloper
 });
 

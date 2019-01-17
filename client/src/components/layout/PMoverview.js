@@ -28,7 +28,7 @@ class PMoverview extends Component {
     this.props.getProjects();
     this.props.getDevelopers();
     this.props.resetAssignedStrategies();
-    if (this.props.project.project) {
+    if (this.props.project.project._id !== undefined) {
       this.props.getProject(this.props.project.project._id);
     }
   }

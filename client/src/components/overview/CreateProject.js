@@ -41,6 +41,7 @@ class CreateProject extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onChangeStrategy = this.onChangeStrategy.bind(this);
   }
 
   componentDidMount() {
@@ -52,6 +53,11 @@ class CreateProject extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  onChangeStrategy(e) {
+    console.log("click");
+    this.setState({ assignedStrategies: this.props.assignedStrategies });
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
@@ -60,7 +66,7 @@ class CreateProject extends Component {
     const newProject = {
       name: this.state.name,
       description: this.state.description,
-      assignedTactics: store.getState().project.assignedTactics, //fehlerquelle
+      assignedTactics: store.getState().project.assignedTactics,
       assignedStrategies: store.getState().project.assignedStrategies,
       assignedDevelopers: store.getState().project.assignedDevelopers,
       //nameDeveloper: store.getState().project.nameDeveloper,
@@ -106,7 +112,6 @@ class CreateProject extends Component {
     } else {
       strategyContent = (
         <StrListGroupField
-          onClick={this.componentWillUpdate}
           strategies={this.props.strategies}
           location={this.props.location}
         />

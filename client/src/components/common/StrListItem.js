@@ -49,13 +49,15 @@ class StrListItem extends Component {
   }
 
   onClick(e) {
+    this.props.setAssignedStrategies(this.props.strategy);
     this.setState(() => {
-      this.props.setAssignedStrategies(this.props.strategy);
       return {
         assignedStrategies: this.props.strategy,
         bsStyle: !this.state.bsStyle ? "success" : undefined
       };
     });
+
+    this.setState({ assignedStrategies: this.props.assignedStrategies });
   }
 
   render() {
