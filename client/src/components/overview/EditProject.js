@@ -11,7 +11,8 @@ import {
   setAssignedTactics,
   setAssignedStrategies,
   resetAssignedStrategies,
-  switchAttrForEditProject
+  switchAttrForEditProject,
+  getProject
 } from "../../actions/projectActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
@@ -58,7 +59,6 @@ class EditProject extends Component {
     this.props.getDevelopers();
     this.props.getStrategies();
     this.props.match.params.id;
-    this.props.switchAttrForEditProject();
   }
 
   onChange(e) {
@@ -225,6 +225,7 @@ export default connect(
     setAssignedTactics,
     setAssignedStrategies,
     resetAssignedStrategies,
-    switchAttrForEditProject
+    switchAttrForEditProject,
+    getProject
   }
 )(withRouter(EditProject));

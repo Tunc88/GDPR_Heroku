@@ -5,3 +5,8 @@
 .inputText {
   height: 50px;
 }
+
+.chatBox {
+  overflow-y: scroll;
+  height: 400px;
+}

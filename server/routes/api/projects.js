@@ -476,29 +476,16 @@ router.post("/project/setComment", (req, res) => {
 
   //console.log(projectFields);
   //console.log(req.body.id);
-
-  let promiseArr = [];
-
-  var prom = new Promise(function(resolve, reject) {
-    Project.findOneAndUpdate(
-      { _id: req.body.id },
-      {
-        $push: projectFields
-      },
-      {
-        new: true
-      }
-    )
-      .then(comment => console.log(comment))
-      .catch(err => reject(err));
-  });
-
-  promiseArr.push(prom);
-
-  //console.log(promiseArr);
-
-  Promise.all(promiseArr)
-    .then(comment => res.json(comment))
+  Project.findOneAndUpdate(
+    { _id: req.body.id },
+    {
+      $push: projectFields
+    },
+    {
+      new: true
+    }
+  )
+    .then(comment => res.json(comment.comment))
     .catch(err => console.log(err));
 });
 

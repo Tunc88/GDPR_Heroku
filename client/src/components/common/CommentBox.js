@@ -22,39 +22,69 @@ class CommentBox extends Component {
         author: {},
         content: ""
       },
+
       errors: {}
     };
 
+    this.convertDate = this.convertDate.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.onClickComment = this.onClickComment.bind(this);
-    this.correctName = this.correctName.bind(this);
+    this.correctX = this.correctX.bind(this);
   }
 
-  componentDidMount() {}
-
-  correctName(id) {
+  correctX(id, x) {
     var index;
     var tempArr = [];
 
-    for (var i = 0; i < this.props.project.commentAttendees.length; i++) {
-      tempArr.push(this.props.project.commentAttendees[i]._id);
-    }
+    if (this.props.project.commentAttendees) {
+      if (this.props.project.commentAttendees.length === 0) {
+        if (x === "name") {
+          return this.props.auth.user.name;
+        } else {
+          return this.props.auth.user.role;
+        }
+      } else {
+        for (var i = 0; i < this.props.project.commentAttendees.length; i++) {
+          tempArr.push(this.props.project.commentAttendees[i]._id);
+        }
+      }
 
-    index = tempArr.indexOf(id);
-    return this.props.project.commentAttendees[index].name;
+      index = tempArr.indexOf(id);
+
+      if (x === "name") {
+        return this.props.project.commentAttendees[index].name;
+      } else {
+        return this.props.project.commentAttendees[index].role;
+      }
+    }
+  }
+
+  /*componentDidUpdate() {
+    setTimeout(() => {
+      this.setState({ state: this.state });
+    }, 1000);
+  }*/
+
+  convertDate(isoDate) {
+    const date = new Date(isoDate);
+    const hour = date.getUTCHours();
+    const minute = date.getUTCMinutes();
+    const DMY = date.toDateString();
+
+    return (
+      (hour < 10 ? "0" + hour : hour) +
+      ":" +
+      (minute < 10 ? "0" + minute : minute) +
+      ", " +
+      DMY
+    );
   }
 
   onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-    this.onClickComment(e);
-  }
-
-  onClickComment(e) {
     this.setState({
       comment: {
         author: this.props.auth.user.id,
-        content: this.state.content
+        content: e.target.value
       }
     });
   }
@@ -70,7 +100,11 @@ class CommentBox extends Component {
     console.log(commentData);
 
     //console.log(editedProject);
-    this.props.setComment(commentData, this.props.history);
+
+    this.props.setComment(commentData);
+
+    //this.setState({ content: "" });
+
     //this.props.editProject(commentData);
   }
 
@@ -85,18 +119,22 @@ class CommentBox extends Component {
             <Panel.Title componentClass="h3">Comment Box</Panel.Title>
           </Panel.Heading>
           <Panel.Body id="commentBox">
-            {this.props.project.comment
-              ? this.props.project.comment.map(comment => (
-                  <div>
-                    {comment.date}, {this.correctName(comment.author)}
-                    <Panel>
-                      <Panel.Body key={comment._id}>
-                        {comment.content}
-                      </Panel.Body>
-                    </Panel>
-                  </div>
-                ))
-              : ""}
+            <div className="chatBox">
+              {this.props.comment
+                ? this.props.comment.length !== 0
+                  ? this.props.comment.map(comment => (
+                      <div key={comment._id}>
+                        {this.convertDate(comment.date)},{" "}
+                        {this.correctX(comment.author, "name")},{" "}
+                        {this.correctX(comment.author, "role")}
+                        <Panel>
+                          <Panel.Body>{comment.content}</Panel.Body>
+                        </Panel>
+                      </div>
+                    ))
+                  : ""
+                : ""}
+            </div>
 
             <TextAreaField
               name="content"
@@ -121,7 +159,7 @@ CommentBox.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors,
-  comment: state.comment
+  comment: state.project.comment
 });
 
 export default connect(

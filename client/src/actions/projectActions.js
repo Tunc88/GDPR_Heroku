@@ -164,16 +164,14 @@ export const setAssignedStrategies = strategy => {
   };
 };
 
-export const setComment = (commentData, history) => dispatch => {
+export const setComment = commentData => dispatch => {
   axios
     .post("/api/projects/project/setComment", commentData)
-    .then(
-      res =>
-        dispatch({
-          type: SET_COMMENT,
-          payload: res.data
-        }),
-      history.push(`/project/${commentData.id}`)
+    .then(res =>
+      dispatch({
+        type: SET_COMMENT,
+        payload: res.data
+      })
     )
     .catch(err =>
       dispatch({

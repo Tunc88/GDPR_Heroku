@@ -92,7 +92,7 @@ TacListItem.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth,
   assignedTactics: state.project.assignedTactics,
-  finishedTactics: state.project.project.finishedTactics
+  finishedTactics: state.project.finishedTactics
   //nameDeveloper: state.nameDeveloper
 });
 

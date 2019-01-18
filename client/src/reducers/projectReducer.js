@@ -19,6 +19,7 @@ const initialState = {
   assignedStrategies: [],
   assignedTactics: [],
   comment: [],
+  commentAttendees: [],
   loading: false,
   finishedTactics: []
 };
@@ -43,7 +44,7 @@ export default function(state = initialState, action) {
         loading: false
       };
     case SET_COMMENT:
-      //console.log(...state);
+      //console.log(action.payload);
       return {
         ...state,
         comment: action.payload,
@@ -122,6 +123,8 @@ export default function(state = initialState, action) {
         assignedTactics: tempArr,
         assignedDevelopers: state.project.assignedDevelopers,
         finishedTactics: state.project.finishedTactics,
+        comment: state.project.comment,
+        commentAttendees: state.project.commentAttendees,
         loading: false
       };
     case SET_ASSIGNED_DEVELOPER:
@@ -239,6 +242,8 @@ export default function(state = initialState, action) {
         assignedStrategies: [],
         assignedDevelopers: [],
         finishedTactics: [],
+        comment: [],
+        commentAttendees: [],
         loading: false
       };
     case SET_ASSIGNED_STRATEGIES:

@@ -38,10 +38,21 @@ class DetailProject extends Component {
   componentDidMount() {
     this.props.getProject(this.props.match.params.id);
     this.props.getDevelopers();
+
     setTimeout(() => {
       this.props.switchAttrForEditProject();
-    }, 175);
+    }, 1000);
   }
+
+  componentWillMount() {}
+
+  //for realtime activate
+  /*componentWillUpdate() {
+    setTimeout(() => {
+      this.props.getProject(this.props.match.params.id);
+      this.props.switchAttrForEditProject();
+    }, 2000);
+  }*/
 
   handleInputChange(e) {
     //e.preventDefault();
@@ -79,11 +90,13 @@ class DetailProject extends Component {
         tempArr.push(aggrTac()[i].name);
       }
 
-      for (var i = 0; i < finishedTacticsArray.length; i++) {
-        var index = tempArr.indexOf(finishedTacticsArray[i]);
+      if (finishedTacticsArray) {
+        for (var i = 0; i < finishedTacticsArray.length; i++) {
+          var index = tempArr.indexOf(finishedTacticsArray[i]);
 
-        if (index !== -1) {
-          tempArr.splice(index, 1);
+          if (index !== -1) {
+            tempArr.splice(index, 1);
+          }
         }
       }
 
@@ -225,9 +238,11 @@ class DetailProject extends Component {
                   <h4>Done</h4>
                   <div>
                     <ul>
-                      {this.props.finishedTactics.map(tac => (
-                        <li key={tac}>{tac}</li>
-                      ))}
+                      {this.props.finishedTactics
+                        ? this.props.finishedTactics.map(tac => (
+                            <li key={tac}>{tac}</li>
+                          ))
+                        : ""}
                     </ul>
                   </div>
                 </Col>
