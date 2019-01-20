@@ -74,7 +74,7 @@ class TacListItem extends Component {
         {this.props.finishedTactics.indexOf(tactic.name) === -1 ? (
           ""
         ) : (
-          <i class="far fa-check-circle" />
+          <i className="far fa-check-circle" />
         )}
         {"     "}
         {tactic.name}
