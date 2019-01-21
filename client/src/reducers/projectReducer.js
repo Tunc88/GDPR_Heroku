@@ -9,7 +9,9 @@ import {
   SET_ASSIGNED_STRATEGIES,
   SWITCH_ATTR_FOR_EDIT_PROJECT,
   SET_COMMENT,
-  SET_FINISHED_TACTIC
+  SET_FINISHED_TACTIC,
+  REMOVE_PROJECT_FROM_USER,
+  ADD_PROJECT_TO_USER
 } from "../actions/types";
 
 const initialState = {
@@ -376,6 +378,17 @@ export default function(state = initialState, action) {
           project => project._id !== action.payload
         )
       };
+
+    case REMOVE_PROJECT_FROM_USER:
+      return {
+        ...state
+      };
+
+    case ADD_PROJECT_TO_USER:
+      return {
+        ...state
+      };
+
     default:
       return state;
   }

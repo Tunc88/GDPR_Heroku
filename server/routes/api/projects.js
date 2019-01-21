@@ -409,38 +409,6 @@ router.post("/project/edit", (req, res) => {
             //console.log("Bleibt");
           }
         }
-
-        /*
-      for (var i = 0; i < req.body.allDevelopers.length; i++) {
-        for (var j = 0; j < req.body.assignedDevelopers.length; j++) {
-          console.log(req.body.allDevelopers[i].assignedProjects);
-          console.log(req.body.assignedDevelopers[j].assignedProjects);
-          if (
-            req.body.allDevelopers[i].assignedProjects.indexOf(req.body.id) !==
-              -1 &&
-            req.body.allDevelopers[i].assignedProjects ===
-              req.body.assignedDevelopers[j].assignedProjects
-          ) {
-            console.log("Project wird entfernt");
-            User.findOneAndUpdate(
-              { _id: req.body.allDevelopers[i]._id },
-              {
-                $pull: userFields
-              },
-              {
-                new: true
-              }
-            )
-              .then(project => res.json(project))
-              .catch(err =>
-                res.status(404).json({ project: "There is no user" })
-              );
-          } else {
-            console.log("Project bleibt");
-          }
-        }
-      }
-    */
       }
     }
   }
@@ -472,21 +440,54 @@ router.post("/project/setComment", (req, res) => {
 
   const projectFields = {};
 
-  projectFields.comment = req.body.comment;
+  //projectFields.comment = req.body.comment;
+
+  console.log(req.body);
 
   //console.log(projectFields);
   //console.log(req.body.id);
-  Project.findOneAndUpdate(
-    { _id: req.body.id },
-    {
-      $push: projectFields
-    },
-    {
-      new: true
+
+  if (req.body.delete === false) {
+    projectFields.comment = req.body.comment;
+
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $push: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(comment => res.json(comment.comment))
+      .catch(err => console.log(err));
+  } else {
+    tempArr = [];
+    commentsArray = req.body.comments;
+    for (var i = 0; i < req.body.comments.length; i++) {
+      tempArr.push(req.body.comments[i]._id);
     }
-  )
-    .then(comment => res.json(comment.comment))
-    .catch(err => console.log(err));
+
+    console.log(tempArr);
+    index = tempArr.indexOf(req.body.commentId);
+    console.log(index);
+
+    commentsArray.splice(index, 1);
+
+    projectFields.comment = commentsArray;
+
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $set: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(comment => res.json(comment.comment))
+      .catch(err => console.log(err));
+  }
 });
 
 router.post("/project/setFinishedTactic", (req, res) => {
@@ -526,6 +527,88 @@ router.post("/project/setFinishedTactic", (req, res) => {
       .then(finishedTactics => res.json(finishedTactics))
       .catch(err => console.log(err));
   }
+});
+
+// @route   POST api/projects/project/deleteAssignedProject
+// @desc    Edit project by ID
+// @access  Public
+
+router.post("/project/deleteAssignedProject", (req, res) => {
+  const errors = {};
+
+  const userFields = {};
+
+  if (req.body.assignedDevelopers) userFields.assignedProjects = req.body._id;
+
+  console.log(req.body);
+
+  let promiseArr = [];
+  if (req.body.assignedDevelopers) {
+    for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+      var prom = new Promise(function(resolve, reject) {
+        User.findOneAndUpdate(
+          { _id: req.body.assignedDevelopers[i]._id },
+          {
+            $pull: userFields
+          },
+          {
+            new: true
+          }
+        )
+          .then(project => resolve())
+          .catch(err => reject(err));
+      });
+
+      promiseArr.push(prom);
+    }
+  }
+
+  //console.log(promiseArr);
+
+  Promise.all(promiseArr)
+    .then(project => res.json(project))
+    .catch(err => res.status(404).json({ project: "There is no project" }));
+});
+
+// @route   POST api/projects/project/addAssignedProject
+// @desc    Edit project by ID
+// @access  Public
+
+router.post("/project/addAssignedProject", (req, res) => {
+  const errors = {};
+
+  const userFields = {};
+
+  if (req.body.assignedDevelopers) userFields.assignedProjects = req.body._id;
+
+  console.log(req.body);
+
+  let promiseArr = [];
+  if (req.body.assignedDevelopers) {
+    for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+      var prom = new Promise(function(resolve, reject) {
+        User.findOneAndUpdate(
+          { _id: req.body.assignedDevelopers[i]._id },
+          {
+            $push: userFields
+          },
+          {
+            new: true
+          }
+        )
+          .then(project => resolve())
+          .catch(err => reject(err));
+      });
+
+      promiseArr.push(prom);
+    }
+  }
+
+  //console.log(promiseArr);
+
+  Promise.all(promiseArr)
+    .then(project => res.json(project))
+    .catch(err => res.status(404).json({ project: "There is no project" }));
 });
 
 module.exports = router;

@@ -10,6 +10,7 @@ import {
   InputGroup,
   FormControl
 } from "react-bootstrap";
+import store from "../../store";
 
 import TextAreaField from "../common/TextAreaField";
 import "./CommentBox.css";
@@ -30,6 +31,19 @@ class CommentBox extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.correctX = this.correctX.bind(this);
+    this.onClickRemove = this.onClickRemove.bind(this);
+  }
+
+  onClickRemove(commentId) {
+    const commentData = {
+      id: this.props.match.params.id,
+      comment: this.state.comment,
+      comments: store.getState().project.comment,
+      commentId: commentId,
+      delete: true
+    };
+
+    this.props.setComment(commentData);
   }
 
   correctX(id, x) {
@@ -94,10 +108,11 @@ class CommentBox extends Component {
 
     const commentData = {
       id: this.props.match.params.id,
-      comment: this.state.comment
+      comment: this.state.comment,
+      delete: false
     };
 
-    console.log(commentData);
+    //console.log(commentData);
 
     //console.log(editedProject);
 
@@ -126,7 +141,17 @@ class CommentBox extends Component {
                       <div key={comment._id}>
                         {this.convertDate(comment.date)},{" "}
                         {this.correctX(comment.author, "name")},{" "}
-                        {this.correctX(comment.author, "role")}
+                        {this.correctX(comment.author, "role")}{" "}
+                        {this.props.auth.user.id === comment.author ? (
+                          <Button
+                            bsSize="small"
+                            onClick={() => this.onClickRemove(comment._id)}
+                          >
+                            <i className="far fa-trash-alt" />
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                         <Panel>
                           <Panel.Body>{comment.content}</Panel.Body>
                         </Panel>

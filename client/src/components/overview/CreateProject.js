@@ -10,7 +10,8 @@ import {
   setAssignedDevelopers,
   setAssignedTactics,
   setAssignedStrategies,
-  resetAssignedStrategies
+  resetAssignedStrategies,
+  addAssignedProjects
 } from "../../actions/projectActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
@@ -74,6 +75,14 @@ class CreateProject extends Component {
     };
 
     this.props.createProject(newProject, this.props.history);
+
+    setTimeout(() => {
+      this.props.addAssignedProjects(
+        store.getState().project.projects[
+          store.getState().project.projects.length - 1
+        ]
+      );
+    }, 2000);
   }
 
   render() {
@@ -177,7 +186,8 @@ CreateProject.propTypes = {
   setAssignedDevelopers: PropTypes.func.isRequired,
   setAssignedTactics: PropTypes.func.isRequired,
   setAssignedStrategies: PropTypes.func.isRequired,
-  resetAssignedStrategies: PropTypes.func.isRequired
+  resetAssignedStrategies: PropTypes.func.isRequired,
+  addAssignedProjects: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -201,6 +211,7 @@ export default connect(
     setAssignedDevelopers,
     setAssignedTactics,
     setAssignedStrategies,
-    resetAssignedStrategies
+    resetAssignedStrategies,
+    addAssignedProjects
   }
 )(withRouter(CreateProject));

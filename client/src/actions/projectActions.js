@@ -14,7 +14,9 @@ import {
   MATCH_USER,
   SWITCH_ATTR_FOR_EDIT_PROJECT,
   SET_COMMENT,
-  SET_FINISHED_TACTIC
+  SET_FINISHED_TACTIC,
+  REMOVE_PROJECT_FROM_USER,
+  ADD_PROJECT_TO_USER
 } from "./types";
 
 // create Project
@@ -219,4 +221,38 @@ export const switchAttrForEditProject = attr => {
     type: SWITCH_ATTR_FOR_EDIT_PROJECT,
     payload: attr
   };
+};
+
+export const removeAssignedProjects = project => dispatch => {
+  axios
+    .post(`/api/projects/project/deleteAssignedProject`, project)
+    .then(res =>
+      dispatch({
+        type: REMOVE_PROJECT_FROM_USER,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: REMOVE_PROJECT_FROM_USER,
+        payload: null
+      })
+    );
+};
+
+export const addAssignedProjects = project => dispatch => {
+  axios
+    .post(`/api/projects/project/addAssignedProject`, project)
+    .then(res =>
+      dispatch({
+        type: ADD_PROJECT_TO_USER,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: ADD_PROJECT_TO_USER,
+        payload: null
+      })
+    );
 };

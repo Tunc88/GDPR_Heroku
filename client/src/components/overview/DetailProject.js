@@ -6,12 +6,15 @@ import { connect } from "react-redux";
 import {
   getProject,
   setFinishedTactic,
-  switchAttrForEditProject
+  switchAttrForEditProject,
+  deleteProject,
+  removeAssignedProjects
 } from "../../actions/projectActions";
 import { getDevelopers } from "../../actions/userActions";
 import DevListGroupField from "../common/DevListGroupField";
 import StrListGroupField from "../common/StrListGroupField";
 import TacListGroupField from "../common/TacListGroupField";
+import ModalProject from "../common/ModalProject";
 import PropTypes from "prop-types";
 import store from "../../store";
 
@@ -33,6 +36,7 @@ class DetailProject extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   componentDidMount() {
@@ -46,13 +50,18 @@ class DetailProject extends Component {
 
   componentWillMount() {}
 
-  //for realtime activate
+  //for realtime chat activate
   /*componentWillUpdate() {
     setTimeout(() => {
       this.props.getProject(this.props.match.params.id);
       this.props.switchAttrForEditProject();
     }, 2000);
   }*/
+
+  onClickDelete(id) {
+    this.props.deleteProject(id);
+    this.props.removeAssignedProjects(this.props.project);
+  }
 
   handleInputChange(e) {
     //e.preventDefault();
@@ -215,6 +224,16 @@ class DetailProject extends Component {
           <Link to={`/project/edit-project/${this.props.project._id}`}>
             <Button>Edit Project</Button>
           </Link>
+          {/*
+          <Link to={"/PMoverview"}>
+          */}
+          <ModalProject
+            onClick={this.onClickDelete}
+            project={this.props.project}
+          />
+          {/*
+          </Link>
+            */}
         </Panel>
 
         {progress < 75 ? (
@@ -346,7 +365,9 @@ DetailProject.propTypes = {
   auth: PropTypes.object.isRequired,
   getDevelopers: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
-  setFinishedTactic: PropTypes.func.isRequired
+  setFinishedTactic: PropTypes.func.isRequired,
+  deleteProject: PropTypes.func.isRequired,
+  removeAssignedProjects: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -362,6 +383,8 @@ export default connect(
     getProject,
     getDevelopers,
     setFinishedTactic,
-    switchAttrForEditProject
+    switchAttrForEditProject,
+    deleteProject,
+    removeAssignedProjects
   }
 )(withRouter(DetailProject));
