@@ -40,7 +40,7 @@ class DetailProject extends Component {
   }
 
   componentDidMount() {
-    this.props.getProject(this.props.match.params.id);
+    //this.props.getProject(this.props.match.params.id);
     this.props.getDevelopers();
 
     setTimeout(() => {
@@ -48,7 +48,11 @@ class DetailProject extends Component {
     }, 1000);
   }
 
-  componentWillMount() {}
+  componentWillReceiveProps(newProps) {}
+
+  componentWillMount() {
+    this.props.getProject(this.props.match.params.id);
+  }
 
   //for realtime chat activate
   /*componentWillUpdate() {
@@ -76,7 +80,9 @@ class DetailProject extends Component {
   }
 
   render() {
-    var tactics = this.props.project.assignedStrategiesWithAllTactics;
+    if (this.props.project.assignedStrategiesWithAllTactics) {
+      var tactics = this.props.project.assignedStrategiesWithAllTactics;
+    }
 
     function aggrTac() {
       var arr = [];
@@ -132,6 +138,10 @@ class DetailProject extends Component {
     this.createNewArray();
     this.matchItem("5bf9449f9c505c1ec0a7f628").then(val => console.log(val)); */
     //console.log(this.props.project);
+
+    var finTac = this.props.project.finishedTactics;
+
+    function currentList() {}
 
     return (
       <div>
@@ -190,20 +200,19 @@ class DetailProject extends Component {
                       Assigned Tactics
                     </Panel.Title>
                   </Panel.Heading>
+
                   <Panel.Body>
                     {aggrTac()
                       ? aggrTac().map(tac => (
                           <div key={tac._id}>
+                            {" "}
+                            {/* Added random value to generate real unique keys,  so the component have to render every time, with id as key component don't render if key has another status*/}
                             <form>
                               <input
                                 name={tac.name}
                                 type="checkbox"
                                 defaultChecked={
-                                  this.props.project.finishedTactics.indexOf(
-                                    tac.name
-                                  ) === -1
-                                    ? false
-                                    : true
+                                  finTac.indexOf(tac.name) === -1 ? false : true
                                 }
                                 onClick={this.handleInputChange}
                               />
@@ -218,22 +227,24 @@ class DetailProject extends Component {
               </Col>
             </Row>
           </Panel.Body>
+
           <Link to="/PMoverview">
             <Button>Back to Overview</Button>
           </Link>
-          <Link to={`/project/edit-project/${this.props.project._id}`}>
-            <Button>Edit Project</Button>
-          </Link>
-          {/*
-          <Link to={"/PMoverview"}>
-          */}
-          <ModalProject
-            onClick={this.onClickDelete}
-            project={this.props.project}
-          />
-          {/*
-          </Link>
-            */}
+
+          {this.props.auth.user.role === "Project Manager" ? (
+            <span>
+              <Link to={`/project/edit-project/${this.props.project._id}`}>
+                <Button>Edit Project</Button>
+              </Link>
+              <ModalProject
+                onClick={this.onClickDelete}
+                project={this.props.project}
+              />{" "}
+            </span>
+          ) : (
+            ""
+          )}
         </Panel>
 
         {progress < 75 ? (

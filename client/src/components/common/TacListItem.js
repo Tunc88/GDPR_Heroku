@@ -5,15 +5,20 @@ import { connect } from "react-redux";
 import { setAssignedTactics } from "../../actions/projectActions";
 import {
   Panel,
+  Row,
   Col,
   Tabs,
   Tab,
   Button,
   Collapse,
-  ListGroupItem
+  ListGroupItem,
+  Tooltip,
+  OverlayTrigger
 } from "react-bootstrap";
 import EditToolbarTactics from "./EditToolbarTactics";
 import store from "../../store";
+
+import "./TacListItem.css";
 
 class TacListItem extends Component {
   constructor(props, context) {
@@ -63,22 +68,42 @@ class TacListItem extends Component {
   }
 
   render() {
-    const { tactic, auth } = this.props;
+    const tooltip = (
+      <Tooltip id="tooltip">
+        <strong>{this.props.strategy}</strong>
+      </Tooltip>
+    );
 
+    const { tactic, auth } = this.props;
+    //console.log(tactic._id.toHexString().length);
     return (
-      <ListGroupItem
-        onClick={this.onClick}
-        name={tactic.name}
-        bsStyle={this.state.bsStyle}
-      >
-        {this.props.finishedTactics.indexOf(tactic.name) === -1 ? (
-          ""
-        ) : (
-          <i className="far fa-check-circle" />
-        )}
-        {"     "}
-        {tactic.name}
-      </ListGroupItem>
+      <Row>
+        <OverlayTrigger placement="top" overlay={tooltip}>
+          <div className="strategy">
+            <Col
+              xs={2}
+              /*style={{ backgroundColor: "rgba" + this.props.color }}*/
+            >
+              {this.props.strategy.substring(0, 4)}
+            </Col>
+          </div>
+        </OverlayTrigger>
+        <Col xs={10}>
+          <ListGroupItem
+            onClick={this.onClick}
+            name={tactic.name}
+            bsStyle={this.state.bsStyle}
+          >
+            {this.props.finishedTactics.indexOf(tactic.name) === -1 ? (
+              ""
+            ) : (
+              <i className="far fa-check-circle" />
+            )}
+            {"     "}
+            {tactic.name}
+          </ListGroupItem>
+        </Col>
+      </Row>
     );
   }
 }

@@ -46,24 +46,31 @@ class CommentBox extends Component {
     this.props.setComment(commentData);
   }
 
-  correctX(id, x) {
+  correctX(comment, x) {
     var index;
-    var tempArr = [];
+    var tempArrAtt = [];
+    var tempArrCom = [];
+    for (var i = 0; i < this.props.project.commentAttendees.length; i++) {
+      tempArrAtt.push(this.props.project.commentAttendees[i]._id);
+    }
+
+    for (var i = 0; i < this.props.project.comment.length; i++) {
+      tempArrCom.push(this.props.project.comment[i].author);
+    }
 
     if (this.props.project.commentAttendees) {
-      if (this.props.project.commentAttendees.length === 0) {
+      if (
+        this.props.project.commentAttendees.length === 0 ||
+        comment.author === this.props.auth.user.id
+      ) {
         if (x === "name") {
           return this.props.auth.user.name;
         } else {
           return this.props.auth.user.role;
         }
-      } else {
-        for (var i = 0; i < this.props.project.commentAttendees.length; i++) {
-          tempArr.push(this.props.project.commentAttendees[i]._id);
-        }
       }
 
-      index = tempArr.indexOf(id);
+      index = tempArrAtt.indexOf(comment.author);
 
       if (x === "name") {
         return this.props.project.commentAttendees[index].name;
@@ -140,8 +147,8 @@ class CommentBox extends Component {
                   ? this.props.comment.map(comment => (
                       <div key={comment._id}>
                         {this.convertDate(comment.date)},{" "}
-                        {this.correctX(comment.author, "name")},{" "}
-                        {this.correctX(comment.author, "role")}{" "}
+                        {this.correctX(comment, "name")},{" "}
+                        {this.correctX(comment, "role")}{" "}
                         {this.props.auth.user.id === comment.author ? (
                           <Button
                             bsSize="small"

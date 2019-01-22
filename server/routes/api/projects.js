@@ -16,7 +16,7 @@ const User = require("../../models/User");
 // @access  Public
 router.get("/test", (req, res) => res.json({ msg: "Project Works" }));
 
-// @route   GET api/projects/projets
+// @route   GET api/projects/projects
 // @desc    Get all projects
 // @access  Public
 
@@ -68,74 +68,16 @@ router.get("/", (req, res) =>
             tacticIndex
           ) {
             if (project.assignedTactics.includes(tactic._id.toString())) {
-              //console.log("true");
-              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
               NewAssignedTactics.push(
                 assignedStrategy.assignedTactics[tacticIndex]
               );
             } else {
-              //console.log("false");
-              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-              //console.log(NewAssignedTactics);
             }
-
-            // }
           });
           assignedStrategy.assignedTactics = NewAssignedTactics;
-          //console.log(assignedStrategy);
-
-          //console.log(assignedStrategy);
         });
       });
 
-      /* projects.forEach(function(project) {
-        project.assignedTactics.forEach(function(
-          assignedTactic,
-          assignedTacticIndex
-        ) {
-          project.assignedTactics[
-            assignedTacticIndex
-          ] = assignedTactic.toString();
-        });
-        project.assignedStrategiesWithAllTactics.forEach(function(
-          assignedStrategy
-        ) {
-          var NewAssignedTactics = [];
-          assignedStrategy.assignedTactics.forEach(function(
-            tactic,
-            tacticIndex
-          ) {
-            if (project.assignedTactics.includes(tactic._id.toString())) {
-              console.log("true");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-              NewAssignedTactics.push(
-                assignedStrategy.assignedTactics[tacticIndex]
-              );
-            } else {
-              console.log("false");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-
-              console.log(NewAssignedTactics);
-            }
-
-            // }
-          });
-          assignedStrategy.assignedTactics = NewAssignedTactics;
-          //console.log(assignedStrategy);
-
-          console.log(assignedStrategy);
-        });
-      }); */
-
-      //console.log(patterns[].assignedStrategiesWithAllTactics[]._id);
-      //console.log(patterns[].assignedTactics[]._id);
-      //console.log(patterns[].assignedTactics[]._id);
-      // patterns.forEach(function(pattern) {
-      // pattern.assignedTactics.forEach(function(tactic) {
-      //console.log(tactic._id);
-      //  });
-      //console.log(pattern.assignedTactics);
-      //  });
       if (!projects)
         return res.status(404).json({
           error: "Not Found",
@@ -151,14 +93,6 @@ router.get("/", (req, res) =>
     )
 );
 
-/* router.get("/", (req, res) =>
-  Project.find({})
-    .then(projects => {
-      res.json(projects);
-    })
-    .catch(err => res.status(404).json({ msg: "No projects available" }))
-);
- */
 // @route   GET api/projects/createproject
 // @desc    Create Projects
 // @access  Private
@@ -281,23 +215,13 @@ router.get("/project/:id", (req, res) => {
             tacticIndex
           ) {
             if (project.assignedTactics.includes(tactic._id.toString())) {
-              // console.log("true");
-              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
               NewAssignedTactics.push(
                 assignedStrategy.assignedTactics[tacticIndex]
               );
             } else {
-              // console.log("false");
-              //console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-              //console.log(NewAssignedTactics);
             }
-
-            // }
           });
           assignedStrategy.assignedTactics = NewAssignedTactics;
-          //console.log(assignedStrategy);
-
-          //console.log(assignedStrategy);
         });
       });
       res.json(projects[0]);

@@ -48,6 +48,7 @@ class CreateProject extends Component {
   componentDidMount() {
     this.props.getDevelopers();
     this.props.getStrategies();
+    this.props.resetAssignedStrategies();
   }
 
   onChange(e) {

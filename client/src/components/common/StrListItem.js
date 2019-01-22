@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { setAssignedStrategies } from "../../actions/projectActions";
 import {
   Panel,
+  Row,
   Col,
   Tabs,
   Tab,
@@ -151,13 +152,18 @@ class StrListItem extends Component {
     const { strategy, auth } = this.props;
 
     return (
-      <ListGroupItem
-        onClick={this.onClick}
-        name={strategy.name}
-        bsStyle={this.state.bsStyle}
-      >
-        {strategy.name}
-      </ListGroupItem>
+      <Row>
+        <Col xs={10}>
+          <ListGroupItem
+            onClick={this.onClick}
+            name={strategy.name}
+            bsStyle={this.state.bsStyle}
+          >
+            {strategy.name}
+          </ListGroupItem>
+        </Col>
+        <Col xs={2} className={strategy.name} />
+      </Row>
     );
   }
 }

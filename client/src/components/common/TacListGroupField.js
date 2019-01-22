@@ -15,17 +15,25 @@ class TacListGroupField extends Component {
   }
 
   componentWillUpdate() {
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.setState({ state: this.state });
-    }, 500);
+    }, 500);*/
   }
 
   render() {
+    function randomColor() {
+      var r = Math.round(Math.random() * 255);
+      var g = Math.round(Math.random() * 255);
+      var b = Math.round(Math.random() * 255);
+
+      return "(" + r + "," + g + "," + b + ",0.2)";
+    }
+
     var tactics = this.props.tactics;
     //console.log(tactics);
     //return <div />;
 
-    //console.log(tactics);
+    console.log(tactics);
 
     function concatTactics() {
       var tempArray = [];
@@ -33,7 +41,10 @@ class TacListGroupField extends Component {
       if (tactics) {
         tactics.map(strategy =>
           strategy.assignedTactics.map(
-            tactic => (tempArray = tempArray.concat([tactic]))
+            tactic =>
+              (tempArray = tempArray.concat([
+                { tactic, strategy, color: randomColor() } // color entfernen
+              ]))
           )
         );
       }
@@ -41,17 +52,23 @@ class TacListGroupField extends Component {
       return tempArray;
     }
 
-    // console.log(concatTactics());
+    console.log(concatTactics());
 
-    return concatTactics().map(tactic => (
-      //console.log(tactic.assignedTactics),
-
-      <TacListItem
-        key={tactic._id}
-        tactic={tactic}
-        location={this.props.location}
-      />
-    ));
+    return (
+      <div>
+        {concatTactics().map((
+          tactic //console.log(tactic.assignedTactics),
+        ) => (
+          <TacListItem
+            key={tactic.tactic._id}
+            tactic={tactic.tactic}
+            location={this.props.location}
+            strategy={tactic.strategy.name}
+            color={tactic.color}
+          />
+        ))}
+      </div>
+    );
   }
 }
 
