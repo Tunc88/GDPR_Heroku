@@ -6,6 +6,7 @@ import projectReducer from "./projectReducer";
 import tacticReducer from "./tacticReducer";
 import userReducer from "./userReducer";
 import strategyReducer from "./strategyReducer";
+import generalReducer from "./generalReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
   project: projectReducer,
   tactic: tacticReducer,
   user: userReducer,
-  strategy: strategyReducer
+  strategy: strategyReducer,
+  general: generalReducer
 });

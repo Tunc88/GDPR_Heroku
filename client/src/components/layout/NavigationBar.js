@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
+import SearchBox from "./SearchBox";
 import {
   Navbar,
   Nav,
@@ -55,14 +56,7 @@ class Navigationbar extends Component {
         <Navbar.Collapse>
           <Navbar.Form pullLeft>
             <div className="placeholder" />
-            <FormGroup>
-              <FormControl
-                id="search"
-                type="text"
-                placeholder="Enter tactic or pattern"
-              />
-            </FormGroup>{" "}
-            <Button type="submit">Search!</Button>
+            <SearchBox /> {/*<Button type="submit">Search!</Button>*/}
           </Navbar.Form>
 
           <Image

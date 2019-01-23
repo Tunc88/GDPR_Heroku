@@ -17,7 +17,7 @@ import TextField from "../common/TextField";
 import StrListGroupField from "../common/StrListGroupField";
 import TacListGroupField from "../common/TacListGroupField";
 import { getStrategies } from "../../actions/strategyActions";
-import { Button, Row, Col } from "react-bootstrap";
+import { Button, Row, Col, Panel, Tab, Tabs } from "react-bootstrap";
 import store from "../../store";
 import StrategyFeed from "./StrategyFeed";
 
@@ -139,63 +139,76 @@ class CreatePattern extends Component {
     const { errors } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
-        <TextField
-          label="Name of pattern"
-          name="name"
-          value={this.state.name} // must be changede to name
-          placeholder="Enter the name of the pattern"
-          onChange={this.onChange}
-        />
-        {strategyContent}
-        <TextAreaField
-          label="Summary"
-          name="summary"
-          value={this.state.summary} // must be changed to summary
-          placeholder="Enter Summary"
-          onChange={this.onChange}
-        />
+        <Panel>
+          <Panel.Heading>
+            <Tabs
+              defaultActiveKey={1}
+              id="Select-View"
+              //onSelect={() => this.handleSelect()}
+            >
+              <Tab eventKey={1} title="Basic Information" />
+              <Tab eventKey={2} title="Assigned Strategies" />
+              <Tab eventKey={3} title="Additional Information" />
+            </Tabs>
+          </Panel.Heading>
 
-        <TextAreaField
-          label="Context"
-          name="context"
-          value={this.state.context}
-          placeholder="Enter Context"
-          onChange={this.onChange}
-        />
+          <TextField
+            label="Name of pattern"
+            name="name"
+            value={this.state.name} // must be changede to name
+            placeholder="Enter the name of the pattern"
+            onChange={this.onChange}
+          />
+          {strategyContent}
+          <TextAreaField
+            label="Summary"
+            name="summary"
+            value={this.state.summary} // must be changed to summary
+            placeholder="Enter Summary"
+            onChange={this.onChange}
+          />
 
-        <TextAreaField
-          label="Problem"
-          name="problem"
-          value={this.state.problem}
-          placeholder="Enter Problem"
-          onChange={this.onChange}
-        />
+          <TextAreaField
+            label="Context"
+            name="context"
+            value={this.state.context}
+            placeholder="Enter Context"
+            onChange={this.onChange}
+          />
 
-        <TextAreaField
-          label="Solution"
-          name="solution"
-          value={this.state.solution}
-          placeholder="Enter Solution"
-          onChange={this.onChange}
-        />
+          <TextAreaField
+            label="Problem"
+            name="problem"
+            value={this.state.problem}
+            placeholder="Enter Problem"
+            onChange={this.onChange}
+          />
 
-        <TextAreaField
-          label="Consequences"
-          name="consequences"
-          value={this.state.consequences}
-          placeholder="Enter Consequences"
-          onChange={this.onChange}
-        />
+          <TextAreaField
+            label="Solution"
+            name="solution"
+            value={this.state.solution}
+            placeholder="Enter Solution"
+            onChange={this.onChange}
+          />
 
-        <TextAreaField
-          label="Examples"
-          name="examples"
-          value={this.state.examples}
-          placeholder="Enter Examples"
-          onChange={this.onChange}
-        />
+          <TextAreaField
+            label="Consequences"
+            name="consequences"
+            value={this.state.consequences}
+            placeholder="Enter Consequences"
+            onChange={this.onChange}
+          />
 
-        {/*<Row className="show-grid">
+          <TextAreaField
+            label="Examples"
+            name="examples"
+            value={this.state.examples}
+            placeholder="Enter Examples"
+            onChange={this.onChange}
+          />
+
+          {/*<Row className="show-grid">
           <Col md={6}>
             <h4>Which Strategies will be covered</h4>
             {strategyContent}
@@ -205,9 +218,10 @@ class CreatePattern extends Component {
             {tacticContent}
           </Col>
         </Row>*/}
-        <Button bsStyle="primary" onClick={this.createPattern}>
-          Create Pattern
-        </Button>
+          <Button bsStyle="primary" onClick={this.createPattern}>
+            Create Pattern
+          </Button>
+        </Panel>
       </form>
     );
   }
