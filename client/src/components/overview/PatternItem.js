@@ -24,7 +24,7 @@ class PatternItem extends Component {
     let more;
     let patternDescriptionFirstPart = pattern.summary;
     if (pattern.summary.split(" ").length > 30) {
-      patternDescriptionFirstPart = pattern.summary.split(" ", 32).join(" ");
+      patternDescriptionFirstPart = pattern.summary.split(" ", 28).join(" ");
       patternDescriptionFirstPart = patternDescriptionFirstPart + "...";
     }
     //let patternDescriptionFirstPart = pattern.summary.split(" ", 30).join(" ");
@@ -53,8 +53,6 @@ class PatternItem extends Component {
               >
                 <div className={"h4"}>{pattern.name}</div>
               </Link>
-
-              {/*<EditToolbar pattern={pattern} />*/}
             </div>
 
             {/*<div>
@@ -68,7 +66,7 @@ class PatternItem extends Component {
             <ul className={"StrategyListInPatterns"}>
               {pattern.assignedStrategiesWithAllTactics.map(strategy => (
                 <li>
-                  <span class="dotForStrategy" /> {strategy.name}
+                  <span class="dotForStrategy" /> {" " + strategy.name + " "}
                 </li>
               ))}
             </ul>

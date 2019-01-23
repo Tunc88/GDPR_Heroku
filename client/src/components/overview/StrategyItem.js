@@ -85,7 +85,7 @@ class StrategyItem extends Component {
     }
     return (
       <span>
-        <Col xs={isFilter ? 12 : 3}>
+        <Col xs={isFilter ? 12 : 12}>
           <Panel id={strategy.name} className={cssClassesofStrategyPanel}>
             <Panel.Heading>
               {strategyHeading}

@@ -52,7 +52,8 @@ img {
   /*min-height: 200px;*/
 }
 .minHeightPatternPanel {
-  min-height: 290px !important;
+  min-height: 310px !important;
+  max-height: 310px !important;
 }
 
 .minHeightPatternPanelHeading {
@@ -213,4 +214,8 @@ g g:first-of-type {
 rect:hover {
   fill: #23527c !important
   ;
+}
+.nav-tabs > li.active > a {
+  background-color: #337ab7 !important;
+  color: white !important;
 }

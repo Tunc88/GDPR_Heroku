@@ -42,11 +42,13 @@ class CreatePattern extends Component {
       knownUses: "",
       assignedTactics: [],
       assignedStrategies: [],
-      errors: {}
+      errors: {},
+      activeKey: 1
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   componentDidMount() {
@@ -59,9 +61,41 @@ class CreatePattern extends Component {
       this.setState({ errors: nextProps.errors });
     }
   }
-
+  checkIfEmpty(e) {
+    alert(e);
+    if (this.state.summary == "") {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          summary: "Summary is required!"
+        }
+      });
+    } else {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          summary: undefined
+        }
+      });
+    }
+  }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+    if (e.target.value == "") {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          [e.target.name]: [e.target.name] + " is required!"
+        }
+      });
+    } else {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          [e.target.name]: undefined
+        }
+      });
+    }
   }
 
   onSubmit(e) {
@@ -106,6 +140,30 @@ class CreatePattern extends Component {
     this.props.createPattern(newPattern, this.props.history);
   };
 
+  handleSelect(activeKey) {
+    //alert(`selected ${activeKey}`);
+
+    this.setState({ activeKey });
+  }
+
+  onClickTextField = textField => {
+    //alert("hallloo");
+    if (this.state.summary == "") {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          summary: "Summary is required!"
+        }
+      });
+    } else {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          summary: undefined
+        }
+      });
+    }
+  };
   render() {
     //const { loading2, strategies } = this.props;
     const { loading, tactics } = this.props;
@@ -137,76 +195,158 @@ class CreatePattern extends Component {
     }
 
     const { errors } = this.state;
+    var seeStrategies = false;
+    var seeAdditionals = false;
+    if (
+      this.state.name != "" &&
+      this.state.summary != "" &&
+      this.state.context != "" &&
+      this.state.problem != "" &&
+      this.state.solution != ""
+    ) {
+      seeStrategies = true;
+    }
+    if (this.props.pattern.chosenTactics.length != 0) {
+      seeAdditionals = true;
+    }
     return (
       <form onSubmit={this.onSubmit}>
         <Panel>
-          <Panel.Heading>
-            <Tabs
-              defaultActiveKey={1}
-              id="Select-View"
-              //onSelect={() => this.handleSelect()}
-            >
-              <Tab eventKey={1} title="Basic Information" />
-              <Tab eventKey={2} title="Assigned Strategies" />
-              <Tab eventKey={3} title="Additional Information" />
-            </Tabs>
-          </Panel.Heading>
+          <Tabs
+            defaultActiveKey={1}
+            activeKey={this.state.activeKey}
+            onSelect={this.handleSelect}
+            id="Select-View"
+            //onSelect={() => this.handleSelect()}
+          >
+            <Tab eventKey={1} title="1. Basic Information">
+              <TextField
+                label="Name of pattern"
+                name="name"
+                value={this.state.name} // must be changede to name
+                placeholder="Enter the name of the pattern"
+                onChange={this.onChange}
+                error={errors.name}
+                onBlur={this.onChange}
+              />
+              <TextAreaField
+                label="Summary"
+                name="summary"
+                value={this.state.summary} // must be changed to summary
+                placeholder="Enter Summary"
+                onChange={this.onChange}
+                error={errors.summary}
+                onBlur={this.onChange}
+              />
+              <TextAreaField
+                label="Context"
+                name="context"
+                value={this.state.context}
+                placeholder="Enter Context"
+                onChange={this.onChange}
+                error={errors.context}
+                onBlur={this.onChange}
+              />
+              <TextAreaField
+                label="Problem"
+                name="problem"
+                value={this.state.problem}
+                placeholder="Enter Problem"
+                onChange={this.onChange}
+                error={errors.problem}
+                onBlur={this.onChange}
+              />
+              <TextAreaField
+                label="Solution"
+                name="solution"
+                value={this.state.solution}
+                placeholder="Enter Solution"
+                onChange={this.onChange}
+                error={errors.solution}
+                onBlur={this.onChange}
+              />{" "}
+              {seeStrategies ? (
+                <Button
+                  bsStyle="primary"
+                  className={"col-xs-12"}
+                  onClick={() => this.handleSelect(2)}
+                >
+                  Set assigned Strategies
+                </Button>
+              ) : (
+                <Button
+                  bsStyle="primary"
+                  onClick={() => this.handleSelect(2)}
+                  disabled
+                  className={"col-xs-12"}
+                >
+                  Set assigned Strategies
+                </Button>
+              )}
+            </Tab>
+            {seeStrategies ? (
+              <Tab eventKey={2} title="2. Assigned Strategies">
+                {" "}
+                <br />
+                <br />
+                {strategyContent} <br />
+                <br />
+                {seeAdditionals ? (
+                  <Button
+                    className={"col-xs-12"}
+                    bsStyle="primary"
+                    onClick={() => this.handleSelect(3)}
+                  >
+                    Set additional Information
+                  </Button>
+                ) : (
+                  <span>
+                    <div style={{ fontWeight: "bold", color: "red" }}>
+                      At least one tactic must be chosen!
+                    </div>
+                    <Button
+                      className={"col-xs-12"}
+                      bsStyle="primary"
+                      onClick={() => this.handleSelect(3)}
+                      disabled
+                    >
+                      Set additional Information
+                    </Button>
+                  </span>
+                )}
+              </Tab>
+            ) : (
+              <Tab eventKey={2} title="2. Assigned Strategies" disabled />
+            )}
+            {seeAdditionals ? (
+              <Tab eventKey={3} title="3. Additional Information">
+                <TextAreaField
+                  label="Consequences"
+                  name="consequences"
+                  value={this.state.consequences}
+                  placeholder="Enter Consequences"
+                  onChange={this.onChange}
+                />
 
-          <TextField
-            label="Name of pattern"
-            name="name"
-            value={this.state.name} // must be changede to name
-            placeholder="Enter the name of the pattern"
-            onChange={this.onChange}
-          />
-          {strategyContent}
-          <TextAreaField
-            label="Summary"
-            name="summary"
-            value={this.state.summary} // must be changed to summary
-            placeholder="Enter Summary"
-            onChange={this.onChange}
-          />
-
-          <TextAreaField
-            label="Context"
-            name="context"
-            value={this.state.context}
-            placeholder="Enter Context"
-            onChange={this.onChange}
-          />
-
-          <TextAreaField
-            label="Problem"
-            name="problem"
-            value={this.state.problem}
-            placeholder="Enter Problem"
-            onChange={this.onChange}
-          />
-
-          <TextAreaField
-            label="Solution"
-            name="solution"
-            value={this.state.solution}
-            placeholder="Enter Solution"
-            onChange={this.onChange}
-          />
-
-          <TextAreaField
-            label="Consequences"
-            name="consequences"
-            value={this.state.consequences}
-            placeholder="Enter Consequences"
-            onChange={this.onChange}
-          />
-
-          <TextAreaField
-            label="Examples"
-            name="examples"
-            value={this.state.examples}
-            placeholder="Enter Examples"
-            onChange={this.onChange}
-          />
+                <TextAreaField
+                  label="Examples"
+                  name="examples"
+                  value={this.state.examples}
+                  placeholder="Enter Examples"
+                  onChange={this.onChange}
+                />
+                <Button
+                  bsStyle="primary"
+                  className={"col-xs-12"}
+                  onClick={this.createPattern}
+                >
+                  Create Pattern
+                </Button>
+              </Tab>
+            ) : (
+              <Tab eventKey={3} title="3. Additional Information" disabled />
+            )}
+          </Tabs>
 
           {/*<Row className="show-grid">
           <Col md={6}>
@@ -218,9 +358,6 @@ class CreatePattern extends Component {
             {tacticContent}
           </Col>
         </Row>*/}
-          <Button bsStyle="primary" onClick={this.createPattern}>
-            Create Pattern
-          </Button>
         </Panel>
       </form>
     );

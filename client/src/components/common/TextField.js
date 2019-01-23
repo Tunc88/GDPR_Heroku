@@ -9,10 +9,19 @@ const TextField = ({
   placeholder,
   value,
   onChange,
-  disabled
+  disabled,
+  info,
+  error,
+  onBlur
 }) => {
+  var validationState;
+  if (error != null) {
+    validationState = "error";
+  } else {
+    validationState = null;
+  }
   return (
-    <FormGroup controlId="formBasicText">
+    <FormGroup controlId="formBasicText" validationState={validationState}>
       <ControlLabel>{label}</ControlLabel>
       <FormControl
         label={label}
@@ -22,7 +31,10 @@ const TextField = ({
         placeholder={placeholder}
         onChange={onChange}
         disabled={disabled}
+        onBlur={onBlur}
       />
+      {info && <small className="form-text text-muted">{info}</small>}
+      {error && <div className="invalid-feedback">{error}</div>}
     </FormGroup>
   );
 };

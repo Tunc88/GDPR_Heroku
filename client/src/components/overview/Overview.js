@@ -201,7 +201,7 @@ class Overview extends Component {
               position: "fixed",
               marginTop: "52px",
               display: this.state.displaySidebar,
-              maxWidth: "275px"
+              maxWidth: "200px"
             }
           }}
         />

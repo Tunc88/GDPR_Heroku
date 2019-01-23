@@ -9,10 +9,21 @@ const TextAreaField = ({
   value,
   error,
   info,
-  onChange
+  onChange,
+  onBlur
 }) => {
+  var validationState;
+  if (error != null) {
+    validationState = "error";
+  } else {
+    validationState = null;
+  }
+
   return (
-    <FormGroup controlId="formControlsTextarea">
+    <FormGroup
+      controlId="formControlsTextarea"
+      validationState={validationState}
+    >
       <ControlLabel>{label}</ControlLabel>
       <FormControl
         componentClass="textarea"
@@ -21,6 +32,8 @@ const TextAreaField = ({
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+        //onFocus={onFocus}
+        onBlur={onBlur}
       />
       {info && <small className="form-text text-muted">{info}</small>}
       {error && <div className="invalid-feedback">{error}</div>}
