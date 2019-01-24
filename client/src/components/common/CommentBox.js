@@ -50,6 +50,7 @@ class CommentBox extends Component {
     var index;
     var tempArrAtt = [];
     var tempArrCom = [];
+
     for (var i = 0; i < this.props.project.commentAttendees.length; i++) {
       tempArrAtt.push(this.props.project.commentAttendees[i]._id);
     }

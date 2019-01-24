@@ -1,5 +1,7 @@
 .strategy {
-  height: 38px;
-  margin-left: auto;
-  margin-right: auto;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(119, 109, 109, 0.3);
 }

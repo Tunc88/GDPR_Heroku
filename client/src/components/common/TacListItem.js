@@ -79,14 +79,14 @@ class TacListItem extends Component {
     return (
       <Row>
         <OverlayTrigger placement="top" overlay={tooltip}>
-          <div className="strategy">
-            <Col
-              xs={2}
-              /*style={{ backgroundColor: "rgba" + this.props.color }}*/
-            >
-              {this.props.strategy.substring(0, 4)}
-            </Col>
-          </div>
+          <Col
+            xs={2}
+            /*style={{ backgroundColor: "rgba" + this.props.color }}*/
+          >
+            <div className="strategy">
+              <strong>{this.props.strategy.substring(0, 4)}</strong>
+            </div>
+          </Col>
         </OverlayTrigger>
         <Col xs={10}>
           <ListGroupItem

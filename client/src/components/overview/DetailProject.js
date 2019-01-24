@@ -11,9 +11,6 @@ import {
   removeAssignedProjects
 } from "../../actions/projectActions";
 import { getDevelopers } from "../../actions/userActions";
-import DevListGroupField from "../common/DevListGroupField";
-import StrListGroupField from "../common/StrListGroupField";
-import TacListGroupField from "../common/TacListGroupField";
 import ModalProject from "../common/ModalProject";
 import PropTypes from "prop-types";
 import store from "../../store";
@@ -28,43 +25,74 @@ class DetailProject extends Component {
       project: {},
       assignedDevelopers: [],
       finishedTactic: "",
-      done: false,
+      default: true,
       finishedTactics: [],
       progress: "",
+      done: [],
 
       errors: {}
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
+    this.handleChecked = this.handleChecked.bind(this);
+    this.createDoneArray = this.createDoneArray.bind(this);
   }
 
   componentDidMount() {
-    //this.props.getProject(this.props.match.params.id);
+    this.props.getProject(this.props.match.params.id);
+
     this.props.getDevelopers();
 
     setTimeout(() => {
       this.props.switchAttrForEditProject();
     }, 1000);
-  }
 
-  componentWillReceiveProps(newProps) {}
-
-  componentWillMount() {
-    this.props.getProject(this.props.match.params.id);
+    this.createDoneArray();
+    this.setState({ default: false });
   }
 
   //for realtime chat activate
-  /*componentWillUpdate() {
-    setTimeout(() => {
+  componentWillUpdate() {
+    /*setTimeout(() => {
       this.props.getProject(this.props.match.params.id);
       this.props.switchAttrForEditProject();
-    }, 2000);
-  }*/
+    }, 5000);*/
+  }
 
   onClickDelete(id) {
     this.props.deleteProject(id);
     this.props.removeAssignedProjects(this.props.project);
+  }
+
+  createDoneArray() {
+    var doneArr = [];
+    if (this.props.project.assignedStrategiesWithAllTactics) {
+      var tactics = this.props.project.assignedStrategiesWithAllTactics;
+    }
+    var tacticsArr = [];
+
+    if (tactics != undefined) {
+      tactics.map(strategies =>
+        strategies.assignedTactics.map(
+          tactic => (tacticsArr = tacticsArr.concat(tactic))
+        )
+      );
+    }
+
+    var finishedTacticsArray = this.props.finishedTactics;
+
+    if (tactics != undefined) {
+      for (var i = 0; i < tacticsArr.length; i++) {
+        if (finishedTacticsArray.indexOf(tacticsArr[i].name) === -1) {
+          doneArr.push({ name: tacticsArr[i].name, done: false });
+        } else {
+          doneArr.push({ name: tacticsArr[i].name, done: true });
+        }
+      }
+    }
+
+    return doneArr;
   }
 
   handleInputChange(e) {
@@ -77,6 +105,21 @@ class DetailProject extends Component {
     };
 
     this.props.setFinishedTactic(finishedTacticData);
+  }
+
+  handleChecked(tac, i) {
+    //console.log(tac);
+    var finTac = this.props.project.finishedTactics;
+
+    if (this.state.default) {
+      if (finTac.indexOf(tac.name) === -1) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return this.createDoneArray()[i].done;
+    }
   }
 
   render() {
@@ -125,24 +168,8 @@ class DetailProject extends Component {
       progress = (finTac.length * 100) / allTac.length;
     }
 
-    // console.log(aggrTac());
-    //console.log(tactics);
-    /*     var devName = [];
-    for (var i = 0; i < this.createNewArray().length; i++) {
-      devName.push(this.matchItem(this.createNewArray()[i]));
-    }
-
-    console.log();
-
-    setTimeout(console.log(Promise.resolve(devName)), 2000);
-    this.createNewArray();
-    this.matchItem("5bf9449f9c505c1ec0a7f628").then(val => console.log(val)); */
-    //console.log(this.props.project);
-
-    var finTac = this.props.project.finishedTactics;
-
     function currentList() {}
-
+    var counter = -1;
     return (
       <div>
         <Panel>
@@ -204,22 +231,24 @@ class DetailProject extends Component {
                   <Panel.Body>
                     {aggrTac()
                       ? aggrTac().map(tac => (
-                          <div key={tac._id}>
-                            {" "}
-                            {/* Added random value to generate real unique keys,  so the component have to render every time, with id as key component don't render if key has another status*/}
-                            <form>
-                              <input
-                                name={tac.name}
-                                type="checkbox"
-                                defaultChecked={
-                                  finTac.indexOf(tac.name) === -1 ? false : true
-                                }
-                                onClick={this.handleInputChange}
-                              />
+                          <form
+                            key={
+                              tac._id.toString() +
+                              this.props.match.params.id.toString()
+                            }
+                          >
+                            <input
+                              name={tac.name}
+                              type="checkbox"
+                              checked={this.handleChecked(
+                                tac,
+                                (counter = counter + 1)
+                              )}
+                              onChange={this.handleInputChange}
+                            />
 
-                              {tac.name}
-                            </form>
-                          </div>
+                            {tac.name}
+                          </form>
                         ))
                       : ""}
                   </Panel.Body>
@@ -260,7 +289,7 @@ class DetailProject extends Component {
               <ProgressBar
                 striped
                 bsStyle="danger"
-                label={`${progress.toFixed(2)}%`}
+                label={`${progress.toFixed(0)}%`}
                 now={progress}
               />
               <Row>
@@ -298,7 +327,7 @@ class DetailProject extends Component {
               <ProgressBar
                 striped
                 bsStyle="warning"
-                label={`${progress.toFixed(2)}%`}
+                label={`${progress.toFixed(0)}%`}
                 now={progress}
               />
               <Row>
@@ -336,7 +365,7 @@ class DetailProject extends Component {
               <ProgressBar
                 striped
                 bsStyle="success"
-                label={`${progress.toFixed(2)}%`}
+                label={`${progress.toFixed(0)}%`}
                 now={progress}
               />
               <Row>

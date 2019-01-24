@@ -15,25 +15,15 @@ class TacListGroupField extends Component {
   }
 
   componentWillUpdate() {
-    /* setTimeout(() => {
+    /*setTimeout(() => {
       this.setState({ state: this.state });
     }, 500);*/
   }
 
   render() {
-    function randomColor() {
-      var r = Math.round(Math.random() * 255);
-      var g = Math.round(Math.random() * 255);
-      var b = Math.round(Math.random() * 255);
-
-      return "(" + r + "," + g + "," + b + ",0.2)";
-    }
-
     var tactics = this.props.tactics;
     //console.log(tactics);
     //return <div />;
-
-    console.log(tactics);
 
     function concatTactics() {
       var tempArray = [];
@@ -41,18 +31,13 @@ class TacListGroupField extends Component {
       if (tactics) {
         tactics.map(strategy =>
           strategy.assignedTactics.map(
-            tactic =>
-              (tempArray = tempArray.concat([
-                { tactic, strategy, color: randomColor() } // color entfernen
-              ]))
+            tactic => (tempArray = tempArray.concat([{ tactic, strategy }]))
           )
         );
       }
 
       return tempArray;
     }
-
-    console.log(concatTactics());
 
     return (
       <div>
