@@ -8,16 +8,26 @@ class TacListGroupField extends Component {
   constructor() {
     super();
     this.state = {
-      tactics: [],
+      tactics: undefined,
 
       errors: {}
     };
+
+    this.updateTactics = this.updateTactics.bind(this);
   }
 
   componentWillUpdate() {
-    /*setTimeout(() => {
-      this.setState({ state: this.state });
-    }, 500);*/
+    setTimeout(() => {
+      this.updateTactics(null);
+    }, 500);
+  }
+
+  componentDidMount() {
+    //this.updateTactics();
+  }
+
+  updateTactics(tactics) {
+    this.setState({ state: this.state });
   }
 
   render() {
@@ -39,6 +49,8 @@ class TacListGroupField extends Component {
       return tempArray;
     }
 
+    //this.updateTactics(this.props.tactics);
+
     return (
       <div>
         {concatTactics().map((
@@ -49,7 +61,6 @@ class TacListGroupField extends Component {
             tactic={tactic.tactic}
             location={this.props.location}
             strategy={tactic.strategy.name}
-            color={tactic.color}
           />
         ))}
       </div>

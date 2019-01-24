@@ -55,6 +55,7 @@ class TacListItem extends Component {
 
   onClick(e) {
     if (this.props.finishedTactics.indexOf(this.props.tactic.name) === -1) {
+      this.props.update;
       this.setState(() => {
         this.props.setAssignedTactics(this.props.tactic);
         return {

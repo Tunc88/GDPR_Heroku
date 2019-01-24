@@ -113,7 +113,7 @@ class StrListItem extends Component {
         indArr.push(ind);
       }
 
-      console.log(Math.max(...indArr));
+      //console.log(Math.max(...indArr));
 
       if (Math.max(...indArr) >= 0) {
         alert("You can't deselect the Strategy with finished tactics");

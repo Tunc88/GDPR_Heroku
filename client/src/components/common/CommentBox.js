@@ -23,6 +23,7 @@ class CommentBox extends Component {
         author: {},
         content: ""
       },
+      empty: "",
 
       errors: {}
     };
@@ -32,6 +33,7 @@ class CommentBox extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.correctX = this.correctX.bind(this);
     this.onClickRemove = this.onClickRemove.bind(this);
+    this.updateScroll = this.updateScroll.bind(this);
   }
 
   onClickRemove(commentId) {
@@ -81,6 +83,12 @@ class CommentBox extends Component {
     }
   }
 
+  componentDidMount() {
+    setTimeout(() => {
+      this.updateScroll();
+    }, 1000);
+  }
+
   /*componentDidUpdate() {
     setTimeout(() => {
       this.setState({ state: this.state });
@@ -126,14 +134,34 @@ class CommentBox extends Component {
 
     this.props.setComment(commentData);
 
-    //this.setState({ content: "" });
-
+    this.setState({
+      comment: {
+        author: this.props.auth.user.id,
+        content: ""
+      }
+    });
+    setTimeout(() => {
+      this.updateScroll();
+    }, 250);
     //this.props.editProject(commentData);
+  }
+
+  updateScroll() {
+    var element = document.getElementsByClassName("chatBox")[0];
+    if (element) {
+      element.scrollTop = element.scrollHeight;
+    }
   }
 
   render() {
     //console.log(this.props.match.params.id);
     //console.log(this.state.comment);
+
+    {
+      setTimeout(() => {
+        this.updateScroll();
+      }, 500);
+    }
 
     return (
       <div>
@@ -171,11 +199,11 @@ class CommentBox extends Component {
 
             <TextAreaField
               name="content"
-              value={this.state.content}
               placeholder="Enter your comment"
               onChange={this.onChange}
               location={this.props.location}
               onSubmit={this.onSubmit}
+              value={this.state.comment.content}
             />
           </Panel.Body>
         </Panel>
