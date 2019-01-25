@@ -53,12 +53,16 @@ class CommentBox extends Component {
     var tempArrAtt = [];
     var tempArrCom = [];
 
-    for (var i = 0; i < this.props.project.commentAttendees.length; i++) {
-      tempArrAtt.push(this.props.project.commentAttendees[i]._id);
+    if (this.props.project.commentAttendees) {
+      for (var i = 0; i < this.props.project.commentAttendees.length; i++) {
+        tempArrAtt.push(this.props.project.commentAttendees[i]._id);
+      }
     }
 
-    for (var i = 0; i < this.props.project.comment.length; i++) {
-      tempArrCom.push(this.props.project.comment[i].author);
+    if (this.props.project.comment) {
+      for (var i = 0; i < this.props.project.comment.length; i++) {
+        tempArrCom.push(this.props.project.comment[i].author);
+      }
     }
 
     if (this.props.project.commentAttendees) {

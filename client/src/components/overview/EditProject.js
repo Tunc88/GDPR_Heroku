@@ -59,7 +59,6 @@ class EditProject extends Component {
     this.props.getProject(this.props.match.params.id);
     this.props.getDevelopers();
     this.props.getStrategies();
-    this.props.match.params.id;
   }
 
   onChange(e) {

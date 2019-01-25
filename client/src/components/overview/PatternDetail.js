@@ -53,8 +53,8 @@ class PatternDetail extends Component {
     console.log(this.props.location.state);
     //alert(this.props.match.params._id);
     // alert(this.props.getPattern(this.props.match.params._id));
-    this.props.getPattern(this.props.match.params._id),
-      this.setState({ pattern: this.props.pattern });
+    this.props.getPattern(this.props.match.params.id);
+    this.setState({ pattern: this.props.pattern });
   }
 
   componentWillReceiveProps(nextProps) {
