@@ -8,6 +8,7 @@ const patterns = require("./routes/api/patterns");
 const tactics = require("./routes/api/tactics");
 const strategies = require("./routes/api/strategies");
 const projects = require("./routes/api/projects");
+const general = require("./routes/api/general");
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use("/api/patterns", patterns);
 app.use("/api/tactics", tactics);
 app.use("/api/strategies", strategies);
 app.use("/api/projects", projects);
+app.use("/api/general", general);
 
 const port = process.env.PORT || 5000;
 

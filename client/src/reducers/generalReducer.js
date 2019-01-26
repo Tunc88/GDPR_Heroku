@@ -15,7 +15,7 @@ export default function(state = initialState, action) {
     case SEARCH_IN_BACKEND:
       return {
         ...state,
-        searchResults: action.payload,
+        searchResults: action.payload.searchResults,
         loading: false
       };
 

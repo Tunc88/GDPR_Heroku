@@ -9,7 +9,7 @@ export const searchInBackend = searchString => dispatch => {
 
   //alert("seerver");
   axios
-    .get(`/api/patterns/search`, searchString)
+    .post(`/api/general/search`, { searchString: searchString })
     .then(res =>
       // console.log("res" + res.data.pattern)
 
@@ -21,7 +21,7 @@ export const searchInBackend = searchString => dispatch => {
     .catch(err =>
       dispatch({
         type: SEARCH_IN_BACKEND,
-        payload: ["treffer1", "treffer 2"]
+        payload: err
       })
     );
 };

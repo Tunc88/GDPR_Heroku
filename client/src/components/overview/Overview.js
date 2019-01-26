@@ -31,14 +31,14 @@ class Overview extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sidebarOpen: false,
+      sidebarOpen: true,
       sidebarDocked: mql.matches,
       displaySidebar: "block",
       sidebarCounter: 0
     };
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
-    this.hideFilterbar = this.hideFilterbar.bind(this);
+    // this.hideFilterbar = this.hideFilterbar.bind(this);
   }
 
   componentWillMount() {
@@ -55,17 +55,16 @@ class Overview extends Component {
     mql.removeListener(this.mediaQueryChanged);
   }
 
-  onSetSidebarOpen(open) {
-    this.setState({ sidebarOpen: open });
-  }
+  onSetSidebarOpen = () => {
+    //alert("hallo");
+    this.setState({ sidebarOpen: !this.state.sidebarOpen });
+  };
 
   mediaQueryChanged() {
     this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
   }
 
-  hideFilterbar = () => {
-    //alert((document.getElementById("Filterbar").innerHTML = "hallo"));
-    //document.getElementById("Filterbar").style.display = "none";
+  /*hideFilterbar = () => {
     alert("hallo");
     this.setState({
       displaySidebar: "none"
@@ -73,18 +72,13 @@ class Overview extends Component {
   };
 
   hideFilterbar() {
-    //preventDefault();
-    //alert((document.getElementById("Filterbar").innerHTML = "hallo"));
-    //document.getElementById("Filterbar").style.display = "none";
     alert("hallo");
     this.setState({
       displaySidebar: "none"
     });
   }
-
+*/
   onSelect() {
-    //alert((document.getElementById("Filterbar").innerHTML = "hallo"));
-    //document.getElementById("Filterbar").style.display = "none";
     alert("hallo");
     this.setState({
       displaySidebar: "none"
@@ -161,14 +155,13 @@ class Overview extends Component {
       patternContent = <PatternFeed patterns={visiblePatterns} />;
     }
 
-    const { tactics, loading2 } = this.props.tactic;
+    /*const { tactics, loading2 } = this.props.tactic;
     let tacticContent;
 
     if (tactics === null || loading2) {
       tacticContent = <Spinner />;
     } else {
-      // tacticContent = <TacticFeed tactics={tactics} />;
-    }
+    }*/
 
     const { strategies, loading3 } = this.props.strategy;
     let strategyContent;
@@ -180,31 +173,69 @@ class Overview extends Component {
         <StrategyFeed strategies={strategies} isFilter={true} />
       );
     }
-    //console.log(patterns);
     return (
       <div style={{ paddingBottom: "660px" }}>
-        <Sidebar
-          sidebarId="Filterbar"
-          sidebar={
-            <div>
-              <h4 style={{ textAlign: "center" }}>Filter</h4>
-              {strategyContent}
-            </div>
-          }
-          open={this.state.sidebarOpen}
-          docked={true}
-          pullRight={true}
-          onSetOpen={this.onSetSidebarOpen}
-          styles={{
-            sidebar: {
-              background: "white",
-              position: "fixed",
-              marginTop: "52px",
-              display: this.state.displaySidebar,
-              maxWidth: "200px"
+        {this.state.sidebarOpen ? (
+          <Sidebar
+            sidebarId="Filterbar"
+            sidebar={
+              <div>
+                <h4 style={{ textAlign: "center" }}>
+                  Filter{" "}
+                  <Button
+                    bsSize="small"
+                    style={{ float: "right" }}
+                    onClick={() => this.onSetSidebarOpen()}
+                  >
+                    <Glyphicon glyph="resize-small" />
+                  </Button>
+                </h4>
+                <br />
+
+                {strategyContent}
+              </div>
             }
-          }}
-        />
+            open={this.state.sidebarOpen}
+            docked={true}
+            pullRight={true}
+            onSetOpen={this.onSetSidebarOpen}
+            styles={{
+              sidebar: {
+                background: "white",
+                position: "fixed",
+                marginTop: "52px",
+                //display: this.state.displaySidebar,
+                maxWidth: "200px"
+              }
+            }}
+          />
+        ) : (
+          <Sidebar
+            sidebarId="Filterbar"
+            sidebar={
+              <div>
+                <h4 />
+                <Button bsSize="small" onClick={() => this.onSetSidebarOpen()}>
+                  <Glyphicon glyph="resize-full" />
+                </Button>
+              </div>
+            }
+            open={this.state.sidebarOpen}
+            docked={true}
+            pullRight={true}
+            onSetOpen={this.onSetSidebarOpen}
+            styles={{
+              sidebar: {
+                background: "white",
+                position: "fixed",
+                marginTop: "52px",
+                //display: this.state.displaySidebar,
+                maxWidth: "35px"
+              }
+            }}
+          />
+        )}
+
         <Tabs
           defaultActiveKey={1}
           id="Select-View"
@@ -225,28 +256,12 @@ class Overview extends Component {
                 Manage Strategies and Tactics...
               </Link>
             </Col>
-
-            {/*visiblePatterns[0].name*/}
             <br />
             <br />
             <br />
             {patternContent}
-            {/*<Col xs={12}>
-              <h4>Tactics</h4>
-        </Col>*/}
-            {/*tacticContent*/}
           </Tab>
-
-          <Tab
-            //onSelect={this.hideFilterbar}
-            eventKey={2}
-            title="Diagram View"
-            // onClick={() => this.hideFilterbar()}
-            //   onClick={this.hideFilterbar}
-          >
-            {/*<br />
-            <h3>Strategies, Tactics and Privacy Patterns</h3>
-            <Image src={SankeyDiagram} responsive />*/}
+          <Tab eventKey={2} title="Diagram View">
             <SankeyDiagram />
           </Tab>
         </Tabs>

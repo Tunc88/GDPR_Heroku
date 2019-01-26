@@ -23,7 +23,8 @@ import {
   Checkbox,
   Col,
   FormControl,
-  Input
+  Input,
+  Panel
 } from "react-bootstrap";
 import StrategyFeed from "./StrategyFeed";
 import { getStrategies } from "../../actions/strategyActions";
@@ -345,87 +346,93 @@ class PatternDetail extends Component {
       patternContent = (
         <div style={{ marginBottom: "70px" }}>
           {!editPattern ? (
-            <div>
-              <Col xs={6}>
-                <h3>{pattern.name}</h3>
-              </Col>
-              <Col xs={6}>
-                {isAuthenticated ? (
-                  <EditToolbar
-                    name={pattern.name}
-                    _id={this.props.match.params._id}
-                    enableEditing={() => this.handleEditing()}
-                  />
-                ) : (
-                  <Col xs={6} />
-                )}
-              </Col>
-              <Col xs={12}>
-                {
-                  <PatternDetail_StrategiesWithTactics
-                    assignedStrategiesWithAllTactics={
-                      pattern.assignedStrategiesWithAllTactics
-                    }
-                  />
-                }
-                {isEmpty(pattern.alsoKnownAs) ? (
-                  <span />
-                ) : (
-                  <span>
-                    <h4>Also Known As</h4>
-                    <div>{pattern.alsoKnownAs}</div>
-                  </span>
-                )}
-                <h4>Summary</h4>
-                <div>{pattern.summary}</div>
-                <h4>Context</h4>
-                <div>{pattern.context}</div>
-                <h4>Problem</h4>
-                <div>{pattern.problem}</div>
-                <h4>Solution</h4>
-                <div>{pattern.solution}</div>
-                {isEmpty(pattern.consequences) ? (
-                  <span />
-                ) : (
-                  <span>
-                    <h4>Consequences</h4>
-                    <div>{pattern.consequences}</div>
-                  </span>
-                )}
-                {isEmpty(pattern.examples) ? (
-                  <span />
-                ) : (
-                  <span>
-                    <h4>Examples</h4>
-                    <div>{pattern.examples}</div>
-                  </span>
-                )}
-                {isEmpty(pattern.knownUses) ? (
-                  <span />
-                ) : (
-                  <span>
-                    <h4>Known Uses</h4>
-                    <div>{pattern.knownUses}</div>
-                  </span>
-                )}
-                {isEmpty(pattern.relatedPatterns) ? (
-                  <span />
-                ) : (
-                  <span>
-                    <h4>relatedPatterns</h4>
-                    <div>{pattern.relatedPatterns}</div>
-                  </span>
-                )}
-                {isEmpty(pattern.sources) ? (
-                  <span />
-                ) : (
-                  <span>
-                    <h4>Sources</h4>
-                    <div>{pattern.sources}</div>
-                  </span>
-                )}
-              </Col>
-            </div>
+            <Panel>
+              <Panel.Heading className="minHeightPatternPanelHeadingDetail">
+                <Panel.Title>
+                  <Col xs={6}>
+                    <span className={"h3"}>{pattern.name}</span>
+                  </Col>
+                  <Col xs={6}>
+                    {isAuthenticated ? (
+                      <EditToolbar
+                        name={pattern.name}
+                        _id={this.props.match.params._id}
+                        enableEditing={() => this.handleEditing()}
+                      />
+                    ) : (
+                      <Col xs={6} />
+                    )}
+                  </Col>
+                </Panel.Title>
+              </Panel.Heading>
+              <Panel.Body>
+                <Col xs={12}>
+                  {
+                    <PatternDetail_StrategiesWithTactics
+                      assignedStrategiesWithAllTactics={
+                        pattern.assignedStrategiesWithAllTactics
+                      }
+                    />
+                  }
+                  {isEmpty(pattern.alsoKnownAs) ? (
+                    <span />
+                  ) : (
+                    <span>
+                      <h4>Also Known As</h4>
+                      <div>{pattern.alsoKnownAs}</div>
+                    </span>
+                  )}
+                  <h4>Summary</h4>
+                  <div>{pattern.summary}</div>
+                  <h4>Context</h4>
+                  <div>{pattern.context}</div>
+                  <h4>Problem</h4>
+                  <div>{pattern.problem}</div>
+                  <h4>Solution</h4>
+                  <div>{pattern.solution}</div>
+                  {isEmpty(pattern.consequences) ? (
+                    <span />
+                  ) : (
+                    <span>
+                      <h4>Consequences</h4>
+                      <div>{pattern.consequences}</div>
+                    </span>
+                  )}
+                  {isEmpty(pattern.examples) ? (
+                    <span />
+                  ) : (
+                    <span>
+                      <h4>Examples</h4>
+                      <div>{pattern.examples}</div>
+                    </span>
+                  )}
+                  {isEmpty(pattern.knownUses) ? (
+                    <span />
+                  ) : (
+                    <span>
+                      <h4>Known Uses</h4>
+                      <div>{pattern.knownUses}</div>
+                    </span>
+                  )}
+                  {isEmpty(pattern.relatedPatterns) ? (
+                    <span />
+                  ) : (
+                    <span>
+                      <h4>relatedPatterns</h4>
+                      <div>{pattern.relatedPatterns}</div>
+                    </span>
+                  )}
+                  {isEmpty(pattern.sources) ? (
+                    <span />
+                  ) : (
+                    <span>
+                      <h4>Sources</h4>
+                      <div>{pattern.sources}</div>
+                    </span>
+                  )}
+                </Col>
+              </Panel.Body>
+            </Panel>
           ) : (
             <div>
               <Col xs={6} xsOffset={6}>

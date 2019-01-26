@@ -8,7 +8,8 @@ const PatternSchema = new Schema({
   },
   name: {
     type: String,
-    required: true
+    required: true,
+    text: true
   },
   context: {
     type: String,
