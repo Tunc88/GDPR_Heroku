@@ -13,13 +13,14 @@ import {
   Image
 } from "react-bootstrap";
 import Spinner from "../common/Spinner";
-import SankeyDiagram from "../../img/SankeyDiagram.png";
+//import SankeyDiagram from "../../img/SankeyDiagram.png";
 import "./Overview.css";
 import PatternFeed from "./PatternFeed";
 import { getPatterns } from "../../actions/patternActions";
 //import TacticFeed from "./TacticFeed";
 import { getTactics } from "../../actions/tacticActions";
 import StrategyFeed from "./StrategyFeed";
+import SankeyDiagram from "./SankeyDiagram";
 import { getStrategies } from "../../actions/strategyActions";
 import Sidebar from "react-sidebar";
 import { Link } from "react-router-dom";
@@ -105,15 +106,59 @@ class Overview extends Component {
     }
   };
 
+  getVisiblePatterns = (patterns, filters) => {
+    //alert(filter);
+    //alert(patterns);
+    /*var visiblePatterns = [];
+    var patternz = [
+      {
+        name: "dies",
+        assignedStrategiesWithAllTactics: [
+          { name: "hallo", assignedTactics: [{ name: "Share" }] }
+        ]
+      }
+    ];
+    visiblePatterns = patternz.filter(function(pattern) {
+      return pattern.assignedStrategiesWithAllTactics.assignedTactics.includes(
+        filter
+      );
+    });
+    return visiblePatterns;*/
+    //patterns.forEach(element => {});
+    if (filters.length == 0) {
+      visiblePatterns = patterns;
+    } else {
+      var visiblePatterns = [];
+      patterns.forEach(pattern => {
+        pattern.assignedStrategiesWithAllTactics.forEach(strategy => {
+          strategy.assignedTactics.forEach(tactic => {
+            if (filters.includes(tactic.name)) {
+              if (!visiblePatterns.includes(tactic.name)) {
+                visiblePatterns.push(pattern);
+              }
+            }
+          });
+        });
+      });
+    }
+    //console.log("visible Patterns");
+    //console.log(visiblePatterns);
+    //alert(visiblePatterns);
+    return visiblePatterns;
+  };
   render() {
     const { patterns, loading } = this.props.pattern;
-
+    //console.log(patterns);
+    const visiblePatterns = this.getVisiblePatterns(
+      this.props.pattern.patterns,
+      this.props.pattern.visibilityFilters
+    );
     let patternContent;
 
     if (patterns === null || loading) {
       patternContent = <Spinner />;
     } else {
-      patternContent = <PatternFeed patterns={patterns} />;
+      patternContent = <PatternFeed patterns={visiblePatterns} />;
     }
 
     const { tactics, loading2 } = this.props.tactic;
@@ -131,9 +176,11 @@ class Overview extends Component {
     if (strategies === null || loading3) {
       strategyContent = <Spinner />;
     } else {
-      strategyContent = <StrategyFeed strategies={strategies} />;
+      strategyContent = (
+        <StrategyFeed strategies={strategies} isFilter={true} />
+      );
     }
-
+    //console.log(patterns);
     return (
       <div style={{ paddingBottom: "660px" }}>
         <Sidebar
@@ -178,6 +225,8 @@ class Overview extends Component {
                 Manage Strategies and Tactics...
               </Link>
             </Col>
+
+            {/*visiblePatterns[0].name*/}
             <br />
             <br />
             <br />
@@ -195,9 +244,10 @@ class Overview extends Component {
             // onClick={() => this.hideFilterbar()}
             //   onClick={this.hideFilterbar}
           >
-            <br />
+            {/*<br />
             <h3>Strategies, Tactics and Privacy Patterns</h3>
-            <Image src={SankeyDiagram} responsive />
+            <Image src={SankeyDiagram} responsive />*/}
+            <SankeyDiagram />
           </Tab>
         </Tabs>
       </div>

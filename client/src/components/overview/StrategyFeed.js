@@ -7,7 +7,11 @@ class StrategyFeed extends Component {
     const { strategies } = this.props;
 
     return strategies.map(strategy => (
-      <StrategyItem key={strategy._id} strategy={strategy} />
+      <StrategyItem
+        key={strategy._id}
+        strategy={strategy}
+        isFilter={this.props.isFilter}
+      />
     ));
   }
 }
