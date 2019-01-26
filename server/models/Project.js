@@ -12,6 +12,10 @@ const ProjectSchema = new Schema({
     type: Boolean,
     default: false
   },
+  progress: {
+    type: Number,
+    default: 0
+  },
   description: {
     type: String,
     required: true
@@ -30,18 +34,6 @@ const ProjectSchema = new Schema({
       ref: "strategies" //[mongoose.Schema.Types.ObjectId]
     }
   ],
-  assignedStrategiesTest: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "strategies", //[mongoose.Schema.Types.ObjectId]
-      assignedTactics: [
-        {
-          type: Schema.Types.ObjectId
-          //ref: "strategies.assignedTactics" //[mongoose.Schema.Types.ObjectId]
-        }
-      ]
-    }
-  ],
 
   assignedDevelopers: [
     {
@@ -54,6 +46,22 @@ const ProjectSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "users"
   },
+
+  comment: [
+    {
+      author: {
+        type: Schema.Types.ObjectId
+      },
+      content: {
+        type: String
+      },
+      date: {
+        type: Date,
+        default: Date.now
+      }
+    }
+  ],
+  finishedTactics: [{ type: String, default: [] }],
 
   date: {
     type: Date,

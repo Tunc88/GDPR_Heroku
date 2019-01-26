@@ -16,7 +16,7 @@ const User = require("../../models/User");
 // @access  Public
 router.get("/test", (req, res) => res.json({ msg: "Project Works" }));
 
-// @route   GET api/projects/projets
+// @route   GET api/projects/projects
 // @desc    Get all projects
 // @access  Public
 
@@ -68,75 +68,16 @@ router.get("/", (req, res) =>
             tacticIndex
           ) {
             if (project.assignedTactics.includes(tactic._id.toString())) {
-              console.log("true");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
               NewAssignedTactics.push(
                 assignedStrategy.assignedTactics[tacticIndex]
               );
             } else {
-              console.log("false");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-
-              console.log(NewAssignedTactics);
             }
-
-            // }
           });
           assignedStrategy.assignedTactics = NewAssignedTactics;
-          //console.log(assignedStrategy);
-
-          console.log(assignedStrategy);
         });
       });
 
-      /* projects.forEach(function(project) {
-        project.assignedTactics.forEach(function(
-          assignedTactic,
-          assignedTacticIndex
-        ) {
-          project.assignedTactics[
-            assignedTacticIndex
-          ] = assignedTactic.toString();
-        });
-        project.assignedStrategiesWithAllTactics.forEach(function(
-          assignedStrategy
-        ) {
-          var NewAssignedTactics = [];
-          assignedStrategy.assignedTactics.forEach(function(
-            tactic,
-            tacticIndex
-          ) {
-            if (project.assignedTactics.includes(tactic._id.toString())) {
-              console.log("true");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-              NewAssignedTactics.push(
-                assignedStrategy.assignedTactics[tacticIndex]
-              );
-            } else {
-              console.log("false");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-
-              console.log(NewAssignedTactics);
-            }
-
-            // }
-          });
-          assignedStrategy.assignedTactics = NewAssignedTactics;
-          //console.log(assignedStrategy);
-
-          console.log(assignedStrategy);
-        });
-      }); */
-
-      //console.log(patterns[].assignedStrategiesWithAllTactics[]._id);
-      //console.log(patterns[].assignedTactics[]._id);
-      //console.log(patterns[].assignedTactics[]._id);
-      // patterns.forEach(function(pattern) {
-      // pattern.assignedTactics.forEach(function(tactic) {
-      //console.log(tactic._id);
-      //  });
-      //console.log(pattern.assignedTactics);
-      //  });
       if (!projects)
         return res.status(404).json({
           error: "Not Found",
@@ -152,14 +93,6 @@ router.get("/", (req, res) =>
     )
 );
 
-/* router.get("/", (req, res) =>
-  Project.find({})
-    .then(projects => {
-      res.json(projects);
-    })
-    .catch(err => res.status(404).json({ msg: "No projects available" }))
-);
- */
 // @route   GET api/projects/createproject
 // @desc    Create Projects
 // @access  Private
@@ -186,53 +119,14 @@ router.post(
           finished: req.body.finished,
           description: req.body.description,
           assignedDevelopers: req.body.assignedDevelopers,
-          creator: req.user.id
+          creator: req.user.id,
+          comment: req.body.comment
         });
         newProject
           .save()
           .then(project => res.json(project))
           .catch(err => console.log(err));
       }
-    });
-  }
-);
-
-// @route   POST api/projects
-// @desc    Edit project
-// @access  Private
-router.post(
-  "/editproject",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const { errors, isValid } = validateProjectInput(req.body);
-
-    // Check Validation
-    /*
-    if (!isValid) {
-      // Return any errors with 400 status
-      return res.status(400).json(errors);
-    }*/
-
-    // Get fields
-    const projectFields = {};
-
-    projectFields.id = req.body.id;
-    if (req.body.name) projectFields.name = req.body.name;
-    if (req.body.finished) projectFields.finished = req.body.finished;
-    if (req.body.description) projectFields.description = req.body.description;
-    if (req.body.assignedStrategies)
-      projectFields.assignedStrategies = req.body.assignedStrategies;
-    if (req.body.assignedTactics)
-      projectFields.assignedTactics = req.body.assignedTactics;
-    if (req.body.assignedDevelopers)
-      projectFields.assignedDevelopers = req.body.assignedDevelopers;
-
-    Project.findOneAndUpdate(
-      { _id: req.body.id },
-      { $set: projectFields },
-      { new: true }
-    ).then(project => {
-      res.json(req.params.id);
     });
   }
 );
@@ -278,6 +172,14 @@ router.get("/project/:id", (req, res) => {
     },
     {
       $lookup: {
+        from: "users",
+        localField: "comment.author",
+        foreignField: "_id",
+        as: "commentAttendees"
+      }
+    },
+    {
+      $lookup: {
         from: "strategies",
         localField: "assignedTactics",
         foreignField: "assignedTactics._id",
@@ -313,24 +215,13 @@ router.get("/project/:id", (req, res) => {
             tacticIndex
           ) {
             if (project.assignedTactics.includes(tactic._id.toString())) {
-              console.log("true");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
               NewAssignedTactics.push(
                 assignedStrategy.assignedTactics[tacticIndex]
               );
             } else {
-              console.log("false");
-              console.log(assignedStrategy.assignedTactics[tacticIndex].name);
-
-              console.log(NewAssignedTactics);
             }
-
-            // }
           });
           assignedStrategy.assignedTactics = NewAssignedTactics;
-          //console.log(assignedStrategy);
-
-          console.log(assignedStrategy);
         });
       });
       res.json(projects[0]);
@@ -342,46 +233,305 @@ router.get("/project/:id", (req, res) => {
 // @desc    Edit project by ID
 // @access  Public
 
-router.post("/project/edit/:id", (req, res) => {
+router.post("/project/edit", (req, res) => {
   const errors = {};
 
-  Project.findbyIdAndUpdate(
-    req.params.id,
-    {
-      $set: {
-        name: req.body.name,
-        description: req.body.description,
-        finished: req.body.finshed,
-        assignedTactics: req.body.assignedTactics,
-        assignedStrategies: req.body.assignedStrategies,
-        assignedDevelopers: req.body.assignedDevelopers
+  const projectFields = {};
+  const userFields = {};
+
+  if (req.body.name) projectFields.name = req.body.name;
+  if (req.body.finished) projectFields.finished = req.body.finished;
+  if (req.body.progress) projectFields.progress = req.body.progress;
+  if (req.body.description) projectFields.description = req.body.description;
+  if (req.body.assignedStrategies)
+    projectFields.assignedStrategies = req.body.assignedStrategies;
+  if (req.body.assignedTactics)
+    projectFields.assignedTactics = req.body.assignedTactics;
+  if (req.body.assignedDevelopers)
+    projectFields.assignedDevelopers = req.body.assignedDevelopers;
+  if (req.body.finishedTactic)
+    projectFields.finishedTactic = req.body.finishedTactic;
+
+  if (req.body.assignedDevelopers) userFields.assignedProjects = req.body.id;
+
+  console.log(projectFields);
+  //console.log(req.body.comment);
+
+  //console.log("123123" + req.body.id);
+  /*for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+    for (
+      var j = 0;
+      j < req.body.assignedDevelopers[i].assignedProjects.length;
+      j++
+    ) {
+      console.log(
+        "assignedProjects: " +
+          req.body.assignedDevelopers[i].assignedProjects[j]
+      );
+    }
+    console.log("assignedDevelopers: " + req.body.assignedDevelopers[i]);
+  }*/
+
+  let promiseArr = [];
+  var idArrAssDev = [];
+  if (req.body.assignedDevelopers) {
+    for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+      idArrAssDev.push(req.body.assignedDevelopers[i]._id);
+    }
+
+    //console.log(idArrAssDev);
+
+    for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+      if (
+        req.body.assignedDevelopers[i].assignedProjects.indexOf(req.body.id) ===
+        -1
+      ) {
+        console.log("Project wird hinzugefügt");
+
+        var prom = new Promise(function(resolve, reject) {
+          User.findOneAndUpdate(
+            { _id: req.body.assignedDevelopers[i]._id },
+            {
+              $push: userFields
+            },
+            {
+              new: true
+            }
+          )
+            .then(project => resolve())
+            .catch(err => reject(err));
+        });
+
+        promiseArr.push(prom);
+      } else {
+        //console.log("entfernen prüfen");
+
+        for (var j = 0; j < req.body.allDevelopers.length; j++) {
+          if (
+            req.body.allDevelopers[j].assignedProjects.indexOf(req.body.id) !==
+              -1 &&
+            idArrAssDev.indexOf(req.body.allDevelopers[j]._id) === -1
+          ) {
+            //console.log("Entfernen");
+
+            var prom = new Promise(function(resolve, reject) {
+              User.findOneAndUpdate(
+                { _id: req.body.allDevelopers[j]._id },
+                {
+                  $pull: userFields
+                },
+                {
+                  new: true
+                }
+              )
+                .then(project => resolve())
+                .catch(err => reject(err));
+            });
+
+            promiseArr.push(prom);
+          } else {
+            //console.log("Bleibt");
+          }
+        }
       }
-    },
-    { new: true }
-  )
-    .then(project => {
-      res.json(true);
-    })
+    }
+  }
+  var prom = new Promise(function(resolve, reject) {
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $set: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(project => resolve())
+      .catch(err => reject(err));
+  });
+
+  promiseArr.push(prom);
+
+  //console.log(promiseArr);
+
+  Promise.all(promiseArr)
+    .then(project => res.json(project))
     .catch(err => res.status(404).json({ project: "There is no project" }));
 });
 
-// @route   GET api/projects/project/edit/:project_id
-// @desc    Get matching names of developer
+router.post("/project/setComment", (req, res) => {
+  const errors = {};
+
+  const projectFields = {};
+
+  //projectFields.comment = req.body.comment;
+
+  console.log(req.body);
+
+  //console.log(projectFields);
+  //console.log(req.body.id);
+
+  if (req.body.delete === false) {
+    projectFields.comment = req.body.comment;
+
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $push: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(comment => res.json(comment.comment))
+      .catch(err => console.log(err));
+  } else {
+    tempArr = [];
+    commentsArray = req.body.comments;
+    for (var i = 0; i < req.body.comments.length; i++) {
+      tempArr.push(req.body.comments[i]._id);
+    }
+
+    console.log(tempArr);
+    index = tempArr.indexOf(req.body.commentId);
+    console.log(index);
+
+    commentsArray.splice(index, 1);
+
+    projectFields.comment = commentsArray;
+
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $set: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(comment => res.json(comment.comment))
+      .catch(err => console.log(err));
+  }
+});
+
+router.post("/project/setFinishedTactic", (req, res) => {
+  const errors = {};
+
+  const projectFields = {};
+
+  projectFields.finishedTactics = req.body.finishedTactic;
+
+  //console.log(req.body);
+  //console.log(req.body.id);
+
+  if (req.body.finishedTactics.indexOf(req.body.finishedTactic) === -1) {
+    //console.log(req.body.finishedTactic + "hinzugefügt");
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $push: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(finishedTactics => res.json(finishedTactics))
+      .catch(err => console.log(err));
+  } else {
+    //console.log(req.body.finishedTactic + "entfernt");
+    Project.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        $pull: projectFields
+      },
+      {
+        new: true
+      }
+    )
+      .then(finishedTactics => res.json(finishedTactics))
+      .catch(err => console.log(err));
+  }
+});
+
+// @route   POST api/projects/project/deleteAssignedProject
+// @desc    Edit project by ID
 // @access  Public
 
-router.get("/developer/match/:id", (req, res) => {
+router.post("/project/deleteAssignedProject", (req, res) => {
   const errors = {};
-  var arr = [];
 
-  Project.findById(req.params.id)
-    .then(project => {
-      for (var i = 0; i < project.assignedDevelopers.length; i++) {
-        User.findById(project.assignedDevelopers[i]).then(user => {
-          arr.push(user.name), console.log(user.name);
-        });
-      }
-      res.json(arr);
-    })
+  const userFields = {};
+
+  if (req.body.assignedDevelopers) userFields.assignedProjects = req.body._id;
+
+  console.log(req.body);
+
+  let promiseArr = [];
+  if (req.body.assignedDevelopers) {
+    for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+      var prom = new Promise(function(resolve, reject) {
+        User.findOneAndUpdate(
+          { _id: req.body.assignedDevelopers[i]._id },
+          {
+            $pull: userFields
+          },
+          {
+            new: true
+          }
+        )
+          .then(project => resolve())
+          .catch(err => reject(err));
+      });
+
+      promiseArr.push(prom);
+    }
+  }
+
+  //console.log(promiseArr);
+
+  Promise.all(promiseArr)
+    .then(project => res.json(project))
+    .catch(err => res.status(404).json({ project: "There is no project" }));
+});
+
+// @route   POST api/projects/project/addAssignedProject
+// @desc    Edit project by ID
+// @access  Public
+
+router.post("/project/addAssignedProject", (req, res) => {
+  const errors = {};
+
+  const userFields = {};
+
+  if (req.body.assignedDevelopers) userFields.assignedProjects = req.body._id;
+
+  console.log(req.body);
+
+  let promiseArr = [];
+  if (req.body.assignedDevelopers) {
+    for (var i = 0; i < req.body.assignedDevelopers.length; i++) {
+      var prom = new Promise(function(resolve, reject) {
+        User.findOneAndUpdate(
+          { _id: req.body.assignedDevelopers[i]._id },
+          {
+            $push: userFields
+          },
+          {
+            new: true
+          }
+        )
+          .then(project => resolve())
+          .catch(err => reject(err));
+      });
+
+      promiseArr.push(prom);
+    }
+  }
+
+  //console.log(promiseArr);
+
+  Promise.all(promiseArr)
+    .then(project => res.json(project))
     .catch(err => res.status(404).json({ project: "There is no project" }));
 });
 

@@ -9,14 +9,27 @@ import {
   editProject,
   setAssignedDevelopers,
   setAssignedTactics,
-  setAssignedStrategies
+  setAssignedStrategies,
+  resetAssignedStrategies,
+  switchAttrForEditProject,
+  getProject
 } from "../../actions/projectActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
 import DevListGroupField from "../common/DevListGroupField";
 import TacListGroupField from "../common/TacListGroupField";
 import StrListGroupField from "../common/StrListGroupField";
-import { Button, ListGroup, ListGroupItem, Row, Col } from "react-bootstrap";
+import {
+  Button,
+  ButtonGroup,
+  ListGroup,
+  ListGroupItem,
+  Row,
+  Col,
+  ToggleButton,
+  ToggleButtonGroup,
+  ButtonToolbar
+} from "react-bootstrap";
 import { getDevelopers } from "../../actions/userActions";
 import { getTactics } from "../../actions/tacticActions";
 import { getStrategies } from "../../actions/strategyActions";
@@ -32,7 +45,7 @@ class EditProject extends Component {
       assignedTactics: [],
       finished: false,
       assignedDevelopers: [],
-      //nameDeveloper: "",
+      finishedTactic: store.getState().project.project.finishedTactic,
       developers: [],
 
       errors: {}
@@ -43,9 +56,9 @@ class EditProject extends Component {
   }
 
   componentDidMount() {
+    this.props.getProject(this.props.match.params.id);
     this.props.getDevelopers();
     this.props.getStrategies();
-    this.props.match.params.id;
   }
 
   onChange(e) {
@@ -57,18 +70,21 @@ class EditProject extends Component {
 
     //const { projectId } = this.props;
 
-    const newProject = {
+    const editedProject = {
       id: this.props.match.params.id,
       name: this.state.name,
       description: this.state.description,
-      assignedTactics: store.getState().project.assignedTactics._id, //fehlerquelle
+      assignedTactics: store.getState().project.assignedTactics,
       assignedStrategies: store.getState().project.assignedStrategies,
       assignedDevelopers: store.getState().project.assignedDevelopers,
       //nameDeveloper: store.getState().project.nameDeveloper,
-      finished: this.state.finished
+      finished: this.state.finished,
+      allDevelopers: store.getState().user.developers,
+      finishedTactic: this.state.finishedTactic
     };
 
-    this.props.editProject(newProject, this.props.history);
+    //console.log(editedProject);
+    this.props.editProject(editedProject, this.props.history);
   }
 
   render() {
@@ -84,65 +100,89 @@ class EditProject extends Component {
       developerContent = <Spinner />;
     } else {
       developerContent = (
-        <DevListGroupField developers={this.props.developers} />
+        <DevListGroupField
+          developers={this.props.developers}
+          location={this.props.location}
+        />
       );
     }
 
     if (tactics === null || loading2) {
       tacticContent = <Spinner />;
     } else {
-      tacticContent = <TacListGroupField tactics={this.props.strategies} />;
+      tacticContent = (
+        <TacListGroupField
+          tactics={this.props.assignedStrategies}
+          location={this.props.location}
+        />
+      );
     }
 
     if (strategies === null || loading3) {
       strategyContent = <Spinner />;
     } else {
       strategyContent = (
-        <StrListGroupField strategies={this.props.strategies} />
+        <StrListGroupField
+          strategies={this.props.strategies}
+          location={this.props.location}
+        />
       );
     }
 
     const { errors } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
-        <TextField
-          label="Name of project"
-          name="name"
-          value={this.state.name}
-          placeholder={store.getState().project.project.name}
-          onChange={this.onChange}
-        />
+        <span>
+          <TextField
+            label="Name of project"
+            name="name"
+            value={this.state.name}
+            placeholder={store.getState().project.project.name}
+            onChange={this.onChange}
+          />
 
-        <TextAreaField
-          label="Description"
-          name="description"
-          value={this.state.description}
-          placeholder={store.getState().project.project.description}
-          onChange={this.onChange}
-        />
+          <TextAreaField
+            label="Description"
+            name="description"
+            value={this.state.description}
+            placeholder={store.getState().project.project.description}
+            onChange={this.onChange}
+          />
 
-        <Row className="show-grid">
-          <Col md={3}>
-            <h4>Choose your strategies</h4>
-            {strategyContent}
-          </Col>
-          <Col md={3}>
-            {" "}
-            <h4>and the according tactics</h4>
-            {tacticContent}
-          </Col>
+          <Row className="show-grid">
+            <Col md={3}>
+              <h4>Choose your strategies</h4>
+              {strategyContent}
+            </Col>
+            <Col md={3}>
+              {" "}
+              <h4>and the according tactics</h4>
+              {tacticContent}
+            </Col>
 
-          <Col md={6}>
-            <h4>Choose your developer</h4>
-            {developerContent}
-          </Col>
-        </Row>
+            <Col md={6}>
+              <h4>Choose your developer</h4>
+              {developerContent}
+            </Col>
+          </Row>
+        </span>
 
-        <Button bsStyle="primary" onClick={this.onSubmit}>
-          Edit Project
-        </Button>
-        <Link to="/PMoverview">
-          <Button bsStyle="info">Abort</Button>
+        <Link
+          to={`/project/${this.props.location.pathname.substr(
+            this.props.location.pathname.length - 24
+          )}`}
+        >
+          <Button bsStyle="primary" onClick={this.onSubmit}>
+            Save changes
+          </Button>
+        </Link>
+
+        <Link
+          to={`/project/${this.props.location.pathname.substr(
+            this.props.location.pathname.length - 24
+          )}`}
+        >
+          <Button bsStyle="info">Stop editing and discard changes </Button>
         </Link>
       </form>
     );
@@ -158,7 +198,9 @@ EditProject.propTypes = {
   getStrategies: PropTypes.func.isRequired,
   setAssignedDevelopers: PropTypes.func.isRequired,
   setAssignedTactics: PropTypes.func.isRequired,
-  setAssignedStrategies: PropTypes.func.isRequired
+  setAssignedStrategies: PropTypes.func.isRequired,
+  resetAssignedStrategies: PropTypes.func.isRequired,
+  switchAttrForEditProject: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -181,6 +223,9 @@ export default connect(
     getStrategies,
     setAssignedDevelopers,
     setAssignedTactics,
-    setAssignedStrategies
+    setAssignedStrategies,
+    resetAssignedStrategies,
+    switchAttrForEditProject,
+    getProject
   }
 )(withRouter(EditProject));

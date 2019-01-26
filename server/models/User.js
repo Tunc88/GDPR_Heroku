@@ -23,9 +23,12 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  assignedProjects: {
-    type: [String]
-  },
+  assignedProjects: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "projects"
+    }
+  ],
   avatar: {
     type: String
   },

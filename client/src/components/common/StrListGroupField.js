@@ -10,7 +10,11 @@ class StrListGroupField extends Component {
     //return <div />;
 
     return strategies.map(strategy => (
-      <StrListItem key={strategy._id} strategy={strategy} />
+      <StrListItem
+        location={this.props.location}
+        key={strategy._id}
+        strategy={strategy}
+      />
     ));
   }
 }

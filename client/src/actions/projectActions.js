@@ -9,8 +9,14 @@ import {
   CLEAR_ERRORS,
   SET_ASSIGNED_DEVELOPER,
   SET_ASSIGNED_TACTICS,
+  RESET_ASSIGNED_STRATEGIES,
   SET_ASSIGNED_STRATEGIES,
-  MATCH_USER
+  MATCH_USER,
+  SWITCH_ATTR_FOR_EDIT_PROJECT,
+  SET_COMMENT,
+  SET_FINISHED_TACTIC,
+  REMOVE_PROJECT_FROM_USER,
+  ADD_PROJECT_TO_USER
 } from "./types";
 
 // create Project
@@ -103,19 +109,20 @@ export const deleteProject = id => dispatch => {
 };
 
 // Edit Project
-export const editProject = id => dispatch => {
+export const editProject = (projectData, history) => dispatch => {
   axios
-
-    .post(`/api/projects/project/edit/${id}`)
-    .then(res =>
-      dispatch({
-        type: GET_PROJECTS,
-        payload: res.data
-      })
+    .post(`/api/projects/project/edit`, projectData)
+    .then(
+      res =>
+        dispatch({
+          type: GET_PROJECT,
+          payload: res.data
+        }),
+      history.push(`/project/${projectData.id}`)
     )
     .catch(err =>
       dispatch({
-        type: GET_PROJECTS,
+        type: GET_PROJECT,
         payload: null
       })
     );
@@ -157,4 +164,95 @@ export const setAssignedStrategies = strategy => {
     type: SET_ASSIGNED_STRATEGIES,
     payload: strategy
   };
+};
+
+export const setComment = commentData => dispatch => {
+  axios
+    .post("/api/projects/project/setComment", commentData)
+    .then(res =>
+      dispatch({
+        type: SET_COMMENT,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const setFinishedTactic = tacticData => dispatch => {
+  axios
+    .post("/api/projects/project/setFinishedTactic", tacticData)
+    .then(res =>
+      dispatch({
+        type: SET_FINISHED_TACTIC,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+/*export const setFinishedTactic = tactic => {
+  return {
+    type: SET_FINISHED_TACTIC,
+    payload: tactic
+  };
+};*/
+
+// Reset assignedTactics
+export const resetAssignedStrategies = strategy => {
+  return {
+    type: RESET_ASSIGNED_STRATEGIES,
+    payload: strategy
+  };
+};
+
+// switch Attributes to edit project
+export const switchAttrForEditProject = attr => {
+  return {
+    type: SWITCH_ATTR_FOR_EDIT_PROJECT,
+    payload: attr
+  };
+};
+
+export const removeAssignedProjects = project => dispatch => {
+  axios
+    .post(`/api/projects/project/deleteAssignedProject`, project)
+    .then(res =>
+      dispatch({
+        type: REMOVE_PROJECT_FROM_USER,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: REMOVE_PROJECT_FROM_USER,
+        payload: null
+      })
+    );
+};
+
+export const addAssignedProjects = project => dispatch => {
+  axios
+    .post(`/api/projects/project/addAssignedProject`, project)
+    .then(res =>
+      dispatch({
+        type: ADD_PROJECT_TO_USER,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: ADD_PROJECT_TO_USER,
+        payload: null
+      })
+    );
 };

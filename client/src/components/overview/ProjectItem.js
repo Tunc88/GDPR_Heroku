@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Panel, Col, Tabs, Row, Tab, Button, Collapse } from "react-bootstrap";
-import EditToolbar from "../common/EditToolbarProject";
 import classnames from "classnames";
+
+import { getProject } from "../../actions/projectActions";
 
 import "./ProjectItem.css";
 
@@ -33,7 +34,7 @@ class ProjectItem extends Component {
       return arr;
     }
 
-    console.log(aggrTac());
+    //console.log(aggrTac());
     //console.log(tactics);
 
     // this.props.project.assignedStrategiesWithAllTactics.map(strategies =>
@@ -61,13 +62,19 @@ class ProjectItem extends Component {
 
     return (
       <Col xs={4}>
-        <Panel className={panelHeight}>
+        <Panel
+          //onMouseLeave={() => this.props.getProject(project._id)}
+          className={panelHeight}
+          bsStyle={
+            project.assignedTactics.length === project.finishedTactics.length
+              ? "success"
+              : undefined
+          }
+        >
           <Panel.Heading>
             <Link to={`/project/${project._id}`}>
               <h4>{project.name}</h4>
             </Link>
-
-            <EditToolbar project={project} />
           </Panel.Heading>
           <Panel.Body>
             <h4>Description</h4>
@@ -81,13 +88,13 @@ class ProjectItem extends Component {
                     <h4>Tactics:</h4>
 
                     {aggrTac().map(tactic => (
-                      <div key={tactic.id}>{tactic.name} </div>
+                      <div key={tactic._id}>{tactic.name} </div>
                     ))}
                   </Col>
                   <Col md={6} mdPull={6}>
                     <h4>Developer:</h4>
                     {project.assignedDevelopers.map(developer => (
-                      <div key={developer.id}>{developer.name} </div>
+                      <div key={developer._id}>{developer.name} </div>
                     ))}
                   </Col>
                 </Row>
@@ -105,7 +112,8 @@ class ProjectItem extends Component {
 
 ProjectItem.propTypes = {
   project: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  getProject: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -114,5 +122,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  { getProject }
 )(ProjectItem);

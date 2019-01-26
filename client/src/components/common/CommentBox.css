@@ -1,0 +1,12 @@
+.addon {
+  height: 50px;
+}
+
+.inputText {
+  height: 50px;
+}
+
+.chatBox {
+  overflow-y: scroll;
+  height: 400px;
+}

@@ -9,7 +9,9 @@ import {
   createProject,
   setAssignedDevelopers,
   setAssignedTactics,
-  setAssignedStrategies
+  setAssignedStrategies,
+  resetAssignedStrategies,
+  addAssignedProjects
 } from "../../actions/projectActions";
 import TextAreaField from "../common/TextAreaField";
 import TextField from "../common/TextField";
@@ -33,21 +35,29 @@ class CreateProject extends Component {
       finished: false,
       assignedDevelopers: [],
       developers: [],
+      comment: [],
 
       errors: {}
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onChangeStrategy = this.onChangeStrategy.bind(this);
   }
 
   componentDidMount() {
     this.props.getDevelopers();
     this.props.getStrategies();
+    this.props.resetAssignedStrategies();
   }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onChangeStrategy(e) {
+    console.log("click");
+    this.setState({ assignedStrategies: this.props.assignedStrategies });
   }
 
   onSubmit(e) {
@@ -58,7 +68,7 @@ class CreateProject extends Component {
     const newProject = {
       name: this.state.name,
       description: this.state.description,
-      assignedTactics: store.getState().project.assignedTactics, //fehlerquelle
+      assignedTactics: store.getState().project.assignedTactics,
       assignedStrategies: store.getState().project.assignedStrategies,
       assignedDevelopers: store.getState().project.assignedDevelopers,
       //nameDeveloper: store.getState().project.nameDeveloper,
@@ -66,6 +76,14 @@ class CreateProject extends Component {
     };
 
     this.props.createProject(newProject, this.props.history);
+
+    setTimeout(() => {
+      this.props.addAssignedProjects(
+        store.getState().project.projects[
+          store.getState().project.projects.length - 1
+        ]
+      );
+    }, 2000);
   }
 
   render() {
@@ -81,7 +99,10 @@ class CreateProject extends Component {
       developerContent = <Spinner />;
     } else {
       developerContent = (
-        <DevListGroupField developers={this.props.developers} />
+        <DevListGroupField
+          developers={this.props.developers}
+          location={this.props.location}
+        />
       );
     }
 
@@ -90,8 +111,8 @@ class CreateProject extends Component {
     } else {
       tacticContent = (
         <TacListGroupField
-          onClick={this.componentWillUpdate}
           tactics={this.props.assignedStrategies}
+          location={this.props.location}
         />
       );
     }
@@ -101,8 +122,8 @@ class CreateProject extends Component {
     } else {
       strategyContent = (
         <StrListGroupField
-          onClick={this.componentWillUpdate}
           strategies={this.props.strategies}
+          location={this.props.location}
         />
       );
     }
@@ -147,7 +168,9 @@ class CreateProject extends Component {
           Create Project
         </Button>
         <Link to="/PMoverview">
-          <Button bsStyle="info">Abort</Button>
+          <Button bsStyle="info" onClick={this.props.resetAssignedStrategies}>
+            Abort
+          </Button>
         </Link>
       </form>
     );
@@ -163,7 +186,9 @@ CreateProject.propTypes = {
   getStrategies: PropTypes.func.isRequired,
   setAssignedDevelopers: PropTypes.func.isRequired,
   setAssignedTactics: PropTypes.func.isRequired,
-  setAssignedStrategies: PropTypes.func.isRequired
+  setAssignedStrategies: PropTypes.func.isRequired,
+  resetAssignedStrategies: PropTypes.func.isRequired,
+  addAssignedProjects: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -186,6 +211,8 @@ export default connect(
     getStrategies,
     setAssignedDevelopers,
     setAssignedTactics,
-    setAssignedStrategies
+    setAssignedStrategies,
+    resetAssignedStrategies,
+    addAssignedProjects
   }
 )(withRouter(CreateProject));
